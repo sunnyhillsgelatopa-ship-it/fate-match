@@ -539,7 +539,7 @@
         const getApiUrl = (path) => {
             const pwd = sessionStorage.getItem('adminPassword');
             const separator = path.includes('?') ? '&' : '?';
-            return `/api${path}${separator}pwd=${pwd}`;
+            return `${path}${separator}pwd=${pwd}`;
         };
 
         function login() {
