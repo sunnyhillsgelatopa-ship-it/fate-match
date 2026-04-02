@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ç¼åéé | Fate Match</title>
+<title>缘分速配 | Fate Match</title>
 <script src="/socket.io/socket.io.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
@@ -161,30 +161,30 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 </head>
 <body>
 <div class="hearts-bg" id="heartsBg"></div>
-<div class="warning-badge" id="warningBadge">â ï¸ æ¯äººä»æä¸æ¬¡å¡«åæºä¼<br>è¯·è®¤çå¡«åï¼</div>
+<div class="warning-badge" id="warningBadge">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
 
 <!-- Register Screen -->
 <div class="screen active" id="registerScreen">
 <div class="card">
-  <div class="logo"><span class="logo-icon">ð</span><h1>ç¼åéé</h1><p>Fate Match â éè§ä½ çç¼å</p></div>
+  <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 遇见你的缘分</p></div>
   <div>
-    <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">éæ©ä½ çæ§å« <span class="required">*</span></span>
+    <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">选择你的性别 <span class="required">*</span></span>
     <div class="gender-select">
-      <button class="gender-btn" data-gender="male" onclick="selGender('male')"><span class="icon">ð¨</span><div style="font-weight:500">ç·</div></button>
-      <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">ð©</span><div style="font-weight:500">å¥³</div></button>
+      <button class="gender-btn" data-gender="male" onclick="selGender('male')"><span class="icon">👨</span><div style="font-weight:500">男</div></button>
+      <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">👩</span><div style="font-weight:500">女</div></button>
     </div>
-    <div class="error-msg" id="genderErr">è¯·éæ©æ§å«</div>
+    <div class="error-msg" id="genderErr">请选择性别</div>
   </div>
-  <div class="input-group"><label>ä½ çæµç§° <span class="required">*</span></label><input type="text" id="nickInput" placeholder="åä¸ä¸ªå¥½å¬çåå­" maxlength="20"><div class="error-msg" id="nickErr">è¯·å¡«åæµç§°</div></div>
-  <div class="input-group"><label>æè¿°èªå·± <span class="required">*</span></label><textarea id="descInput" placeholder="ä»ç»ä¸ä¸ä½ èªå·±å§ï½ å´è¶£ç±å¥½ãæ³æ¾ä»ä¹æ ·çäºº..." maxlength="200"></textarea><div class="error-msg" id="descErr">è¯·å¡«åæè¿°</div></div>
-  <button class="btn btn-primary" onclick="doRegister()" style="margin-top:10px">ð« ç»§ç»­ â</button>
+  <div class="input-group"><label>你的昵称 <span class="required">*</span></label><input type="text" id="nickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="nickErr">请填写昵称</div></div>
+  <div class="input-group"><label>描述自己 <span class="required">*</span></label><textarea id="descInput" placeholder="介绍一下你自己吧～ 兴趣爱好、想找什么样的人..." maxlength="200"></textarea><div class="error-msg" id="descErr">请填写描述</div></div>
+  <button class="btn btn-primary" onclick="doRegister()" style="margin-top:10px">💫 继续 →</button>
 </div>
 </div>
 
 <!-- Contact Info Note Card -->
 <div id="contactNoteCard" class="note-card" style="display:none">
-  <h3>ð çä¸ä½ çèç³»æ¹å¼</h3>
-  <div class="note-hint">èç³»æ¹å¼ä»å¨éå¯¹æååå±ç¤ºç»å¯¹æ¹</div>
+  <h3>📝 留下你的联系方式</h3>
+  <div class="note-hint">联系方式仅在配对成功后展示给对方</div>
   <div class="contact-inputs">
     <div class="input-row">
       <label>Instagram</label>
@@ -199,49 +199,49 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
       <input type="text" id="tiktokInput" placeholder="@username" maxlength="100">
     </div>
     <div class="input-row">
-      <label>å¾®ä¿¡</label>
+      <label>微信</label>
       <input type="text" id="wechatInput" placeholder="WeChat ID" maxlength="100">
     </div>
     <div class="input-row">
-      <label>å°çº¢ä¹¦</label>
-      <input type="text" id="xiaohongshuInput" placeholder="ç¨æ·å" maxlength="100">
+      <label>小红书</label>
+      <input type="text" id="xiaohongshuInput" placeholder="用户名" maxlength="100">
     </div>
   </div>
-  <div class="note-hint-small">è³å°å¡«åä¸ä¸ªèç³»æ¹å¼</div>
-  <button class="btn btn-primary" onclick="submitContactInfo()">å®æ</button>
+  <div class="note-hint-small">至少填写一个联系方式</div>
+  <button class="btn btn-primary" onclick="submitContactInfo()">完成</button>
 </div>
 
 <!-- Bubbles Screen -->
 <div class="screen" id="bubblesScreen">
 <div class="bubbles-container">
   <div class="bubbles-header">
-    <h2>ð åç°ç¼å</h2>
-    <button class="didi-count" id="didiCountBtn" onclick="showMyDidis()">ð <span id="didiNum">0</span></button>
+    <h2>💕 发现缘分</h2>
+    <button class="didi-count" id="didiCountBtn" onclick="showMyDidis()">🔔 <span id="didiNum">0</span></button>
   </div>
-  <div class="bubbles-area" id="bubblesArea"><div class="no-users">ç­å¾æ´å¤äººå å¥...</div></div>
+  <div class="bubbles-area" id="bubblesArea"><div class="no-users">等待更多人加入...</div></div>
 </div>
-<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">ðµ</button>
-<button class="settings-btn" onclick="openSettings()">âï¸</button>
+<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<button class="settings-btn" onclick="openSettings()">⚙️</button>
 <div class="bubble-detail" id="bubbleDetail">
   <div class="bd-header">
-    <div class="bd-avatar" id="bdAvatar">ð©</div>
+    <div class="bd-avatar" id="bdAvatar">👩</div>
     <div><div class="bd-name" id="bdName"></div><div class="bd-gender" id="bdGender"></div></div>
   </div>
   <div class="bd-desc" id="bdDesc"></div>
   <div class="bd-actions">
-    <button class="btn btn-didi" onclick="sendDidi()">ð æ»´æ»´TA</button>
-    <button class="btn btn-cancel-detail" onclick="closeBubbleDetail()">åæ¶</button>
+    <button class="btn btn-didi" onclick="sendDidi()">💕 滴滴TA</button>
+    <button class="btn btn-cancel-detail" onclick="closeBubbleDetail()">取消</button>
   </div>
 </div>
 <div class="settings-panel" id="settingsPanel">
-  <h3>âï¸ ç¼è¾ä¸ªäººä¿¡æ¯</h3>
+  <h3>⚙️ 编辑个人信息</h3>
   <div class="settings-section">
-    <label>æµç§°</label>
-    <input type="text" id="settingsNickInput" placeholder="ä½ çæµç§°" maxlength="20">
+    <label>昵称</label>
+    <input type="text" id="settingsNickInput" placeholder="你的昵称" maxlength="20">
   </div>
   <div class="settings-section">
-    <label>æè¿°</label>
-    <textarea id="settingsDescInput" placeholder="æè¿°èªå·±..." maxlength="200"></textarea>
+    <label>描述</label>
+    <textarea id="settingsDescInput" placeholder="描述自己..." maxlength="200"></textarea>
   </div>
   <div class="settings-section">
     <label>Instagram</label>
@@ -256,15 +256,15 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
     <input type="text" id="settingsTiktokInput" placeholder="@username" maxlength="100">
   </div>
   <div class="settings-section">
-    <label>å¾®ä¿¡</label>
+    <label>微信</label>
     <input type="text" id="settingsWechatInput" placeholder="WeChat ID" maxlength="100">
   </div>
   <div class="settings-section">
-    <label>å°çº¢ä¹¦</label>
-    <input type="text" id="settingsXiaohongshuInput" placeholder="ç¨æ·å" maxlength="100">
+    <label>小红书</label>
+    <input type="text" id="settingsXiaohongshuInput" placeholder="用户名" maxlength="100">
   </div>
-  <button class="btn btn-primary" onclick="saveSettings()">ä¿å­</button>
-  <button class="btn btn-secondary settings-close-btn" onclick="closeSettings()" style="margin-top:10px">åæ¶</button>
+  <button class="btn btn-primary" onclick="saveSettings()">保存</button>
+  <button class="btn btn-secondary settings-close-btn" onclick="closeSettings()" style="margin-top:10px">取消</button>
 </div>
 </div>
 
@@ -273,37 +273,37 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 <div class="chat-container">
   <div class="chat-header">
     <div class="partner-info">
-      <div class="partner-avatar" id="partnerAvatar">ð©</div>
+      <div class="partner-avatar" id="partnerAvatar">👩</div>
       <div><div class="partner-name" id="partnerName"></div></div>
     </div>
-    <div style="text-align:center"><div style="font-size:.65em;opacity:.8">å©ä½</div><div class="timer" id="chatTimer">05:00</div></div>
+    <div style="text-align:center"><div style="font-size:.65em;opacity:.8">剩余</div><div class="timer" id="chatTimer">05:00</div></div>
   </div>
   <div class="chat-actions-bar">
-    <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">ð äº¤æ¢èç³»æ¹å¼</button>
-    <button class="btn btn-secondary" onclick="leaveChat()">éåº</button>
+    <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">💌 交换联系方式</button>
+    <button class="btn btn-secondary" onclick="leaveChat()">退出</button>
   </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-input-area">
-    <input type="text" id="msgInput" placeholder="è¯´ç¹ä»ä¹..." onkeypress="if(event.key==='Enter')sendMsg()" maxlength="500">
-    <button class="send-btn" onclick="sendMsg()" id="sendBtn">â¤</button>
+    <input type="text" id="msgInput" placeholder="说点什么..." onkeypress="if(event.key==='Enter')sendMsg()" maxlength="500">
+    <button class="send-btn" onclick="sendMsg()" id="sendBtn">➤</button>
   </div>
 </div>
 </div>
 
 <!-- Overlays -->
-<div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æäººæ»´æ»´ä½ äºï¼</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">ð¬ æ¥åèå¤©</button><button class="btn btn-reject" onclick="rejectDidi()">ä¸æ¬¡å§</button></div></div></div>
-<div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">â³</span><h3>ç­å¾å¯¹æ¹ç¡®è®¤...</h3><p class="modal-sub" id="waitSenderMsg">å¯¹æ¹æ­£å¨ç¡®è®¤æ¯å¦èå¤©</p></div></div>
-<div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">ð</span><h3 id="didiAcceptTitle">å¯¹æ¹å·²æ¥åï¼</h3><p class="modal-sub">æ¯å¦å¼å§èå¤©ï¼</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">ð¬ å¼å§èå¤©</button><button class="btn btn-reject" onclick="rejectChat()">ç®äº</button></div></div></div>
-<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">ð¢</span><h3>å¯¹æ¹æç»äºèå¤©</h3><p class="modal-sub">æ²¡å³ç³»ï¼è¿ææ´å¤ç¼åç­ä½ ï¼</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">ç»§ç»­çç</button></div></div>
-<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">â°</span><h3>èå¤©æ¶é´ç»æ</h3><p class="modal-sub">5åéééå·²ç»æ</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">ð äº¤æ¢èç³»æ¹å¼</button><button class="btn btn-secondary" onclick="backToBubbles()">è¿å</button></div></div></div>
-<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹æ³äº¤æ¢èç³»æ¹å¼ï¼</h3><p class="modal-sub">æ¥åååæ¹å¯ä»¥çå°èç³»ä¿¡æ¯</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">â æ¥å</button><button class="btn btn-reject" onclick="respondConn(false)">â æç»</button></div></div></div>
-<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">ð¨</span><h3>è¯·æ±å·²åé</h3><p class="modal-sub">ç­å¾å¯¹æ¹ååº...</p></div></div>
-<div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>éå¯¹æåï¼</h3><div class="contact-reveal"><h4>ð± å¯¹æ¹ä¿¡æ¯</h4><div id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">è¿å</button></div></div>
-<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">ð¢</span><h3>å¯¹æ¹æç»äº</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">è¿å</button></div></div>
-<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹å·²ç¦»å¼</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">è¿å</button></div></div>
-<div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æ»´æ»´å·²åéï¼</h3><p class="modal-sub">å¯¹æ¹ä¼æ¶å°éç¥ï¼ç­å¾ååºå§ï½</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">å¥½ç</button></div></div>
-<div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">ð´</span><h3 id="offlineMsg">å¯¹æ¹ææ¶ä¸å¨çº¿</h3><p class="modal-sub">å·²éç¥å¯¹æ¹ï¼ç­TAä¸çº¿å§ï¼</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">å¥½ç</button></div></div>
-<div class="overlay" id="myDidisOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æ¶å°çæ»´æ»´</h3><div id="myDidisList" style="margin:16px 0;max-height:300px;overflow-y:auto"></div><button class="btn btn-secondary" onclick="hideO('myDidisOverlay')">å³é­</button></div></div>
+<div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>有人滴滴你了！</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">💬 接受聊天</button><button class="btn btn-reject" onclick="rejectDidi()">下次吧</button></div></div></div>
+<div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">⏳</span><h3>等待对方确认...</h3><p class="modal-sub" id="waitSenderMsg">对方正在确认是否聊天</p></div></div>
+<div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">💕</span><h3 id="didiAcceptTitle">对方已接受！</h3><p class="modal-sub">是否开始聊天？</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">💬 开始聊天</button><button class="btn btn-reject" onclick="rejectChat()">算了</button></div></div></div>
+<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了聊天</h3><p class="modal-sub">没关系，还有更多缘分等你！</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">继续看看</button></div></div>
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邂逅已结束</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 交换联系方式</button><button class="btn btn-secondary" onclick="backToBubbles()">返回</button></div></div></div>
+<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想交换联系方式！</h3><p class="modal-sub">接受后双方可以看到联系信息</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">✅ 接受</button><button class="btn btn-reject" onclick="respondConn(false)">❌ 拒绝</button></div></div></div>
+<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>请求已发送</h3><p class="modal-sub">等待对方回应...</p></div></div>
+<div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>配对成功！</h3><div class="contact-reveal"><h4>📱 对方信息</h4><div id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>滴滴已发送！</h3><p class="modal-sub">对方会收到通知，等待回应吧～</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">好的</button></div></div>
+<div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">📴</span><h3 id="offlineMsg">对方暂时不在线</h3><p class="modal-sub">已通知对方，等TA上线吧！</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">好的</button></div></div>
+<div class="overlay" id="myDidisOverlay"><div class="modal"><span class="modal-icon">🔔</span><h3>收到的滴滴</h3><div id="myDidisList" style="margin:16px 0;max-height:300px;overflow-y:auto"></div><button class="btn btn-secondary" onclick="hideO('myDidisOverlay')">关闭</button></div></div>
 
 <script>
 let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
@@ -322,7 +322,7 @@ let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',
 })();
 
 /* Hearts background */
-(()=>{const c=document.getElementById('heartsBg'),h=['ð','ð','ð','ð','â¨','ð¸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
+(()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
 
 /* Check registration status */
 (async ()=>{
@@ -350,7 +350,7 @@ async function doRegister(){
   if(!ok)return;
   try{
     const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:nick,description:desc,userId:myUserId})});
-    if(r.status===409){alert('ä½ å·²ç»æ³¨åè¿äºï¼');goToBubbles();return}
+    if(r.status===409){alert('你已经注册过了！');goToBubbles();return}
     const d=await r.json();
     myUserId=d.userId;
     myProfile.nickname=nick;
@@ -358,7 +358,7 @@ async function doRegister(){
     localStorage.setItem('fateMatchUserId',myUserId);
     document.getElementById('warningBadge').style.display='none';
     showContactNoteCard();
-  }catch(e){alert('æ³¨åå¤±è´¥ï¼è¯·éè¯')}
+  }catch(e){alert('注册失败，请重试')}
 }
 
 function showContactNoteCard(){
@@ -374,7 +374,7 @@ function submitContactInfo(){
   const xiaohongshu=document.getElementById('xiaohongshuInput').value.trim();
 
   if(!ig&&!whatsapp&&!tiktok&&!wechat&&!xiaohongshu){
-    alert('è¯·è³å°å¡«åä¸ä¸ªèç³»æ¹å¼');
+    alert('请至少填写一个联系方式');
     return;
   }
 
@@ -399,7 +399,7 @@ function connectSocket(){
   socket.emit('go_online',{userId:myUserId});
   socket.on('didi_received',(d)=>{
     pendingDidiFrom=d;
-    document.getElementById('didiRecvMsg').textContent=d.fromNickname+' æ³åä½ èå¤©ï¼';
+    document.getElementById('didiRecvMsg').textContent=d.fromNickname+' 想和你聊天！';
     showO('didiRecvOverlay');
     playBubbleSound();
     updateDidiCount();
@@ -407,31 +407,31 @@ function connectSocket(){
   socket.on('pending_didis',(list)=>{ updateDidiCount(list.length); });
   socket.on('didi_accepted',(d)=>{
     pendingDidiFrom=d;
-    document.getElementById('didiAcceptTitle').textContent=d.nickname+' æ¥åäºä½ çéè¯·ï¼';
+    document.getElementById('didiAcceptTitle').textContent=d.nickname+' 接受了你的邀请！';
     hideAll();showO('didiAcceptedOverlay');
   });
   socket.on('waiting_for_sender',(d)=>{
-    document.getElementById('waitSenderMsg').textContent='ç­å¾ '+d.nickname+' ç¡®è®¤...';
+    document.getElementById('waitSenderMsg').textContent='等待 '+d.nickname+' 确认...';
     hideAll();showO('waitSenderOverlay');
   });
   socket.on('chat_started',(d)=>{
     hideAll();
     chatEnded=false;chatStartTime=d.startTime;
     document.getElementById('partnerName').textContent=d.partner.nickname;
-    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'ð©':'ð¨';
+    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'👩':'👨';
     document.getElementById('chatMessages').innerHTML='';
     document.getElementById('msgInput').disabled=false;
     document.getElementById('sendBtn').disabled=false;
     document.getElementById('connectBtn').disabled=false;
-    addSys('â¨ éå¯¹æåï¼ä½ ä»¬æ5åéèå¤©æ¶é´');
+    addSys('✨ 配对成功！你们有5分钟聊天时间');
     startTimer();showScreen('chatScreen');
     stopMusic();
   });
   socket.on('chat_rejected',(d)=>{hideAll();showO('chatRejectedOverlay')});
-  socket.on('partner_offline_msg',(d)=>{hideAll();document.getElementById('offlineMsg').textContent=d.nickname+' ææ¶ä¸å¨çº¿';showO('offlineOverlay')});
+  socket.on('partner_offline_msg',(d)=>{hideAll();document.getElementById('offlineMsg').textContent=d.nickname+' 暂时不在线';showO('offlineOverlay')});
   socket.on('chat_message',(d)=>addMsg(d.message,false,d.nickname));
-  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('â ï¸ è¿å©1åéï¼')});
-  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('â° æ¶é´å°ï¼');showO('timeUpOverlay')});
+  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('⚠️ 还剩1分钟！')});
+  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('⏰ 时间到！');showO('timeUpOverlay')});
   socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectReqOverlay')});
   socket.on('request_sent',()=>{hideAll();showO('reqSentOverlay')});
   socket.on('connect_accepted',(d)=>{hideAll();renderContactInfo(d);showO('connAcceptOverlay')});
@@ -443,11 +443,11 @@ function connectSocket(){
 function renderContactInfo(data){
   const contacts=data.contacts||{};
   let html='';
-  if(contacts.ig) html+='<div class="contact-item"><span class="contact-item-label">ð· Instagram:</span><div class="contact-item-value">'+esc(contacts.ig)+'</div></div>';
-  if(contacts.whatsapp) html+='<div class="contact-item"><span class="contact-item-label">ð¬ WhatsApp:</span><div class="contact-item-value">'+esc(contacts.whatsapp)+'</div></div>';
-  if(contacts.tiktok) html+='<div class="contact-item"><span class="contact-item-label">ðµ TikTok:</span><div class="contact-item-value">'+esc(contacts.tiktok)+'</div></div>';
-  if(contacts.wechat) html+='<div class="contact-item"><span class="contact-item-label">ð å¾®ä¿¡:</span><div class="contact-item-value">'+esc(contacts.wechat)+'</div></div>';
-  if(contacts.xiaohongshu) html+='<div class="contact-item"><span class="contact-item-label">â¤ï¸ å°çº¢ä¹¦:</span><div class="contact-item-value">'+esc(contacts.xiaohongshu)+'</div></div>';
+  if(contacts.ig) html+='<div class="contact-item"><span class="contact-item-label">📷 Instagram:</span><div class="contact-item-value">'+esc(contacts.ig)+'</div></div>';
+  if(contacts.whatsapp) html+='<div class="contact-item"><span class="contact-item-label">💬 WhatsApp:</span><div class="contact-item-value">'+esc(contacts.whatsapp)+'</div></div>';
+  if(contacts.tiktok) html+='<div class="contact-item"><span class="contact-item-label">🎵 TikTok:</span><div class="contact-item-value">'+esc(contacts.tiktok)+'</div></div>';
+  if(contacts.wechat) html+='<div class="contact-item"><span class="contact-item-label">💚 微信:</span><div class="contact-item-value">'+esc(contacts.wechat)+'</div></div>';
+  if(contacts.xiaohongshu) html+='<div class="contact-item"><span class="contact-item-label">❤️ 小红书:</span><div class="contact-item-value">'+esc(contacts.xiaohongshu)+'</div></div>';
   document.getElementById('revealContact').innerHTML=html;
 }
 
@@ -456,7 +456,7 @@ async function loadBubbles(){
     const r=await fetch('/api/users?userId='+myUserId);
     const list=await r.json();
     const area=document.getElementById('bubblesArea');
-    if(!list.length){area.innerHTML='<div class="no-users">ð­ ææ¶æ²¡æå¶ä»äºº<br>åäº«é¾æ¥éè¯·æåå å¥å§ï¼</div>';return}
+    if(!list.length){area.innerHTML='<div class="no-users">💭 暂时没有其他人<br>分享链接邀请朋友加入吧！</div>';return}
     area.innerHTML='';
     list.forEach(u=>{
       const b=document.createElement('div');
@@ -465,7 +465,7 @@ async function loadBubbles(){
       const randomDelay=Math.random()*2;
       b.style.animation=`floatBubble${Math.floor(Math.random()*3)} ${randomDuration}s ease-in-out infinite`;
       b.style.animationDelay=randomDelay+'s';
-      b.innerHTML=`<span class="b-emoji">${u.gender==='male'?'ð¨':'ð©'}</span><span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
+      b.innerHTML=`<span class="b-emoji">${u.gender==='male'?'👨':'👩'}</span><span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
       b.onclick=()=>openBubble(u);
       area.appendChild(b);
     });
@@ -507,10 +507,10 @@ function addDriftAnimations(){
 function openBubble(u){
   selectedBubbleUser=u;
   playBubbleSound();
-  document.getElementById('bdAvatar').textContent=u.gender==='male'?'ð¨':'ð©';
+  document.getElementById('bdAvatar').textContent=u.gender==='male'?'👨':'👩';
   document.getElementById('bdAvatar').className='bd-avatar '+(u.gender==='male'?'male':'female');
   document.getElementById('bdName').textContent=u.nickname;
-  document.getElementById('bdGender').textContent=(u.gender==='male'?'â ç·':'â å¥³')+(u.online?' Â· ð¢ å¨çº¿':' Â· ç¦»çº¿');
+  document.getElementById('bdGender').textContent=(u.gender==='male'?'♂ 男':'♀ 女')+(u.online?' · 🟢 在线':' · 离线');
   document.getElementById('bdDesc').textContent=u.description;
   document.getElementById('bubbleDetail').classList.add('show');
 }
@@ -542,12 +542,12 @@ async function saveSettings(){
   const xiaohongshu=document.getElementById('settingsXiaohongshuInput').value.trim();
 
   if(!nick||!desc){
-    alert('æµç§°åæè¿°ä¸è½ä¸ºç©º');
+    alert('昵称和描述不能为空');
     return;
   }
 
   if(!ig&&!whatsapp&&!tiktok&&!wechat&&!xiaohongshu){
-    alert('è¯·è³å°å¡«åä¸ä¸ªèç³»æ¹å¼');
+    alert('请至少填写一个联系方式');
     return;
   }
 
@@ -566,13 +566,13 @@ async function saveSettings(){
       myProfile.nickname=nick;
       myProfile.description=desc;
       myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
-      alert('ä¿å­æå');
+      alert('保存成功');
       closeSettings();
     }else{
-      alert('ä¿å­å¤±è´¥');
+      alert('保存失败');
     }
   }catch(e){
-    alert('ä¿å­å¤±è´¥ï¼è¯·éè¯');
+    alert('保存失败，请重试');
   }
 }
 
@@ -581,7 +581,7 @@ async function sendDidi(){
   try{
     await fetch('/api/didi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fromId:myUserId,toId:selectedBubbleUser.id})});
     showO('didiSentOverlay');
-  }catch(e){alert('åéå¤±è´¥')}
+  }catch(e){alert('发送失败')}
 }
 
 function acceptDidi(){
@@ -603,12 +603,12 @@ async function showMyDidis(){
   const r=await fetch('/api/my-didis?userId='+myUserId);
   const list=await r.json();
   const c=document.getElementById('myDidisList');
-  if(!list.length){c.innerHTML='<p style="color:#9ca3af;padding:20px">è¿æ²¡ææ¶å°æ»´æ»´</p>';showO('myDidisOverlay');return}
+  if(!list.length){c.innerHTML='<p style="color:#9ca3af;padding:20px">还没有收到滴滴</p>';showO('myDidisOverlay');return}
   c.innerHTML='';
   list.forEach(d=>{
     const div=document.createElement('div');
     div.style.cssText='padding:12px;margin-bottom:8px;background:rgba(255,107,157,.05);border-radius:12px;display:flex;justify-content:space-between;align-items:center';
-    div.innerHTML=`<div><strong>${esc(d.fromNickname)}</strong> <span style="font-size:.8em;color:#9ca3af">${d.fromGender==='male'?'â':'â'}</span><br><span style="font-size:.8em;color:#666">${esc(d.fromDesc||'')}</span></div><button class="btn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">ð¬ æ¥å</button>`;
+    div.innerHTML=`<div><strong>${esc(d.fromNickname)}</strong> <span style="font-size:.8em;color:#9ca3af">${d.fromGender==='male'?'♂':'♀'}</span><br><span style="font-size:.8em;color:#666">${esc(d.fromDesc||'')}</span></div><button class="btn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">💬 接受</button>`;
     c.appendChild(div);
   });
   showO('myDidisOverlay');
@@ -654,10 +654,10 @@ function startMusic(){
       lfo.connect(lfoG);lfoG.connect(o.frequency);
       o.connect(g);g.connect(bgGain);o.start();lfo.start();
     });
-    musicPlaying=true;document.getElementById('musicBtn').textContent='ðµ';
+    musicPlaying=true;document.getElementById('musicBtn').textContent='🎵';
   }catch(e){}
 }
-function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='ð'}
+function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='🔇'}
 function toggleMusic(){if(musicPlaying)stopMusic();else startMusic()}
 function playBubbleSound(){
   if(!audioCtx)return;
