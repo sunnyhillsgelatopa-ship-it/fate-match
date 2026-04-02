@@ -26,7 +26,35 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:linear-gradi
 /* Warning badge */
 .warning-badge{position:fixed;top:16px;right:16px;z-index:99;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;padding:8px 14px;border-radius:12px;font-size:.72em;font-weight:600;max-width:200px;text-align:center;box-shadow:0 4px 15px rgba(238,90,36,.3);animation:pulseWarn 2s ease infinite;line-height:1.4}
 @keyframes pulseWarn{0%,100%{box-shadow:0 4px 15px rgba(238,90,36,.3)}50%{box-shadow:0 4px 25px rgba(238,90,36,.5)}}
-xt-fill-color:transparent}
+
+.gender-select{display:flex;gap:16px;margin-bottom:20px}
+.gender-btn{flex:1;padding:18px 14px;border-radius:16px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;transition:all .3s;text-align:center;font-family:inherit;font-size:.9em;color:var(--text)}
+.gender-btn:hover{border-color:var(--pink-light);transform:translateY(-2px)}
+.gender-btn.selected{border-color:var(--pink);background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));box-shadow:0 4px 15px rgba(255,107,157,.2)}
+.gender-btn .icon{font-size:2em;margin-bottom:6px;display:block}
+.input-group{margin-bottom:14px}
+.input-group label{display:block;font-weight:500;margin-bottom:6px;font-size:.85em;color:#5a4a2e}
+input[type="text"],input[type="password"],textarea{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:inherit;font-size:.92em;transition:all .3s;outline:none;background:#fff;color:var(--text)}
+textarea{resize:vertical;min-height:70px;line-height:1.5}
+input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,.1)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:50px;border:none;font-family:inherit;font-size:1em;font-weight:500;cursor:pointer;transition:all .3s;width:100%}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;box-shadow:0 4px 15px rgba(255,107,157,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(255,107,157,.4)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-secondary{background:#fff;color:var(--text);border:2px solid #e5e7eb}
+.btn-secondary:hover{border-color:var(--pink-light);background:#fdf2f8}
+.btn-accept{background:linear-gradient(135deg,#34d399,#10b981);color:#fff}
+.btn-reject{background:#fff;color:#ef4444;border:2px solid #fca5a5}
+.btn-group{display:flex;gap:12px;margin-top:16px}.btn-group .btn{flex:1}
+.error-msg{color:#ef4444;font-size:.8em;margin-top:4px;display:none}.error-msg.show{display:block}
+.required{color:#ef4444}
+
+/* Bubbles Screen */
+#bubblesScreen{padding:0}
+#bubblesScreen.active{display:block}
+.bubbles-container{position:relative;width:100%;min-height:100vh;overflow:hidden}
+.bubbles-header{position:fixed;top:0;left:0;right:0;z-index:10;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(253,242,248,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,107,157,.1)}
+.bubbles-header h2{font-size:1.1em;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .bubbles-header .didi-count{background:var(--pink);color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em;cursor:pointer;border:none;font-family:inherit}
 .bubbles-area{padding:80px 20px 100px;display:flex;flex-wrap:wrap;justify-content:center;gap:20px;min-height:100vh;align-content:center}
 .bubble{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all .4s;animation:floatBubble 4s ease-in-out infinite;position:relative;border:2px solid rgba(255,255,255,.6);box-shadow:0 8px 25px rgba(147,51,234,.15)}
@@ -118,7 +146,38 @@ xt-fill-color:transparent}
 <div class="hearts-bg" id="heartsBg"></div>
 <div class="warning-badge" id="warningBadge">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
 <button class="admin-entry-btn" onclick="showAdminLogin()" title="Admin">⚙️</button>
-dAvatar">👩</div>
+
+<!-- Register Screen -->
+<div class="screen active" id="registerScreen">
+<div class="card">
+  <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 遇见你的缘分</p></div>
+  <div>
+    <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">选择你的性别 <span class="required">*</span></span>
+    <div class="gender-select">
+      <button class="gender-btn" data-gender="male" onclick="selGender('male')"><span class="icon">👨</span><div style="font-weight:500">男</div></button>
+      <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">👩</span><div style="font-weight:500">女</div></button>
+    </div>
+    <div class="error-msg" id="genderErr">请选择性别</div>
+  </div>
+  <div class="input-group"><label>你的昵称 <span class="required">*</span></label><input type="text" id="nickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="nickErr">请填写昵称</div></div>
+  <div class="input-group"><label>描述自己 <span class="required">*</span></label><textarea id="descInput" placeholder="介绍一下你自己吧～ 兴趣爱好、想找什么样的人..." maxlength="200"></textarea><div class="error-msg" id="descErr">请填写描述</div></div>
+  <button class="btn btn-primary" onclick="doRegister()" style="margin-top:10px">💫 继续 →</button>
+</div>
+</div>
+
+<!-- Bubbles Screen -->
+<div class="screen" id="bubblesScreen">
+<div class="bubbles-container">
+  <div class="bubbles-header">
+    <h2>💕 发现缘分</h2>
+    <button class="didi-count" id="didiCountBtn" onclick="showMyDidis()">🔔 <span id="didiNum">0</span></button>
+  </div>
+  <div class="bubbles-area" id="bubblesArea"><div class="no-users">等待更多人加入...</div></div>
+</div>
+<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<div class="bubble-detail" id="bubbleDetail">
+  <div class="bd-header">
+    <div class="bd-avatar" id="bdAvatar">👩</div>
     <div><div class="bd-name" id="bdName"></div><div class="bd-gender" id="bdGender"></div></div>
   </div>
   <div class="bd-desc" id="bdDesc"></div>
@@ -170,12 +229,12 @@ dAvatar">👩</div>
 <div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>有人滴滴你了！</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">💬 接受聊天</button><button class="btn btn-reject" onclick="rejectDidi()">下次吧</button></div></div></div>
 <div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">⏳</span><h3>等待对方确认...</h3><p class="modal-sub" id="waitSenderMsg">对方正在确认是否聊天</p></div></div>
 <div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">💕</span><h3 id="didiAcceptTitle">对方已接受！</h3><p class="modal-sub">是否开始聊天？</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">💬 开始聊天</button><button class="btn btn-reject" onclick="rejectChat()">算了</button></div></div></div>
-<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了聊天</h3><p class="modal-sub">没关系，还有更多缘分等你！</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">继续 看看</button></div></div>
-<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邸逅已结束</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 交换联系方式</button><button class="btn btn-secondary" onclick="backToBubbles()">返回</button></div></div></div>
-<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想交换联系方式！</h3><p class="modal-sub">接受后双方可以看到描述信息</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">✅ 接�_</button><button class="btn btn-reject" onclick="respondConn(false)">❌ 拒绝</button></div></div></div>
-<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>请求已发送</h3><p class="modal-sub">等待对方回择...</p></div></div>
+<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了聊天</h3><p class="modal-sub">没关系，还有更多缘分等你！</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">继续看看</button></div></div>
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邂逅已结束</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 交换联系方式</button><button class="btn btn-secondary" onclick="backToBubbles()">返回</button></div></div></div>
+<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想交换联系方式！</h3><p class="modal-sub">接受后双方可以看到描述信息</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">✅ 接受</button><button class="btn btn-reject" onclick="respondConn(false)">❌ 拒绝</button></div></div></div>
+<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>请求已发送</h3><p class="modal-sub">等待对方回应...</p></div></div>
 <div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>配对成功！</h3><div class="contact-reveal"><h4>📱 对方信息</h4><div class="contact-text" id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
-<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">��回</button></div></div>
+<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
 <div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
 <div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>滴滴已发送！</h3><p class="modal-sub">对方会收到通知，等待回应吧～</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">好的</button></div></div>
 <div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">📴</span><h3 id="offlineMsg">对方暂时不在线</h3><p class="modal-sub">已通知对方，等TA上线吧！</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">好的</button></div></div>
@@ -185,7 +244,69 @@ dAvatar">👩</div>
 <script>
 let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
 let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=null, bgOsc=null, bgGain=null;
-！';
+
+// Hearts background
+(()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
+
+// Check if already registered
+(async()=>{
+  if(myUserId){
+    const r=await fetch('/api/check?userId='+myUserId);
+    const d=await r.json();
+    if(d.registered){document.getElementById('warningBadge').style.display='none';goToBubbles();return}
+  }
+})();
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function showO(id){document.getElementById(id).classList.add('active')}
+function hideO(id){document.getElementById(id).classList.remove('active')}
+function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
+
+function selGender(g){selectedGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));document.querySelector(`[data-gender="${g}"]`).classList.add('selected');document.getElementById('genderErr').classList.remove('show')}
+
+async function doRegister(){
+  let ok=true;
+  if(!selectedGender){document.getElementById('genderErr').classList.add('show');ok=false}
+  const nick=document.getElementById('nickInput').value.trim();
+  const desc=document.getElementById('descInput').value.trim();
+  if(!nick){document.getElementById('nickErr').classList.add('show');ok=false}else document.getElementById('nickErr').classList.remove('show');
+  if(!desc){document.getElementById('descErr').classList.add('show');ok=false}else document.getElementById('descErr').classList.remove('show');
+  if(!ok)return;
+  try{
+    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:nick,description:desc,userId:myUserId})});
+    if(r.status===409){alert('你已经注册过了！');goToBubbles();return}
+    const d=await r.json();
+    myUserId=d.userId;
+    localStorage.setItem('fateMatchUserId',myUserId);
+    document.getElementById('warningBadge').style.display='none';
+    // Subscribe push
+    subscribePush();
+    goToBubbles();
+  }catch(e){alert('注册失败，请重试')}
+}
+
+function goToBubbles(){
+  showScreen('bubblesScreen');
+  connectSocket();
+  loadBubbles();
+  startMusic();
+}
+
+function connectSocket(){
+  if(socket)return;
+  socket=io();
+  socket.emit('go_online',{userId:myUserId});
+  socket.on('didi_received',(d)=>{
+    pendingDidiFrom=d;
+    document.getElementById('didiRecvMsg').textContent=d.fromNickname+' 想和你聊天！';
+    showO('didiRecvOverlay');
+    playBubbleSound();
+    updateDidiCount();
+  });
+  socket.on('pending_didis',(list)=>{ updateDidiCount(list.length); });
+  socket.on('didi_accepted',(d)=>{
+    pendingDidiFrom=d;
+    document.getElementById('didiAcceptTitle').textContent=d.nickname+' 接受了你的邀请！';
     hideAll();showO('didiAcceptedOverlay');
   });
   socket.on('waiting_for_sender',(d)=>{
@@ -217,7 +338,70 @@ let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=
   socket.on('partner_left',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('msgInput').disabled=true;hideAll();showO('partnerLeftOverlay')});
   socket.on('user_status',()=>loadBubbles());
 }
-tn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">💬 接受</button>`;
+
+async function loadBubbles(){
+  try{
+    const r=await fetch('/api/users?userId='+myUserId);
+    const list=await r.json();
+    const area=document.getElementById('bubblesArea');
+    if(!list.length){area.innerHTML='<div class="no-users">💭 暂时没有其他人<br>分享链接邀请朋友加入吧！</div>';return}
+    area.innerHTML='';
+    list.forEach(u=>{
+      const b=document.createElement('div');
+      b.className='bubble '+(u.gender==='male'?'male':'female');
+      b.innerHTML=`<span class="b-emoji">${u.gender==='male'?'👨':'👩'}</span><span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
+      b.onclick=()=>openBubble(u);
+      area.appendChild(b);
+    });
+  }catch(e){}
+}
+
+function openBubble(u){
+  selectedBubbleUser=u;
+  playBubbleSound();
+  document.getElementById('bdAvatar').textContent=u.gender==='male'?'👨':'👩';
+  document.getElementById('bdAvatar').className='bd-avatar '+(u.gender==='male'?'male':'female');
+  document.getElementById('bdName').textContent=u.nickname;
+  document.getElementById('bdGender').textContent=(u.gender==='male'?'♂ 男':'♀ 女')+(u.online?' · 🟢 在线':' · 离线');
+  document.getElementById('bdDesc').textContent=u.description;
+  document.getElementById('bubbleDetail').classList.add('show');
+}
+
+function closeBubbleDetail(){document.getElementById('bubbleDetail').classList.remove('show');selectedBubbleUser=null}
+
+async function sendDidi(){
+  if(!selectedBubbleUser)return;
+  try{
+    await fetch('/api/didi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fromId:myUserId,toId:selectedBubbleUser.id})});
+    showO('didiSentOverlay');
+  }catch(e){alert('发送失败')}
+}
+
+function acceptDidi(){
+  hideO('didiRecvOverlay');
+  if(pendingDidiFrom&&socket)socket.emit('accept_didi',{fromId:pendingDidiFrom.fromId});
+}
+function rejectDidi(){hideO('didiRecvOverlay');pendingDidiFrom=null}
+function confirmChat(){
+  hideO('didiAcceptedOverlay');
+  if(pendingDidiFrom&&socket)socket.emit('confirm_chat',{targetId:pendingDidiFrom.userId});
+}
+function rejectChat(){
+  hideO('didiAcceptedOverlay');
+  if(pendingDidiFrom&&socket)socket.emit('reject_chat',{targetId:pendingDidiFrom.userId});
+  pendingDidiFrom=null;
+}
+
+async function showMyDidis(){
+  const r=await fetch('/api/my-didis?userId='+myUserId);
+  const list=await r.json();
+  const c=document.getElementById('myDidisList');
+  if(!list.length){c.innerHTML='<p style="color:#9ca3af;padding:20px">还没有收到滴滴</p>';showO('myDidisOverlay');return}
+  c.innerHTML='';
+  list.forEach(d=>{
+    const div=document.createElement('div');
+    div.style.cssText='padding:12px;margin-bottom:8px;background:rgba(255,107,157,.05);border-radius:12px;display:flex;justify-content:space-between;align-items:center';
+    div.innerHTML=`<div><strong>${esc(d.fromNickname)}</strong> <span style="font-size:.8em;color:#9ca3af">${d.fromGender==='male'?'♂':'♀'}</span><br><span style="font-size:.8em;color:#666">${esc(d.fromDesc||'')}</span></div><button class="btn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">💬 接受</button>`;
     c.appendChild(div);
   });
   showO('myDidisOverlay');
@@ -247,7 +431,62 @@ function requestConnect(){if(!socket)return;document.getElementById('connectBtn'
 function respondConn(a){hideO('connectReqOverlay');if(socket)socket.emit('respond_connect',{accepted:a,requesterId:pendingReqId})}
 function leaveChat(){if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);hideAll();goToBubbles()}
 function backToBubbles(){hideAll();if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);goToBubbles()}
-on()).then(d=>{
+
+// Audio
+function initAudio(){
+  if(audioCtx)return;
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+}
+function startMusic(){
+  initAudio();if(musicPlaying)return;
+  try{
+    bgGain=audioCtx.createGain();bgGain.gain.value=0.06;bgGain.connect(audioCtx.destination);
+    // Gentle ambient pad
+    const notes=[261.63,329.63,392,523.25];
+    notes.forEach((f,i)=>{
+      const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=f;
+      const g=audioCtx.createGain();g.gain.value=0.015;
+      // Gentle LFO
+      const lfo=audioCtx.createOscillator();lfo.type='sine';lfo.frequency.value=0.2+i*0.1;
+      const lfoG=audioCtx.createGain();lfoG.gain.value=3;
+      lfo.connect(lfoG);lfoG.connect(o.frequency);
+      o.connect(g);g.connect(bgGain);o.start();lfo.start();
+    });
+    musicPlaying=true;document.getElementById('musicBtn').textContent='🎵';
+  }catch(e){}
+}
+function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='🔇'}
+function toggleMusic(){if(musicPlaying)stopMusic();else startMusic()}
+function playBubbleSound(){
+  initAudio();
+  try{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='sine';o.frequency.setValueAtTime(800,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(1200,audioCtx.currentTime+0.1);o.frequency.exponentialRampToValueAtTime(600,audioCtx.currentTime+0.2);
+    g.gain.setValueAtTime(0.15,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);
+    o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+0.3);
+  }catch(e){}
+}
+
+// Push notifications
+async function subscribePush(){
+  if(!('serviceWorker' in navigator)||!('PushManager' in window))return;
+  try{
+    const reg=await navigator.serviceWorker.register('/sw.js');
+    const kr=await fetch('/api/vapid-key');const{key}=await kr.json();
+    const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(key)});
+    await fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:myUserId,subscription:sub})});
+  }catch(e){console.log('Push sub failed:',e)}
+}
+function urlBase64ToUint8Array(base64String){const padding='='.repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');const raw=atob(base64);const arr=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)arr[i]=raw.charCodeAt(i);return arr}
+
+// Admin
+function showAdminLogin(){showO('adminLoginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').classList.remove('show')}
+function adminLogin(){
+  if(document.getElementById('adminPwd').value==='admin123'){hideO('adminLoginOverlay');showScreen('adminScreen');loadAdmin()}
+  else document.getElementById('adminErr').classList.add('show');
+}
+function loadAdmin(){
+  fetch('/admin/data?pwd=admin123').then(r=>r.json()).then(d=>{
     document.getElementById('sUsers').textContent=d.stats.users;
     document.getElementById('sChats').textContent=d.stats.chats;
     document.getElementById('sMsgs').textContent=d.stats.messages;
