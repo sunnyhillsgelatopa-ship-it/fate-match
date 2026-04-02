@@ -27,31 +27,31 @@ app.get('/api/vapid-key', (req, res) => res.json({ key: vapidKeys.publicKey }));
 
 // Register
 app.post('/api/register', (req, res) => {
-  const { gender, nickname, description, userId, contacts } = req.body;
+  const { gender, nickname, description, userId, contacts, interests } = req.body;
   if (!gender || !nickname || !description) return res.status(400).json({ error: 'missing' });
   if (userId && users.has(userId)) return res.status(409).json({ error: 'exists' });
   const id = userId || crypto.randomUUID();
-  users.set(id, { id, gender, nickname, description, contacts: contacts || {}, online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  users.set(id, { id, gender, nickname, description, contacts: contacts || {}, interests: interests || [], online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
   statsData.users++;
   res.json({ userId: id });
 });
-
 // Get users for bubbles
 app.get('/api/users', (req, res) => {
   const myId = req.query.userId;
   const list = [];
-  users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, online: u.online }); });
+  users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, interests: u.interests || [], online: u.online }); });
   res.json(list);
 });
 
 // Update profile
 app.put('/api/update-profile', (req, res) => {
-  const { userId, nickname, description, contacts } = req.body;
+  const { userId, nickname, description, contacts, interests } = req.body;
   const u = users.get(userId);
   if (!u) return res.status(404).json({ error: 'not found' });
   if (nickname !== undefined) u.nickname = nickname;
   if (description !== undefined) u.description = description;
   if (contacts !== undefined) u.contacts = contacts;
+  if (interests !== undefined) u.interests = interests;
   res.json({ ok: true });
 });
 
@@ -69,7 +69,7 @@ app.post('/api/didi', (req, res) => {
   }
   // Push notification
   if (to.pushSub) {
-    webpush.sendNotification(to.pushSub, JSON.stringify({ title: 'ð æäººæ»´æ»´ä½ äºï¼', body: from.nickname + ' æ³åä½ èå¤©ï¼å¿«æ¥ççï¼', url: '/' })).catch(() => {});
+    webpush.sendNotification(to.pushSub, JSON.stringify({ title: '💕 有人滴滴你了！', body: from.nickname + ' 想和你聊天，快来看看！', url: '/' })).catch(() => {});
   }
   res.json({ success: true });
 });
@@ -94,7 +94,6 @@ app.get('/api/my-didis', (req, res) => {
   if (!u) return res.json([]);
   res.json(u.didis);
 });
-
 // Admin endpoints
 app.get('/admin/data', (req, res) => {
   if (req.query.pwd !== 'admin123') return res.status(403).json({ error: 'wrong' });
@@ -131,7 +130,6 @@ app.put('/admin/user/:id', (req, res) => {
 
 // Serve admin page
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
-
 // Socket.IO
 io.on('connection', (socket) => {
   let myUserId = null;
@@ -161,7 +159,7 @@ io.on('connection', (socket) => {
       socket.emit('partner_offline_msg', { nickname: from.nickname });
       // Push notify sender
       if (from.pushSub) {
-        webpush.sendNotification(from.pushSub, JSON.stringify({ title: 'ð ' + me.nickname + ' æ¥åäºä½ çéè¯·ï¼', body: 'å¿«æ¥èå¤©å§ï¼', url: '/' })).catch(() => {});
+        webpush.sendNotification(from.pushSub, JSON.stringify({ title: '💕 ' + me.nickname + ' 接受了你的邀请！', body: '快来聊天吧！', url: '/' })).catch(() => {});
       }
     }
   });
