@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ç¼åéé | Fate Match</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--pink:#ff6b9d;--pink-light:#ff9ec2;--purple:#c084fc;--purple-dark:#9333ea;--bg-start:#fdf2f8;--bg-end:#f3e8ff;--card-bg:rgba(255,255,255,0.85);--text:#4a1942;--text-light:#7c3aed;--shadow:0 8px 32px rgba(147,51,234,0.15)}
+    body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));min-height:100vh;color:var(--text);overflow-x:hidden}
+    .hearts-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;z-index:0}
+    .heart{position:absolute;opacity:.12;animation:floatUp linear infinite}
+    @keyframes floatUp{0%{transform:translateY(100vh) rotate(0) scale(.5);opacity:0}10%{opacity:.12}90%{opacity:.12}100%{transform:translateY(-10vh) rotate(360deg) scale(1);opacity:0}}
+    .screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px}
+    .screen.active{display:flex;align-items:center;justify-content:center}
+    .card{background:var(--card-bg);backdrop-filter:blur(20px);border-radius:24px;padding:40px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.6);max-width:480px;width:100%;animation:fadeInUp .6s ease}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .logo{text-align:center;margin-bottom:32px}
+    .logo .logo-icon{font-size:3em;display:block;margin-bottom:8px;animation:heartBeat 2s ease infinite}
+    @keyframes heartBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.15)}28%{transform:scale(1)}42%{transform:scale(1.15)}56%{transform:scale(1)}}
+    .logo h1{font-size:2em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .logo p{color:var(--text-light);font-size:.9em;margin-top:6px;opacity:.8}
+    .gender-select{display:flex;gap:16px;margin-bottom:24px}
+    .gender-btn{flex:1;padding:20px 16px;border-radius:16px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;transition:all .3s;text-align:center;font-family:inherit;font-size:.95em;color:var(--text)}
+    .gender-btn:hover{border-color:var(--pink-light);transform:translateY(-3px)}
+    .gender-btn.selected{border-color:var(--pink);background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));box-shadow:0 4px 15px rgba(255,107,157,.2)}
+    .gender-btn .icon{font-size:2.2em;margin-bottom:8px;display:block}
+    .note-card{background:linear-gradient(135deg,#fffef5,#fef9e7);border:1.5px dashed #e5d5a0;border-radius:14px;padding:22px;margin-bottom:28px}
+    .note-card-title{font-weight:600;margin-bottom:16px;color:#5a4a2e;font-size:.95em}
+    .note-card label{display:block;font-weight:500;margin-bottom:6px;font-size:.88em;color:#6b5a2e}
+    input[type="text"],input[type="password"]{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:inherit;font-size:.95em;transition:all .3s;outline:none;background:#fff;color:var(--text)}
+    input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,.1)}
+    .input-group{margin-bottom:14px}.input-group:last-child{margin-bottom:0}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:50px;border:none;font-family:inherit;font-size:1em;font-weight:500;cursor:pointer;transition:all .3s;width:100%}
+    .btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;box-shadow:0 4px 15px rgba(255,107,157,.3)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(255,107,157,.4)}
+    .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:#fff;color:var(--text);border:2px solid #e5e7eb}
+    .btn-secondary:hover{border-color:var(--pink-light);background:#fdf2f8}
+    .btn-accept{background:linear-gradient(135deg,#34d399,#10b981);color:#fff}
+    .btn-reject{background:#fff;color:#ef4444;border:2px solid #fca5a5}
+    .btn-group{display:flex;gap:12px;margin-top:16px}.btn-group .btn{flex:1}
+    .btn-group-col{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+    .error-msg{color:#ef4444;font-size:.82em;margin-top:5px;display:none}.error-msg.show{display:block}
+    .required{color:#ef4444}
+    .waiting-content{text-align:center}
+    .pulse-heart{font-size:4em;animation:pulse 1.5s ease infinite;display:inline-block}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+    .online-count{margin-top:20px;padding:10px 20px;background:rgba(255,107,157,.08);border-radius:50px;display:inline-block;font-size:.85em;color:var(--pink)}
+    .waiting-dots::after{content:'';animation:dots 1.5s steps(4) infinite}
+    @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+
+    #chatScreen{align-items:stretch;padding:0}
+    .chat-container{display:flex;flex-direction:column;height:100vh;width:100%;max-width:600px;margin:0 auto;background:var(--card-bg);backdrop-filter:blur(20px)}
+    .chat-header{padding:16px 20px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .partner-info{display:flex;align-items:center;gap:10px}
+    .partner-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.4em}
+    .partner-name{font-weight:600;font-size:1.05em}
+    .partner-gender-tag{font-size:.72em;opacity:.85;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:10px;margin-top:2px;display:inline-block}
+    .timer{font-size:1.6em;font-weight:700;font-variant-numeric:tabular-nums}
+    .timer.warning{animation:blink .7s ease infinite;color:#fef08a}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+    .chat-actions-bar{display:flex;gap:8px;padding:10px 16px;background:rgba(255,255,255,.95);border-bottom:1px solid #f3e8ff;flex-shrink:0}
+    .chat-actions-bar .btn{padding:9px 14px;font-size:.82em;width:auto;flex:1;border-radius:20px}
+    .chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+    .message{max-width:78%;padding:12px 16px;border-radius:18px;font-size:.93em;line-height:1.55;animation:msgIn .3s ease;word-wrap:break-word}
+    @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .message.mine{align-self:flex-end;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border-bottom-right-radius:4px}
+    .message.theirs{align-self:flex-start;background:#fff;border:1px solid #f0e6ff;border-bottom-left-radius:4px}
+    .message.theirs .msg-sender{font-size:.75em;color:var(--purple);font-weight:500;margin-bottom:4px}
+    .message.system{align-self:center;background:rgba(147,51,234,.08);color:var(--text-light);font-size:.82em;border-radius:12px;text-align:center;padding:8px 16px;max-width:90%}
+    .chat-input-area{padding:14px 16px;background:#fff;border-top:1px solid #f3e8ff;display:flex;gap:10px;flex-shrink:0}
+    .chat-input-area input{flex:1;border-radius:50px;padding:12px 20px}
+    .send-btn{width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-size:1.3em;cursor:pointer;transition:all .2s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .send-btn:hover{transform:scale(1.1)}.send-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+    .overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:20px}
+    .overlay.active{display:flex}
+    .modal{background:#fff;border-radius:24px;padding:36px 32px;max-width:400px;width:100%;text-align:center;animation:fadeInUp .4s ease}
+    .modal .modal-icon{font-size:3.5em;margin-bottom:16px;display:block}
+    .modal h3{margin-bottom:6px;font-size:1.2em}
+    .modal .modal-sub{color:#6b7280;font-size:.88em;margin-bottom:20px;line-height:1.65}
+    .contact-reveal{background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));border-radius:16px;padding:20px;margin:16px 0;border:1px solid rgba(255,107,157,.2)}
+    .contact-reveal h4{color:var(--pink);margin-bottom:10px;font-size:.92em}
+    .contact-reveal .contact-text{font-size:1.15em;font-weight:600;word-break:break-all}
+
+    /* Admin */
+    .admin-entry-btn{position:fixed;bottom:20px;right:20px;z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(147,51,234,.15);border:none;cursor:pointer;font-size:1.2em;transition:all .3s;display:flex;align-items:center;justify-content:center}
+    .admin-entry-btn:hover{background:linear-gradient(135deg,var(--pink),var(--purple));transform:scale(1.1)}
+    #adminScreen{padding:0}#adminScreen.active{display:block}
+    .admin-wrap{max-width:960px;margin:0 auto;padding:24px 20px;min-height:100vh}
+    .admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+    .admin-header h2{font-size:1.5em;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
+    .stat-card{background:#fff;border-radius:16px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #f0e6ff}
+    .stat-card .stat-num{font-size:2em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-card .stat-label{font-size:.85em;color:#9ca3af;margin-top:4px}
+    .admin-tabs{display:flex;gap:8px;margin-bottom:24px}
+    .admin-tab{padding:10px 22px;border-radius:50px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;font-family:inherit;font-size:.9em;font-weight:500;color:var(--text);transition:all .3s}
+    .admin-tab.active{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border-color:transparent}
+    .admin-panel{display:none;animation:fadeInUp .4s ease}.admin-panel.active{display:block}
+    .msg-log-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #f0e6ff}
+    .msg-log-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f3e8ff}
+    .msg-log-user{font-weight:600;color:var(--purple-dark)}
+    .msg-log-meta{font-size:.78em;color:#9ca3af}
+    .msg-log-entry{padding:8px 0;border-bottom:1px solid #faf5ff;font-size:.9em;display:flex;gap:10px;align-items:flex-start}
+    .msg-log-entry:last-child{border-bottom:none}
+    .sender-tag{font-size:.75em;padding:2px 8px;border-radius:8px;font-weight:500;flex-shrink:0}
+    .sender-tag.u1{background:rgba(255,107,157,.1);color:var(--pink)}
+    .sender-tag.u2{background:rgba(124,58,237,.1);color:var(--purple-dark)}
+    .sender-tag.sys{background:rgba(156,163,175,.1);color:#6b7280}
+    .msg-log-text{flex:1;line-height:1.5}
+    .connected-badge{display:inline-block;background:#d1fae5;color:#059669;font-size:.75em;padding:2px 8px;border-radius:8px;margin-left:8px}
+
+    @media(max-width:480px){.card{padding:24px 20px;margin:10px}.admin-wrap{padding:16px 12px}}
+  </style>
+</head>
+<body>
+<div class="hearts-bg" id="heartsBg"></div>
+<button class="admin-entry-btn" onclick="showAdminLogin()" title="Admin">âï¸</button>
+
+<!-- Welcome -->
+<div class="screen active" id="welcomeScreen">
+  <div class="card">
+    <div class="logo"><span class="logo-icon">ð</span><h1>ç¼åéé</h1><p>Fate Match â 5åééé / A 5-Minute Encounter</p></div>
+    <div>
+      <span style="font-weight:500;margin-bottom:10px;display:block">éæ©ä½ çæ§å« / Select Your Gender <span class="required">*</span></span>
+      <div class="gender-select">
+        <button class="gender-btn" data-gender="male" onclick="selectGender('male')"><span class="icon">ð¨</span><div style="font-weight:500">ç· Male</div></button>
+        <button class="gender-btn" data-gender="female" onclick="selectGender('female')"><span class="icon">ð©</span><div style="font-weight:500">å¥³ Female</div></button>
+      </div>
+      <div class="error-msg" id="genderError">è¯·éæ©æ§å« / Please select gender</div>
+    </div>
+    <div class="note-card">
+      <div class="note-card-title">ð å°çº¸æ¡ / Your Note Card</div>
+      <div class="input-group"><label>æµç§° / Nickname <span class="required">*</span></label><input type="text" id="nicknameInput" placeholder="è¾å¥æµç§° / Enter nickname" maxlength="20"><div class="error-msg" id="nicknameError">è¯·å¡«åæµç§°</div></div>
+      <div class="input-group"><label>èç³»æ¹å¼ / Contact <span class="required">*</span></label><input type="text" id="contactInput" placeholder="å¾®ä¿¡/QQ/é®ç®±" maxlength="50"><div class="error-msg" id="contactError">è¯·å¡«åèç³»æ¹å¼</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="startMatching()">ð å¼å§å¹é / Start Matching</button>
+  </div>
+</div>
+
+<!-- Waiting -->
+<div class="screen" id="waitingScreen">
+  <div class="card">
+    <div class="waiting-content">
+      <div class="pulse-heart">ð</div>
+      <div style="margin:20px 0 8px;font-size:1.2em;font-weight:600">å¯»æ¾çäººä¸­</div>
+      <p style="color:var(--text-light)">Finding a real person<span class="waiting-dots"></span></p>
+      <div class="online-count" id="onlineCount">å¨çº¿ç­å¾ä¸­...</div>
+      <p style="margin-top:16px;font-size:.84em;color:#9ca3af">éè¦å¦ä¸ä½çäººå å¥æè½å¼å§èå¤©<br>A real person must join to start chatting</p>
+      <button class="btn btn-secondary" style="margin-top:24px" onclick="cancelWaiting()">â åæ¶ / Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Chat -->
+<div class="screen" id="chatScreen">
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="partner-info">
+        <div class="partner-avatar" id="partnerAvatar">ð©</div>
+        <div><div class="partner-name" id="partnerName">å¯¹æ¹</div><span class="partner-gender-tag" id="partnerGender"></span></div>
+      </div>
+      <div style="text-align:center"><div style="font-size:.7em;opacity:.8;letter-spacing:1px">å©ä½ LEFT</div><div class="timer" id="chatTimer">05:00</div></div>
+    </div>
+    <div class="chat-actions-bar">
+      <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">ð è¿ä¸æ­¥äºè§£ / Know More</button>
+      <button class="btn btn-secondary" onclick="leaveChat()">ðª éåº / Exit</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-area">
+      <input type="text" id="messageInput" placeholder="è¾å¥æ¶æ¯... / Type a message..." onkeypress="if(event.key==='Enter')sendMessage()" maxlength="500">
+      <button class="send-btn" onclick="sendMessage()" id="sendBtn">â¤</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin -->
+<div class="screen" id="adminScreen">
+  <div class="admin-wrap">
+    <div class="admin-header"><h2>âï¸ ç®¡çåå° / Admin</h2><button class="btn btn-secondary" style="width:auto;padding:10px 24px" onclick="showScreen('welcomeScreen')">â è¿å</button></div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-label">æ»ç¨æ·</div></div>
+      <div class="stat-card"><div class="stat-num" id="statChats">0</div><div class="stat-label">æ»èå¤©</div></div>
+      <div class="stat-card"><div class="stat-num" id="statMsgs">0</div><div class="stat-label">æ»æ¶æ¯</div></div>
+      <div class="stat-card"><div class="stat-num" id="statConnects">0</div><div class="stat-label">æåéå¯¹</div></div>
+      <div class="stat-card"><div class="stat-num" id="statOnline">0</div><div class="stat-label">å½åå¨çº¿</div></div>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('messages',this)">ð¬ èå¤©è®°å½</button>
+    </div>
+    <div class="admin-panel active" id="panel_messages"><p style="color:#9ca3af;text-align:center;padding:40px" id="logsContainer">å è½½ä¸­...</p></div>
+    <button class="btn btn-secondary" onclick="loadAdminData()" style="margin-top:16px;max-width:200px">ð å·æ°æ°æ®</button>
+  </div>
+</div>
+
+<!-- Overlays -->
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">â°</span><h3>èå¤©æ¶é´ç»æ</h3><p class="modal-sub">5åéééå·²ç»æï¼æ³è¿ä¸æ­¥äºè§£å¯¹æ¹åï¼</p><div class="btn-group-col"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">ð ç³è¯·è¿ä¸æ­¥äºè§£</button><button class="btn btn-secondary" onclick="exitToHome()">ð  è¿åé¦é¡µ</button></div></div></div>
+<div class="overlay" id="connectRequestOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹æ³è¿ä¸æ­¥äºè§£ä½ ï¼</h3><p class="modal-sub">æ¥åååæ¹äº¤æ¢èç³»æ¹å¼</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConnect(true)">â æ¥å</button><button class="btn btn-reject" onclick="respondConnect(false)">â æç»</button></div></div></div>
+<div class="overlay" id="requestSentOverlay"><div class="modal"><span class="modal-icon">ð¨</span><h3>ç³è¯·å·²åé</h3><p class="modal-sub">ç­å¾å¯¹æ¹ååº...</p></div></div>
+<div class="overlay" id="connectAcceptedOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æ­åï¼å¯¹æ¹æ¥åäºï¼</h3><div class="contact-reveal"><h4>ð± å¯¹æ¹èç³»æ¹å¼</h4><div class="contact-text" id="revealedContact"></div></div><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">ð  è¿åé¦é¡µ</button></div></div>
+<div class="overlay" id="connectRejectedOverlay"><div class="modal"><span class="modal-icon">ð¢</span><h3>å¯¹æ¹æç»äº</h3><p class="modal-sub">ç¼åèªæå¤©æï¼</p><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">ð  è¿åé¦é¡µ</button></div></div>
+<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹å·²ç¦»å¼</h3><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">ð  è¿åé¦é¡µ</button></div></div>
+<div class="overlay" id="adminLoginOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>ç®¡çåç»å½</h3><div class="input-group" style="text-align:left;margin:16px 0"><input type="password" id="adminPwd" placeholder="å¯ç " onkeypress="if(event.key==='Enter')adminLogin()"></div><div class="error-msg" id="adminErr" style="margin-bottom:12px">å¯ç éè¯¯</div><div class="btn-group"><button class="btn btn-primary" onclick="adminLogin()">ç»å½</button><button class="btn btn-secondary" onclick="hideO('adminLoginOverlay')">åæ¶</button></div></div></div>
+
+<script>
+let socket=null,selectedGender=null,chatTimerInterval=null,chatEnded=false,chatStartTime=null,pendingReqId=null;
+
+// Hearts
+(()=>{const c=document.getElementById('heartsBg'),h=['ð','ð','ð','ð','â¨','ð¸'];for(let i=0;i<20;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(10+Math.random()*15)+'s';s.style.animationDelay=Math.random()*12+'s';s.style.fontSize=(16+Math.random()*20)+'px';c.appendChild(s)}})();
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function showO(id){document.getElementById(id).classList.add('active')}
+function hideO(id){document.getElementById(id).classList.remove('active')}
+function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
+function selectGender(g){selectedGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));document.querySelector(`[data-gender="${g}"]`).classList.add('selected');document.getElementById('genderError').classList.remove('show')}
+
+function startMatching(){
+  let v=true;
+  if(!selectedGender){document.getElementById('genderError').classList.add('show');v=false}
+  const n=document.getElementById('nicknameInput').value.trim(),c=document.getElementById('contactInput').value.trim();
+  if(!n){document.getElementById('nicknameError').classList.add('show');v=false}else document.getElementById('nicknameError').classList.remove('show');
+  if(!c){document.getElementById('contactError').classList.add('show');v=false}else document.getElementById('contactError').classList.remove('show');
+  if(!v)return;
+  socket=io();setupSocket();
+  socket.emit('register',{gender:selectedGender,contact:c,nickname:n});
+  showScreen('waitingScreen');
+}
+function cancelWaiting(){if(socket){socket.disconnect();socket=null}showScreen('welcomeScreen')}
+
+function setupSocket(){
+  socket.on('waiting',()=>showScreen('waitingScreen'));
+  socket.on('matched',(d)=>{
+    chatEnded=false;chatStartTime=d.startTime;
+    document.getElementById('partnerName').textContent=d.partner.nickname;
+    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'ð©':'ð¨';
+    document.getElementById('partnerGender').textContent=d.partner.gender==='male'?'ð¨ ç·':'ð© å¥³';
+    document.getElementById('chatMessages').innerHTML='';
+    document.getElementById('messageInput').disabled=false;
+    document.getElementById('sendBtn').disabled=false;
+    document.getElementById('connectBtn').disabled=false;
+    addSys('â¨ å¹éæåï¼ä½ ä»¬æ5åéèå¤©æ¶é´');
+    startTimer();showScreen('chatScreen');
+  });
+  socket.on('chat_message',(d)=>addMsg(d.message,false,d.nickname));
+  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('â ï¸ è¿å©1åéï¼')});
+  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('messageInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('â° æ¶é´å°ï¼');showO('timeUpOverlay')});
+  socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectRequestOverlay')});
+  socket.on('request_sent',()=>{hideAll();showO('requestSentOverlay')});
+  socket.on('connect_accepted',(d)=>{hideAll();document.getElementById('revealedContact').textContent=d.nickname+': '+d.contact;showO('connectAcceptedOverlay')});
+  socket.on('connect_rejected',()=>{hideAll();showO('connectRejectedOverlay')});
+  socket.on('partner_left',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('messageInput').disabled=true;hideAll();showO('partnerLeftOverlay')});
+}
+
+function startTimer(){
+  clearInterval(chatTimerInterval);const D=5*60*1000,el=document.getElementById('chatTimer');el.classList.remove('warning');
+  chatTimerInterval=setInterval(()=>{const r=Math.max(0,D-(Date.now()-chatStartTime));el.textContent=String(Math.floor(r/60000)).padStart(2,'0')+':'+String(Math.floor((r%60000)/1000)).padStart(2,'0');if(r<=0)clearInterval(chatTimerInterval)},250);
+}
+function addMsg(t,mine,nick){
+  const c=document.getElementById('chatMessages'),d=document.createElement('div');d.className='message '+(mine?'mine':'theirs');
+  if(!mine&&nick){const s=document.createElement('div');s.className='msg-sender';s.textContent=nick;d.appendChild(s)}
+  const x=document.createElement('div');x.textContent=t;d.appendChild(x);c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function addSys(t){const c=document.getElementById('chatMessages'),d=document.createElement('div');d.className='message system';d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight}
+function sendMessage(){if(chatEnded||!socket)return;const i=document.getElementById('messageInput'),t=i.value.trim();if(!t)return;socket.emit('chat_message',{message:t});addMsg(t,true);i.value='';i.focus()}
+function requestConnect(){if(!socket)return;document.getElementById('connectBtn').disabled=true;socket.emit('request_connect')}
+function respondConnect(a){hideO('connectRequestOverlay');if(socket)socket.emit('respond_connect',{accepted:a,requesterId:pendingReqId})}
+function leaveChat(){if(socket){socket.emit('leave_chat');socket.disconnect();socket=null}clearInterval(chatTimerInterval);hideAll();showScreen('welcomeScreen')}
+function exitToHome(){if(socket){socket.disconnect();socket=null}clearInterval(chatTimerInterval);hideAll();showScreen('welcomeScreen')}
+
+// Admin
+function showAdminLogin(){showO('adminLoginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').classList.remove('show');setTimeout(()=>document.getElementById('adminPwd').focus(),100)}
+function adminLogin(){
+  const p=document.getElementById('adminPwd').value;
+  if(p==='admin123'){hideO('adminLoginOverlay');showScreen('adminScreen');loadAdminData()}
+  else document.getElementById('adminErr').classList.add('show');
+}
+function loadAdminData(){
+  fetch('/admin/data?pwd=admin123').then(r=>r.json()).then(d=>{
+    document.getElementById('statUsers').textContent=d.stats.users;
+    document.getElementById('statChats').textContent=d.stats.chats;
+    document.getElementById('statMsgs').textContent=d.stats.messages;
+    document.getElementById('statConnects').textContent=d.stats.connects;
+    document.getElementById('statOnline').textContent=d.online;
+    renderLogs(d.logs);
+  }).catch(()=>{document.getElementById('logsContainer').innerHTML='<p style="color:#ef4444">å è½½å¤±è´¥</p>'});
+}
+function renderLogs(logs){
+  const c=document.getElementById('logsContainer');
+  if(!logs||!logs.length){c.innerHTML='<p style="color:#9ca3af;text-align:center;padding:40px">ææ èå¤©è®°å½</p>';return}
+  let h='';
+  logs.forEach(l=>{
+    h+=`<div class="msg-log-card"><div class="msg-log-header"><div class="msg-log-user">${esc(l.user1.nickname)} â ${esc(l.user2.nickname)}${l.connected?'<span class="connected-badge">å·²éå¯¹</span>':''}</div><div class="msg-log-meta">${l.date}</div></div>`;
+    h+=`<div style="font-size:.8em;color:#9ca3af;margin-bottom:8px">${esc(l.user1.nickname)}(${l.user1.gender}): ${esc(l.user1.contact)} | ${esc(l.user2.nickname)}(${l.user2.gender}): ${esc(l.user2.contact)}</div>`;
+    l.messages.forEach(m=>{
+      let cls=m.sender===l.user1.nickname?'u1':m.sender===l.user2.nickname?'u2':'sys';
+      h+=`<div class="msg-log-entry"><span class="sender-tag ${cls}">${esc(m.sender)}</span><span class="msg-log-text">${esc(m.text)}</span><span style="font-size:.75em;color:#ccc">${m.time}</span></div>`;
+    });
+    h+='</div>';
+  });
+  c.innerHTML=h;
+}
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
+function switchTab(n,b){document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel_'+n).classList.add('active')}
+</script>
+</body>
+</html>
