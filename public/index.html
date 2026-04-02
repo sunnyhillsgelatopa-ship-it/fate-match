@@ -1,260 +1,237 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>缘分速配 | Fate Match</title>
-  <script src="/socket.io/socket.io.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-    *{margin:0;padding:0;box-sizing:border-box}
-    :root{--pink:#ff6b9d;--pink-light:#ff9ec2;--purple:#c084fc;--purple-dark:#9333ea;--bg-start:#fdf2f8;--bg-end:#f3e8ff;--card-bg:rgba(255,255,255,0.85);--text:#4a1942;--text-light:#7c3aed;--shadow:0 8px 32px rgba(147,51,234,0.15)}
-    body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));min-height:100vh;color:var(--text);overflow-x:hidden}
-    .hearts-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;z-index:0}
-    .heart{position:absolute;opacity:.12;animation:floatUp linear infinite}
-    @keyframes floatUp{0%{transform:translateY(100vh) rotate(0) scale(.5);opacity:0}10%{opacity:.12}90%{opacity:.12}100%{transform:translateY(-10vh) rotate(360deg) scale(1);opacity:0}}
-    .screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px}
-    .screen.active{display:flex;align-items:center;justify-content:center}
-    .card{background:var(--card-bg);backdrop-filter:blur(20px);border-radius:24px;padding:40px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.6);max-width:480px;width:100%;animation:fadeInUp .6s ease}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-    .logo{text-align:center;margin-bottom:32px}
-    .logo .logo-icon{font-size:3em;display:block;margin-bottom:8px;animation:heartBeat 2s ease infinite}
-    @keyframes heartBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.15)}28%{transform:scale(1)}42%{transform:scale(1.15)}56%{transform:scale(1)}}
-    .logo h1{font-size:2em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .logo p{color:var(--text-light);font-size:.9em;margin-top:6px;opacity:.8}
-    .gender-select{display:flex;gap:16px;margin-bottom:24px}
-    .gender-btn{flex:1;padding:20px 16px;border-radius:16px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;transition:all .3s;text-align:center;font-family:inherit;font-size:.95em;color:var(--text)}
-    .gender-btn:hover{border-color:var(--pink-light);transform:translateY(-3px)}
-    .gender-btn.selected{border-color:var(--pink);background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));box-shadow:0 4px 15px rgba(255,107,157,.2)}
-    .gender-btn .icon{font-size:2.2em;margin-bottom:8px;display:block}
-    .note-card{background:linear-gradient(135deg,#fffef5,#fef9e7);border:1.5px dashed #e5d5a0;border-radius:14px;padding:22px;margin-bottom:28px}
-    .note-card-title{font-weight:600;margin-bottom:16px;color:#5a4a2e;font-size:.95em}
-    .note-card label{display:block;font-weight:500;margin-bottom:6px;font-size:.88em;color:#6b5a2e}
-    input[type="text"],input[type="password"]{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:inherit;font-size:.95em;transition:all .3s;outline:none;background:#fff;color:var(--text)}
-    input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,.1)}
-    .input-group{margin-bottom:14px}.input-group:last-child{margin-bottom:0}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:50px;border:none;font-family:inherit;font-size:1em;font-weight:500;cursor:pointer;transition:all .3s;width:100%}
-    .btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;box-shadow:0 4px 15px rgba(255,107,157,.3)}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(255,107,157,.4)}
-    .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
-    .btn-secondary{background:#fff;color:var(--text);border:2px solid #e5e7eb}
-    .btn-secondary:hover{border-color:var(--pink-light);background:#fdf2f8}
-    .btn-accept{background:linear-gradient(135deg,#34d399,#10b981);color:#fff}
-    .btn-reject{background:#fff;color:#ef4444;border:2px solid #fca5a5}
-    .btn-group{display:flex;gap:12px;margin-top:16px}.btn-group .btn{flex:1}
-    .btn-group-col{display:flex;flex-direction:column;gap:12px;margin-top:16px}
-    .error-msg{color:#ef4444;font-size:.82em;margin-top:5px;display:none}.error-msg.show{display:block}
-    .required{color:#ef4444}
-    .waiting-content{text-align:center}
-    .pulse-heart{font-size:4em;animation:pulse 1.5s ease infinite;display:inline-block}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
-    .online-count{margin-top:20px;padding:10px 20px;background:rgba(255,107,157,.08);border-radius:50px;display:inline-block;font-size:.85em;color:var(--pink)}
-    .waiting-dots::after{content:'';animation:dots 1.5s steps(4) infinite}
-    @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>缘分速配 | Fate Match</title>
+<script src="/socket.io/socket.io.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--pink:#ff6b9d;--pink-light:#ff9ec2;--purple:#c084fc;--purple-dark:#9333ea;--bg-start:#fdf2f8;--bg-end:#f3e8ff;--card-bg:rgba(255,255,255,0.88);--text:#4a1942;--text-light:#7c3aed;--shadow:0 8px 32px rgba(147,51,234,0.15)}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));min-height:100vh;color:var(--text);overflow-x:hidden}
+.hearts-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;z-index:0}
+.heart{position:absolute;opacity:.10;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0) scale(.5);opacity:0}10%{opacity:.10}90%{opacity:.10}100%{transform:translateY(-10vh) rotate(360deg) scale(1);opacity:0}}
+.screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px}
+.screen.active{display:flex;align-items:center;justify-content:center}
+.card{background:var(--card-bg);backdrop-filter:blur(20px);border-radius:24px;padding:40px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.6);max-width:480px;width:100%;animation:fadeInUp .6s ease}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.logo{text-align:center;margin-bottom:28px}
+.logo .logo-icon{font-size:3em;display:block;margin-bottom:8px;animation:heartBeat 2s ease infinite}
+@keyframes heartBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.15)}28%{transform:scale(1)}42%{transform:scale(1.15)}56%{transform:scale(1)}}
+.logo h1{font-size:1.8em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo p{color:var(--text-light);font-size:.85em;margin-top:4px;opacity:.8}
 
-    #chatScreen{align-items:stretch;padding:0}
-    .chat-container{display:flex;flex-direction:column;height:100vh;width:100%;max-width:600px;margin:0 auto;background:var(--card-bg);backdrop-filter:blur(20px)}
-    .chat-header{padding:16px 20px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    .partner-info{display:flex;align-items:center;gap:10px}
-    .partner-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.4em}
-    .partner-name{font-weight:600;font-size:1.05em}
-    .partner-gender-tag{font-size:.72em;opacity:.85;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:10px;margin-top:2px;display:inline-block}
-    .timer{font-size:1.6em;font-weight:700;font-variant-numeric:tabular-nums}
-    .timer.warning{animation:blink .7s ease infinite;color:#fef08a}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-    .chat-actions-bar{display:flex;gap:8px;padding:10px 16px;background:rgba(255,255,255,.95);border-bottom:1px solid #f3e8ff;flex-shrink:0}
-    .chat-actions-bar .btn{padding:9px 14px;font-size:.82em;width:auto;flex:1;border-radius:20px}
-    .chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
-    .message{max-width:78%;padding:12px 16px;border-radius:18px;font-size:.93em;line-height:1.55;animation:msgIn .3s ease;word-wrap:break-word}
-    @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .message.mine{align-self:flex-end;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border-bottom-right-radius:4px}
-    .message.theirs{align-self:flex-start;background:#fff;border:1px solid #f0e6ff;border-bottom-left-radius:4px}
-    .message.theirs .msg-sender{font-size:.75em;color:var(--purple);font-weight:500;margin-bottom:4px}
-    .message.system{align-self:center;background:rgba(147,51,234,.08);color:var(--text-light);font-size:.82em;border-radius:12px;text-align:center;padding:8px 16px;max-width:90%}
-    .chat-input-area{padding:14px 16px;background:#fff;border-top:1px solid #f3e8ff;display:flex;gap:10px;flex-shrink:0}
-    .chat-input-area input{flex:1;border-radius:50px;padding:12px 20px}
-    .send-btn{width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-size:1.3em;cursor:pointer;transition:all .2s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-    .send-btn:hover{transform:scale(1.1)}.send-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+/* Warning badge */
+.warning-badge{position:fixed;top:16px;right:16px;z-index:99;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;padding:8px 14px;border-radius:12px;font-size:.72em;font-weight:600;max-width:200px;text-align:center;box-shadow:0 4px 15px rgba(238,90,36,.3);animation:pulseWarn 2s ease infinite;line-height:1.4}
+@keyframes pulseWarn{0%,100%{box-shadow:0 4px 15px rgba(238,90,36,.3)}50%{box-shadow:0 4px 25px rgba(238,90,36,.5)}}
+xt-fill-color:transparent}
+.bubbles-header .didi-count{background:var(--pink);color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em;cursor:pointer;border:none;font-family:inherit}
+.bubbles-area{padding:80px 20px 100px;display:flex;flex-wrap:wrap;justify-content:center;gap:20px;min-height:100vh;align-content:center}
+.bubble{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all .4s;animation:floatBubble 4s ease-in-out infinite;position:relative;border:2px solid rgba(255,255,255,.6);box-shadow:0 8px 25px rgba(147,51,234,.15)}
+.bubble:nth-child(odd){animation-duration:3.5s}
+.bubble:nth-child(3n){animation-duration:4.5s}
+@keyframes floatBubble{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.bubble.male{background:linear-gradient(135deg,rgba(96,165,250,.25),rgba(147,51,234,.2))}
+.bubble.female{background:linear-gradient(135deg,rgba(255,107,157,.25),rgba(244,114,182,.2))}
+.bubble .b-emoji{font-size:1.8em}
+.bubble .b-name{font-size:.62em;margin-top:2px;font-weight:500;color:var(--text);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.bubble .b-online{position:absolute;top:6px;right:6px;width:10px;height:10px;border-radius:50%;border:2px solid #fff}
+.bubble .b-online.on{background:#34d399}
+.bubble .b-online.off{background:#d1d5db}
+.bubble:hover{transform:translateY(-8px) scale(1.1);box-shadow:0 12px 35px rgba(255,107,157,.3)}
+.bubble:active{transform:scale(.95)}
+.no-users{text-align:center;padding:40px;color:#9ca3af;font-size:.9em}
 
-    .overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:20px}
-    .overlay.active{display:flex}
-    .modal{background:#fff;border-radius:24px;padding:36px 32px;max-width:400px;width:100%;text-align:center;animation:fadeInUp .4s ease}
-    .modal .modal-icon{font-size:3.5em;margin-bottom:16px;display:block}
-    .modal h3{margin-bottom:6px;font-size:1.2em}
-    .modal .modal-sub{color:#6b7280;font-size:.88em;margin-bottom:20px;line-height:1.65}
-    .contact-reveal{background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));border-radius:16px;padding:20px;margin:16px 0;border:1px solid rgba(255,107,157,.2)}
-    .contact-reveal h4{color:var(--pink);margin-bottom:10px;font-size:.92em}
-    .contact-reveal .contact-text{font-size:1.15em;font-weight:600;word-break:break-all}
+/* Music toggle */
+.music-toggle{position:fixed;bottom:20px;left:20px;z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.85);border:2px solid rgba(255,107,157,.2);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.music-toggle:hover{transform:scale(1.1)}
 
-    /* Admin */
-    .admin-entry-btn{position:fixed;bottom:20px;right:20px;z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(147,51,234,.15);border:none;cursor:pointer;font-size:1.2em;transition:all .3s;display:flex;align-items:center;justify-content:center}
-    .admin-entry-btn:hover{background:linear-gradient(135deg,var(--pink),var(--purple));transform:scale(1.1)}
-    #adminScreen{padding:0}#adminScreen.active{display:block}
-    .admin-wrap{max-width:960px;margin:0 auto;padding:24px 20px;min-height:100vh}
-    .admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-    .admin-header h2{font-size:1.5em;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
-    .stat-card{background:#fff;border-radius:16px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #f0e6ff}
-    .stat-card .stat-num{font-size:2em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .stat-card .stat-label{font-size:.85em;color:#9ca3af;margin-top:4px}
-    .admin-tabs{display:flex;gap:8px;margin-bottom:24px}
-    .admin-tab{padding:10px 22px;border-radius:50px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;font-family:inherit;font-size:.9em;font-weight:500;color:var(--text);transition:all .3s}
-    .admin-tab.active{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border-color:transparent}
-    .admin-panel{display:none;animation:fadeInUp .4s ease}.admin-panel.active{display:block}
-    .msg-log-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #f0e6ff}
-    .msg-log-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f3e8ff}
-    .msg-log-user{font-weight:600;color:var(--purple-dark)}
-    .msg-log-meta{font-size:.78em;color:#9ca3af}
-    .msg-log-entry{padding:8px 0;border-bottom:1px solid #faf5ff;font-size:.9em;display:flex;gap:10px;align-items:flex-start}
-    .msg-log-entry:last-child{border-bottom:none}
-    .sender-tag{font-size:.75em;padding:2px 8px;border-radius:8px;font-weight:500;flex-shrink:0}
-    .sender-tag.u1{background:rgba(255,107,157,.1);color:var(--pink)}
-    .sender-tag.u2{background:rgba(124,58,237,.1);color:var(--purple-dark)}
-    .sender-tag.sys{background:rgba(156,163,175,.1);color:#6b7280}
-    .msg-log-text{flex:1;line-height:1.5}
-    .connected-badge{display:inline-block;background:#d1fae5;color:#059669;font-size:.75em;padding:2px 8px;border-radius:8px;margin-left:8px}
+/* Bubble detail panel */
+.bubble-detail{position:fixed;bottom:0;left:0;right:0;z-index:20;background:#fff;border-radius:24px 24px 0 0;padding:28px 24px;box-shadow:0 -8px 30px rgba(0,0,0,.15);transform:translateY(100%);transition:transform .4s ease;max-height:60vh;overflow-y:auto}
+.bubble-detail.show{transform:translateY(0)}
+.bd-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.bd-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2em}
+.bd-avatar.male{background:linear-gradient(135deg,rgba(96,165,250,.2),rgba(147,51,234,.15))}
+.bd-avatar.female{background:linear-gradient(135deg,rgba(255,107,157,.2),rgba(244,114,182,.15))}
+.bd-name{font-size:1.15em;font-weight:600}
+.bd-gender{font-size:.75em;color:#9ca3af;margin-top:2px}
+.bd-desc{background:linear-gradient(135deg,rgba(255,107,157,.05),rgba(192,132,252,.05));border-radius:14px;padding:16px;margin-bottom:20px;font-size:.9em;line-height:1.6;color:#555;border:1px solid rgba(255,107,157,.1)}
+.bd-actions{display:flex;gap:12px}
+.bd-actions .btn{flex:1;padding:12px;font-size:.9em}
+.btn-didi{background:linear-gradient(135deg,#ff6b9d,#f472b6);color:#fff;border:none;border-radius:50px;animation:pulseBtn 2s ease infinite}
+@keyframes pulseBtn{0%,100%{box-shadow:0 4px 15px rgba(255,107,157,.3)}50%{box-shadow:0 4px 25px rgba(255,107,157,.5)}}
+.btn-cancel-detail{background:#f3f4f6;color:#6b7280;border:none;border-radius:50px}
 
-    @media(max-width:480px){.card{padding:24px 20px;margin:10px}.admin-wrap{padding:16px 12px}}
-  </style>
+/* Chat screen */
+#chatScreen{align-items:stretch;padding:0}
+.chat-container{display:flex;flex-direction:column;height:100vh;width:100%;max-width:600px;margin:0 auto;background:var(--card-bg);backdrop-filter:blur(20px)}
+.chat-header{padding:14px 20px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.partner-info{display:flex;align-items:center;gap:10px}
+.partner-avatar{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.3em}
+.partner-name{font-weight:600;font-size:1em}
+.timer{font-size:1.4em;font-weight:700;font-variant-numeric:tabular-nums}
+.timer.warning{animation:blink .7s ease infinite;color:#fef08a}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.chat-actions-bar{display:flex;gap:8px;padding:10px 16px;background:rgba(255,255,255,.95);border-bottom:1px solid #f3e8ff;flex-shrink:0}
+.chat-actions-bar .btn{padding:8px 12px;font-size:.8em;width:auto;flex:1;border-radius:20px}
+.chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.message{max-width:78%;padding:12px 16px;border-radius:18px;font-size:.9em;line-height:1.55;animation:msgIn .3s ease;word-wrap:break-word}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.message.mine{align-self:flex-end;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border-bottom-right-radius:4px}
+.message.theirs{align-self:flex-start;background:#fff;border:1px solid #f0e6ff;border-bottom-left-radius:4px}
+.message.theirs .msg-sender{font-size:.72em;color:var(--purple);font-weight:500;margin-bottom:3px}
+.message.system{align-self:center;background:rgba(147,51,234,.08);color:var(--text-light);font-size:.8em;border-radius:12px;text-align:center;padding:8px 16px;max-width:90%}
+.chat-input-area{padding:12px 16px;background:#fff;border-top:1px solid #f3e8ff;display:flex;gap:10px;flex-shrink:0}
+.chat-input-area input{flex:1;border-radius:50px;padding:12px 20px}
+.send-btn{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-size:1.2em;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.send-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* Overlays */
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:20px}
+.overlay.active{display:flex}
+.modal{background:#fff;border-radius:24px;padding:32px 28px;max-width:380px;width:100%;text-align:center;animation:fadeInUp .4s ease}
+.modal .modal-icon{font-size:3em;margin-bottom:14px;display:block}
+.modal h3{margin-bottom:6px;font-size:1.1em}
+.modal .modal-sub{color:#6b7280;font-size:.85em;margin-bottom:18px;line-height:1.6}
+.contact-reveal{background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));border-radius:14px;padding:18px;margin:14px 0;border:1px solid rgba(255,107,157,.2)}
+.contact-reveal h4{color:var(--pink);margin-bottom:8px;font-size:.88em}
+.contact-reveal .contact-text{font-size:1.1em;font-weight:600;word-break:break-all}
+
+/* Admin */
+.admin-entry-btn{position:fixed;bottom:20px;right:20px;z-index:50;width:40px;height:40px;border-radius:50%;background:rgba(147,51,234,.12);border:none;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.admin-entry-btn:hover{background:linear-gradient(135deg,var(--pink),var(--purple));transform:scale(1.1)}
+#adminScreen{padding:0}#adminScreen.active{display:block}
+.admin-wrap{max-width:960px;margin:0 auto;padding:24px 20px;min-height:100vh}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.admin-header h2{font-size:1.3em;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:14px;padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid #f0e6ff}
+.stat-card .stat-num{font-size:1.8em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card .stat-label{font-size:.8em;color:#9ca3af;margin-top:3px}
+
+@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}}
+</style>
 </head>
 <body>
 <div class="hearts-bg" id="heartsBg"></div>
+<div class="warning-badge" id="warningBadge">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
 <button class="admin-entry-btn" onclick="showAdminLogin()" title="Admin">⚙️</button>
-
-<!-- Welcome -->
-<div class="screen active" id="welcomeScreen">
-  <div class="card">
-    <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 5分钟邂逅 / A 5-Minute Encounter</p></div>
-    <div>
-      <span style="font-weight:500;margin-bottom:10px;display:block">选择你的性别 / Select Your Gender <span class="required">*</span></span>
-      <div class="gender-select">
-        <button class="gender-btn" data-gender="male" onclick="selectGender('male')"><span class="icon">👨</span><div style="font-weight:500">男 Male</div></button>
-        <button class="gender-btn" data-gender="female" onclick="selectGender('female')"><span class="icon">👩</span><div style="font-weight:500">女 Female</div></button>
-      </div>
-      <div class="error-msg" id="genderError">请选择性别 / Please select gender</div>
-    </div>
-    <div class="note-card">
-      <div class="note-card-title">📝 小纸条 / Your Note Card</div>
-      <div class="input-group"><label>昵称 / Nickname <span class="required">*</span></label><input type="text" id="nicknameInput" placeholder="输入昵称 / Enter nickname" maxlength="20"><div class="error-msg" id="nicknameError">请填写昵称</div></div>
-      <div class="input-group"><label>联系方式 / Contact <span class="required">*</span></label><input type="text" id="contactInput" placeholder="微信/QQ/邮箱" maxlength="50"><div class="error-msg" id="contactError">请填写联系方式</div></div>
-    </div>
-    <button class="btn btn-primary" onclick="startMatching()">💘 开始匹配 / Start Matching</button>
+dAvatar">👩</div>
+    <div><div class="bd-name" id="bdName"></div><div class="bd-gender" id="bdGender"></div></div>
+  </div>
+  <div class="bd-desc" id="bdDesc"></div>
+  <div class="bd-actions">
+    <button class="btn btn-didi" onclick="sendDidi()">💕 滴滴TA</button>
+    <button class="btn btn-cancel-detail" onclick="closeBubbleDetail()">取消</button>
   </div>
 </div>
-
-<!-- Waiting -->
-<div class="screen" id="waitingScreen">
-  <div class="card">
-    <div class="waiting-content">
-      <div class="pulse-heart">💓</div>
-      <div style="margin:20px 0 8px;font-size:1.2em;font-weight:600">寻找真人中</div>
-      <p style="color:var(--text-light)">Finding a real person<span class="waiting-dots"></span></p>
-      <div class="online-count" id="onlineCount">在线等待中...</div>
-      <p style="margin-top:16px;font-size:.84em;color:#9ca3af">需要另一位真人加入才能开始聊天<br>A real person must join to start chatting</p>
-      <button class="btn btn-secondary" style="margin-top:24px" onclick="cancelWaiting()">✕ 取消 / Cancel</button>
-    </div>
-  </div>
 </div>
 
-<!-- Chat -->
+<!-- Chat Screen -->
 <div class="screen" id="chatScreen">
-  <div class="chat-container">
-    <div class="chat-header">
-      <div class="partner-info">
-        <div class="partner-avatar" id="partnerAvatar">👩</div>
-        <div><div class="partner-name" id="partnerName">对方</div><span class="partner-gender-tag" id="partnerGender"></span></div>
-      </div>
-      <div style="text-align:center"><div style="font-size:.7em;opacity:.8;letter-spacing:1px">剩余 LEFT</div><div class="timer" id="chatTimer">05:00</div></div>
+<div class="chat-container">
+  <div class="chat-header">
+    <div class="partner-info">
+      <div class="partner-avatar" id="partnerAvatar">👩</div>
+      <div><div class="partner-name" id="partnerName"></div></div>
     </div>
-    <div class="chat-actions-bar">
-      <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">💌 进一步了解 / Know More</button>
-      <button class="btn btn-secondary" onclick="leaveChat()">🚪 退出 / Exit</button>
-    </div>
-    <div class="chat-messages" id="chatMessages"></div>
-    <div class="chat-input-area">
-      <input type="text" id="messageInput" placeholder="输入消息... / Type a message..." onkeypress="if(event.key==='Enter')sendMessage()" maxlength="500">
-      <button class="send-btn" onclick="sendMessage()" id="sendBtn">➤</button>
-    </div>
+    <div style="text-align:center"><div style="font-size:.65em;opacity:.8">剩余</div><div class="timer" id="chatTimer">05:00</div></div>
   </div>
+  <div class="chat-actions-bar">
+    <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">💌 交换联系方式</button>
+    <button class="btn btn-secondary" onclick="leaveChat()">退出</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input type="text" id="msgInput" placeholder="说点什么..." onkeypress="if(event.key==='Enter')sendMsg()" maxlength="500">
+    <button class="send-btn" onclick="sendMsg()" id="sendBtn">➤</button>
+  </div>
+</div>
 </div>
 
 <!-- Admin -->
 <div class="screen" id="adminScreen">
-  <div class="admin-wrap">
-    <div class="admin-header"><h2>⚙️ 管理后台 / Admin</h2><button class="btn btn-secondary" style="width:auto;padding:10px 24px" onclick="showScreen('welcomeScreen')">← 返回</button></div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-label">总用户</div></div>
-      <div class="stat-card"><div class="stat-num" id="statChats">0</div><div class="stat-label">总聊天</div></div>
-      <div class="stat-card"><div class="stat-num" id="statMsgs">0</div><div class="stat-label">总消息</div></div>
-      <div class="stat-card"><div class="stat-num" id="statConnects">0</div><div class="stat-label">成功配对</div></div>
-      <div class="stat-card"><div class="stat-num" id="statOnline">0</div><div class="stat-label">当前在线</div></div>
-    </div>
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchTab('messages',this)">💬 聊天记录</button>
-    </div>
-    <div class="admin-panel active" id="panel_messages"><p style="color:#9ca3af;text-align:center;padding:40px" id="logsContainer">加载中...</p></div>
-    <button class="btn btn-secondary" onclick="loadAdminData()" style="margin-top:16px;max-width:200px">🔄 刷新数据</button>
+<div class="admin-wrap">
+  <div class="admin-header"><h2>⚙️ 管理后台</h2><button class="btn btn-secondary" style="width:auto;padding:8px 20px;font-size:.85em" onclick="showScreen('bubblesScreen')">← 返回</button></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="sUsers">0</div><div class="stat-label">总用户</div></div>
+    <div class="stat-card"><div class="stat-num" id="sChats">0</div><div class="stat-label">总聊天</div></div>
+    <div class="stat-card"><div class="stat-num" id="sMsgs">0</div><div class="stat-label">总消息</div></div>
+    <div class="stat-card"><div class="stat-num" id="sConn">0</div><div class="stat-label">配对</div></div>
+    <div class="stat-card"><div class="stat-num" id="sOnline">0</div><div class="stat-label">在线</div></div>
   </div>
+  <button class="btn btn-secondary" onclick="loadAdmin()" style="max-width:180px;font-size:.85em">🔄 刷新</button>
+</div>
 </div>
 
 <!-- Overlays -->
-<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邂逅已结束，想进一步了解对方吗？</p><div class="btn-group-col"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 申请进一步了解</button><button class="btn btn-secondary" onclick="exitToHome()">🏠 返回首页</button></div></div></div>
-<div class="overlay" id="connectRequestOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想进一步了解你！</h3><p class="modal-sub">接受后双方交换联系方式</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConnect(true)">✅ 接受</button><button class="btn btn-reject" onclick="respondConnect(false)">❌ 拒绝</button></div></div></div>
-<div class="overlay" id="requestSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>申请已发送</h3><p class="modal-sub">等待对方回应...</p></div></div>
-<div class="overlay" id="connectAcceptedOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>恭喜！对方接受了！</h3><div class="contact-reveal"><h4>📱 对方联系方式</h4><div class="contact-text" id="revealedContact"></div></div><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">🏠 返回首页</button></div></div>
-<div class="overlay" id="connectRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><p class="modal-sub">缘分自有天意！</p><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">🏠 返回首页</button></div></div>
-<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">🏠 返回首页</button></div></div>
+<div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>有人滴滴你了！</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">💬 接受聊天</button><button class="btn btn-reject" onclick="rejectDidi()">下次吧</button></div></div></div>
+<div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">⏳</span><h3>等待对方确认...</h3><p class="modal-sub" id="waitSenderMsg">对方正在确认是否聊天</p></div></div>
+<div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">💕</span><h3 id="didiAcceptTitle">对方已接受！</h3><p class="modal-sub">是否开始聊天？</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">💬 开始聊天</button><button class="btn btn-reject" onclick="rejectChat()">算了</button></div></div></div>
+<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了聊天</h3><p class="modal-sub">没关系，还有更多缘分等你！</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">继续 看看</button></div></div>
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邸逅已结束</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 交换联系方式</button><button class="btn btn-secondary" onclick="backToBubbles()">返回</button></div></div></div>
+<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想交换联系方式！</h3><p class="modal-sub">接受后双方可以看到描述信息</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">✅ 接�_</button><button class="btn btn-reject" onclick="respondConn(false)">❌ 拒绝</button></div></div></div>
+<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>请求已发送</h3><p class="modal-sub">等待对方回择...</p></div></div>
+<div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>配对成功！</h3><div class="contact-reveal"><h4>📱 对方信息</h4><div class="contact-text" id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">��回</button></div></div>
+<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>滴滴已发送！</h3><p class="modal-sub">对方会收到通知，等待回应吧～</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">好的</button></div></div>
+<div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">📴</span><h3 id="offlineMsg">对方暂时不在线</h3><p class="modal-sub">已通知对方，等TA上线吧！</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">好的</button></div></div>
+<div class="overlay" id="myDidisOverlay"><div class="modal"><span class="modal-icon">🔔</span><h3>收到的滴滴</h3><div id="myDidisList" style="margin:16px 0;max-height:300px;overflow-y:auto"></div><button class="btn btn-secondary" onclick="hideO('myDidisOverlay')">关闭</button></div></div>
 <div class="overlay" id="adminLoginOverlay"><div class="modal"><span class="modal-icon">🔐</span><h3>管理员登录</h3><div class="input-group" style="text-align:left;margin:16px 0"><input type="password" id="adminPwd" placeholder="密码" onkeypress="if(event.key==='Enter')adminLogin()"></div><div class="error-msg" id="adminErr" style="margin-bottom:12px">密码错误</div><div class="btn-group"><button class="btn btn-primary" onclick="adminLogin()">登录</button><button class="btn btn-secondary" onclick="hideO('adminLoginOverlay')">取消</button></div></div></div>
 
 <script>
-let socket=null,selectedGender=null,chatTimerInterval=null,chatEnded=false,chatStartTime=null,pendingReqId=null;
-
-// Hearts
-(()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<20;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(10+Math.random()*15)+'s';s.style.animationDelay=Math.random()*12+'s';s.style.fontSize=(16+Math.random()*20)+'px';c.appendChild(s)}})();
-
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function showO(id){document.getElementById(id).classList.add('active')}
-function hideO(id){document.getElementById(id).classList.remove('active')}
-function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
-function selectGender(g){selectedGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));document.querySelector(`[data-gender="${g}"]`).classList.add('selected');document.getElementById('genderError').classList.remove('show')}
-
-function startMatching(){
-  let v=true;
-  if(!selectedGender){document.getElementById('genderError').classList.add('show');v=false}
-  const n=document.getElementById('nicknameInput').value.trim(),c=document.getElementById('contactInput').value.trim();
-  if(!n){document.getElementById('nicknameError').classList.add('show');v=false}else document.getElementById('nicknameError').classList.remove('show');
-  if(!c){document.getElementById('contactError').classList.add('show');v=false}else document.getElementById('contactError').classList.remove('show');
-  if(!v)return;
-  socket=io();setupSocket();
-  socket.emit('register',{gender:selectedGender,contact:c,nickname:n});
-  showScreen('waitingScreen');
-}
-function cancelWaiting(){if(socket){socket.disconnect();socket=null}showScreen('welcomeScreen')}
-
-function setupSocket(){
-  socket.on('waiting',()=>showScreen('waitingScreen'));
-  socket.on('matched',(d)=>{
+let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
+let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=null, bgOsc=null, bgGain=null;
+！';
+    hideAll();showO('didiAcceptedOverlay');
+  });
+  socket.on('waiting_for_sender',(d)=>{
+    document.getElementById('waitSenderMsg').textContent='等待 '+d.nickname+' 确认...';
+    hideAll();showO('waitSenderOverlay');
+  });
+  socket.on('chat_started',(d)=>{
+    hideAll();
     chatEnded=false;chatStartTime=d.startTime;
     document.getElementById('partnerName').textContent=d.partner.nickname;
     document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'👩':'👨';
-    document.getElementById('partnerGender').textContent=d.partner.gender==='male'?'👨 男':'👩 女';
     document.getElementById('chatMessages').innerHTML='';
-    document.getElementById('messageInput').disabled=false;
+    document.getElementById('msgInput').disabled=false;
     document.getElementById('sendBtn').disabled=false;
     document.getElementById('connectBtn').disabled=false;
-    addSys('✨ 匹配成功！你们有5分钟聊天时间');
+    addSys('✨ 配对成功！你们有5分钟聊天时间');
     startTimer();showScreen('chatScreen');
+    stopMusic();
   });
+  socket.on('chat_rejected',(d)=>{hideAll();showO('chatRejectedOverlay')});
+  socket.on('partner_offline_msg',(d)=>{hideAll();document.getElementById('offlineMsg').textContent=d.nickname+' 暂时不在线';showO('offlineOverlay')});
   socket.on('chat_message',(d)=>addMsg(d.message,false,d.nickname));
   socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('⚠️ 还剩1分钟！')});
-  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('messageInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('⏰ 时间到！');showO('timeUpOverlay')});
-  socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectRequestOverlay')});
-  socket.on('request_sent',()=>{hideAll();showO('requestSentOverlay')});
-  socket.on('connect_accepted',(d)=>{hideAll();document.getElementById('revealedContact').textContent=d.nickname+': '+d.contact;showO('connectAcceptedOverlay')});
-  socket.on('connect_rejected',()=>{hideAll();showO('connectRejectedOverlay')});
-  socket.on('partner_left',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('messageInput').disabled=true;hideAll();showO('partnerLeftOverlay')});
+  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('⏰ 时间到！');showO('timeUpOverlay')});
+  socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectReqOverlay')});
+  socket.on('request_sent',()=>{hideAll();showO('reqSentOverlay')});
+  socket.on('connect_accepted',(d)=>{hideAll();document.getElementById('revealContact').textContent=d.nickname+': '+d.contact;showO('connAcceptOverlay')});
+  socket.on('connect_rejected',()=>{hideAll();showO('connRejectOverlay')});
+  socket.on('partner_left',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('msgInput').disabled=true;hideAll();showO('partnerLeftOverlay')});
+  socket.on('user_status',()=>loadBubbles());
+}
+tn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">💬 接受</button>`;
+    c.appendChild(div);
+  });
+  showO('myDidisOverlay');
+}
+function acceptDidiFromList(fromId){
+  hideO('myDidisOverlay');
+  if(socket)socket.emit('accept_didi',{fromId});
+}
+function updateDidiCount(n){
+  if(n===undefined){fetch('/api/my-didis?userId='+myUserId).then(r=>r.json()).then(l=>{document.getElementById('didiNum').textContent=l.length})}
+  else document.getElementById('didiNum').textContent=n;
 }
 
+// Chat functions
 function startTimer(){
   clearInterval(chatTimerInterval);const D=5*60*1000,el=document.getElementById('chatTimer');el.classList.remove('warning');
   chatTimerInterval=setInterval(()=>{const r=Math.max(0,D-(Date.now()-chatStartTime));el.textContent=String(Math.floor(r/60000)).padStart(2,'0')+':'+String(Math.floor((r%60000)/1000)).padStart(2,'0');if(r<=0)clearInterval(chatTimerInterval)},250);
@@ -265,46 +242,20 @@ function addMsg(t,mine,nick){
   const x=document.createElement('div');x.textContent=t;d.appendChild(x);c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
 function addSys(t){const c=document.getElementById('chatMessages'),d=document.createElement('div');d.className='message system';d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight}
-function sendMessage(){if(chatEnded||!socket)return;const i=document.getElementById('messageInput'),t=i.value.trim();if(!t)return;socket.emit('chat_message',{message:t});addMsg(t,true);i.value='';i.focus()}
+function sendMsg(){if(chatEnded||!socket)return;const i=document.getElementById('msgInput'),t=i.value.trim();if(!t)return;socket.emit('chat_message',{message:t});addMsg(t,true);i.value='';i.focus()}
 function requestConnect(){if(!socket)return;document.getElementById('connectBtn').disabled=true;socket.emit('request_connect')}
-function respondConnect(a){hideO('connectRequestOverlay');if(socket)socket.emit('respond_connect',{accepted:a,requesterId:pendingReqId})}
-function leaveChat(){if(socket){socket.emit('leave_chat');socket.disconnect();socket=null}clearInterval(chatTimerInterval);hideAll();showScreen('welcomeScreen')}
-function exitToHome(){if(socket){socket.disconnect();socket=null}clearInterval(chatTimerInterval);hideAll();showScreen('welcomeScreen')}
-
-// Admin
-function showAdminLogin(){showO('adminLoginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').classList.remove('show');setTimeout(()=>document.getElementById('adminPwd').focus(),100)}
-function adminLogin(){
-  const p=document.getElementById('adminPwd').value;
-  if(p==='admin123'){hideO('adminLoginOverlay');showScreen('adminScreen');loadAdminData()}
-  else document.getElementById('adminErr').classList.add('show');
-}
-function loadAdminData(){
-  fetch('/admin/data?pwd=admin123').then(r=>r.json()).then(d=>{
-    document.getElementById('statUsers').textContent=d.stats.users;
-    document.getElementById('statChats').textContent=d.stats.chats;
-    document.getElementById('statMsgs').textContent=d.stats.messages;
-    document.getElementById('statConnects').textContent=d.stats.connects;
-    document.getElementById('statOnline').textContent=d.online;
-    renderLogs(d.logs);
-  }).catch(()=>{document.getElementById('logsContainer').innerHTML='<p style="color:#ef4444">加载失败</p>'});
-}
-function renderLogs(logs){
-  const c=document.getElementById('logsContainer');
-  if(!logs||!logs.length){c.innerHTML='<p style="color:#9ca3af;text-align:center;padding:40px">暂无聊天记录</p>';return}
-  let h='';
-  logs.forEach(l=>{
-    h+=`<div class="msg-log-card"><div class="msg-log-header"><div class="msg-log-user">${esc(l.user1.nickname)} ↔ ${esc(l.user2.nickname)}${l.connected?'<span class="connected-badge">已配对</span>':''}</div><div class="msg-log-meta">${l.date}</div></div>`;
-    h+=`<div style="font-size:.8em;color:#9ca3af;margin-bottom:8px">${esc(l.user1.nickname)}(${l.user1.gender}): ${esc(l.user1.contact)} | ${esc(l.user2.nickname)}(${l.user2.gender}): ${esc(l.user2.contact)}</div>`;
-    l.messages.forEach(m=>{
-      let cls=m.sender===l.user1.nickname?'u1':m.sender===l.user2.nickname?'u2':'sys';
-      h+=`<div class="msg-log-entry"><span class="sender-tag ${cls}">${esc(m.sender)}</span><span class="msg-log-text">${esc(m.text)}</span><span style="font-size:.75em;color:#ccc">${m.time}</span></div>`;
-    });
-    h+='</div>';
-  });
-  c.innerHTML=h;
+function respondConn(a){hideO('connectReqOverlay');if(socket)socket.emit('respond_connect',{accepted:a,requesterId:pendingReqId})}
+function leaveChat(){if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);hideAll();goToBubbles()}
+function backToBubbles(){hideAll();if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);goToBubbles()}
+on()).then(d=>{
+    document.getElementById('sUsers').textContent=d.stats.users;
+    document.getElementById('sChats').textContent=d.stats.chats;
+    document.getElementById('sMsgs').textContent=d.stats.messages;
+    document.getElementById('sConn').textContent=d.stats.connects;
+    document.getElementById('sOnline').textContent=d.online;
+  }).catch(()=>{});
 }
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
-function switchTab(n,b){document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel_'+n).classList.add('active')}
 </script>
 </body>
 </html>
