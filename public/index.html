@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>缘分速配 | Fate Match</title>
+<title>ç¼åéé | Fate Match</title>
 <script src="/socket.io/socket.io.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
@@ -49,6 +49,18 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .error-msg{color:#ef4444;font-size:.8em;margin-top:4px;display:none}.error-msg.show{display:block}
 .required{color:#ef4444}
 
+/* Contact Info Note Card */
+.note-card{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-2deg);z-index:100;background:#fffef5;border-radius:8px;padding:28px 24px;max-width:380px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.15),0 0 0 1px rgba(139,69,19,.1);backdrop-filter:blur(4px);animation:noteSlideIn .4s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes noteSlideIn{from{opacity:0;transform:translate(-50%,-50%) rotate(-5deg) scale(0.9)}to{opacity:1;transform:translate(-50%,-50%) rotate(-2deg) scale(1)}}
+.note-card h3{text-align:center;font-size:1.15em;color:var(--text);margin-bottom:6px}
+.note-card .note-hint{text-align:center;font-size:.8em;color:#999;margin-bottom:18px}
+.note-card .contact-inputs{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.note-card .input-row{display:flex;align-items:center;gap:10px}
+.note-card .input-row label{min-width:70px;font-size:.85em;color:#666;font-weight:500}
+.note-card .input-row input{flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:.9em;background:#fff}
+.note-card .note-hint-small{font-size:.75em;color:#aaa;text-align:center;margin-bottom:12px}
+.note-card .btn{font-size:.9em;padding:12px}
+
 /* Bubbles Screen */
 #bubblesScreen{padding:0}
 #bubblesScreen.active{display:block}
@@ -57,7 +69,7 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .bubbles-header h2{font-size:1.1em;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .bubbles-header .didi-count{background:var(--pink);color:#fff;padding:4px 12px;border-radius:20px;font-size:.8em;cursor:pointer;border:none;font-family:inherit}
 .bubbles-area{padding:80px 20px 100px;display:flex;flex-wrap:wrap;justify-content:center;gap:20px;min-height:100vh;align-content:center}
-.bubble{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all .4s;animation:floatBubble 4s ease-in-out infinite;position:relative;border:2px solid rgba(255,255,255,.6);box-shadow:0 8px 25px rgba(147,51,234,.15)}
+.bubble{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all .4s;animation:floatBubble 4s ease-in-out infinite;position:relative;border:2px solid rgba(255,255,255,.6);box-shadow:0 8px 25px rgba(147,51,234,.15);opacity:0.75;backdrop-filter:blur(8px)}
 .bubble:nth-child(odd){animation-duration:3.5s}
 .bubble:nth-child(3n){animation-duration:4.5s}
 @keyframes floatBubble{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
@@ -76,6 +88,10 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .music-toggle{position:fixed;bottom:20px;left:20px;z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.85);border:2px solid rgba(255,107,157,.2);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.1)}
 .music-toggle:hover{transform:scale(1.1)}
 
+/* Settings button */
+.settings-btn{position:fixed;bottom:20px;right:20px;z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.85);border:2px solid rgba(255,107,157,.2);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.settings-btn:hover{transform:scale(1.1)}
+
 /* Bubble detail panel */
 .bubble-detail{position:fixed;bottom:0;left:0;right:0;z-index:20;background:#fff;border-radius:24px 24px 0 0;padding:28px 24px;box-shadow:0 -8px 30px rgba(0,0,0,.15);transform:translateY(100%);transition:transform .4s ease;max-height:60vh;overflow-y:auto}
 .bubble-detail.show{transform:translateY(0)}
@@ -91,6 +107,17 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .btn-didi{background:linear-gradient(135deg,#ff6b9d,#f472b6);color:#fff;border:none;border-radius:50px;animation:pulseBtn 2s ease infinite}
 @keyframes pulseBtn{0%,100%{box-shadow:0 4px 15px rgba(255,107,157,.3)}50%{box-shadow:0 4px 25px rgba(255,107,157,.5)}}
 .btn-cancel-detail{background:#f3f4f6;color:#6b7280;border:none;border-radius:50px}
+
+/* Settings panel */
+.settings-panel{position:fixed;bottom:0;left:0;right:0;z-index:20;background:#fff;border-radius:24px 24px 0 0;padding:28px 24px;box-shadow:0 -8px 30px rgba(0,0,0,.15);transform:translateY(100%);transition:transform .4s ease;max-height:80vh;overflow-y:auto}
+.settings-panel.show{transform:translateY(0)}
+.settings-panel h3{font-size:1.15em;font-weight:600;margin-bottom:20px;color:var(--text)}
+.settings-section{margin-bottom:20px}
+.settings-section label{display:block;font-weight:500;margin-bottom:6px;font-size:.85em;color:#5a4a2e}
+.settings-section input,.settings-section textarea{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:inherit;font-size:.92em;transition:all .3s;outline:none;background:#fff;color:var(--text);margin-bottom:10px}
+.settings-section input:focus,.settings-section textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,.1)}
+.settings-panel .btn{margin-top:12px;font-size:.9em}
+.settings-close-btn{background:#f3f4f6;color:#6b7280;border:none;border-radius:50px}
 
 /* Chat screen */
 #chatScreen{align-items:stretch;padding:0}
@@ -125,66 +152,119 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .modal .modal-sub{color:#6b7280;font-size:.85em;margin-bottom:18px;line-height:1.6}
 .contact-reveal{background:linear-gradient(135deg,rgba(255,107,157,.08),rgba(192,132,252,.08));border-radius:14px;padding:18px;margin:14px 0;border:1px solid rgba(255,107,157,.2)}
 .contact-reveal h4{color:var(--pink);margin-bottom:8px;font-size:.88em}
-.contact-reveal .contact-text{font-size:1.1em;font-weight:600;word-break:break-all}
+.contact-item{font-size:0.95em;margin-bottom:10px;color:#333}
+.contact-item-label{font-weight:600;color:var(--pink)}
+.contact-item-value{word-break:break-all;color:#666;margin-top:2px}
 
-/* Admin */
-.admin-entry-btn{position:fixed;bottom:20px;right:20px;z-index:50;width:40px;height:40px;border-radius:50%;background:rgba(147,51,234,.12);border:none;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center;transition:all .3s}
-.admin-entry-btn:hover{background:linear-gradient(135deg,var(--pink),var(--purple));transform:scale(1.1)}
-#adminScreen{padding:0}#adminScreen.active{display:block}
-.admin-wrap{max-width:960px;margin:0 auto;padding:24px 20px;min-height:100vh}
-.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.admin-header h2{font-size:1.3em;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
-.stat-card{background:#fff;border-radius:14px;padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid #f0e6ff}
-.stat-card .stat-num{font-size:1.8em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stat-card .stat-label{font-size:.8em;color:#9ca3af;margin-top:3px}
-
-@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}}
+@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}.note-card{max-width:90%;padding:20px 16px}}
 </style>
 </head>
 <body>
 <div class="hearts-bg" id="heartsBg"></div>
-<div class="warning-badge" id="warningBadge">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
-<button class="admin-entry-btn" onclick="showAdminLogin()" title="Admin">⚙️</button>
+<div class="warning-badge" id="warningBadge">â ï¸ æ¯äººä»æä¸æ¬¡å¡«åæºä¼<br>è¯·è®¤çå¡«åï¼</div>
 
 <!-- Register Screen -->
 <div class="screen active" id="registerScreen">
 <div class="card">
-  <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 遇见你的缘分</p></div>
+  <div class="logo"><span class="logo-icon">ð</span><h1>ç¼åéé</h1><p>Fate Match â éè§ä½ çç¼å</p></div>
   <div>
-    <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">选择你的性别 <span class="required">*</span></span>
+    <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">éæ©ä½ çæ§å« <span class="required">*</span></span>
     <div class="gender-select">
-      <button class="gender-btn" data-gender="male" onclick="selGender('male')"><span class="icon">👨</span><div style="font-weight:500">男</div></button>
-      <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">👩</span><div style="font-weight:500">女</div></button>
+      <button class="gender-btn" data-gender="male" onclick="selGender('male')"><span class="icon">ð¨</span><div style="font-weight:500">ç·</div></button>
+      <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">ð©</span><div style="font-weight:500">å¥³</div></button>
     </div>
-    <div class="error-msg" id="genderErr">请选择性别</div>
+    <div class="error-msg" id="genderErr">è¯·éæ©æ§å«</div>
   </div>
-  <div class="input-group"><label>你的昵称 <span class="required">*</span></label><input type="text" id="nickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="nickErr">请填写昵称</div></div>
-  <div class="input-group"><label>描述自己 <span class="required">*</span></label><textarea id="descInput" placeholder="介绍一下你自己吧～ 兴趣爱好、想找什么样的人..." maxlength="200"></textarea><div class="error-msg" id="descErr">请填写描述</div></div>
-  <button class="btn btn-primary" onclick="doRegister()" style="margin-top:10px">💫 继续 →</button>
+  <div class="input-group"><label>ä½ çæµç§° <span class="required">*</span></label><input type="text" id="nickInput" placeholder="åä¸ä¸ªå¥½å¬çåå­" maxlength="20"><div class="error-msg" id="nickErr">è¯·å¡«åæµç§°</div></div>
+  <div class="input-group"><label>æè¿°èªå·± <span class="required">*</span></label><textarea id="descInput" placeholder="ä»ç»ä¸ä¸ä½ èªå·±å§ï½ å´è¶£ç±å¥½ãæ³æ¾ä»ä¹æ ·çäºº..." maxlength="200"></textarea><div class="error-msg" id="descErr">è¯·å¡«åæè¿°</div></div>
+  <button class="btn btn-primary" onclick="doRegister()" style="margin-top:10px">ð« ç»§ç»­ â</button>
 </div>
+</div>
+
+<!-- Contact Info Note Card -->
+<div id="contactNoteCard" class="note-card" style="display:none">
+  <h3>ð çä¸ä½ çèç³»æ¹å¼</h3>
+  <div class="note-hint">èç³»æ¹å¼ä»å¨éå¯¹æååå±ç¤ºç»å¯¹æ¹</div>
+  <div class="contact-inputs">
+    <div class="input-row">
+      <label>Instagram</label>
+      <input type="text" id="igInput" placeholder="@username" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>WhatsApp</label>
+      <input type="text" id="whatsappInput" placeholder="+1234567890" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>TikTok</label>
+      <input type="text" id="tiktokInput" placeholder="@username" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>å¾®ä¿¡</label>
+      <input type="text" id="wechatInput" placeholder="WeChat ID" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>å°çº¢ä¹¦</label>
+      <input type="text" id="xiaohongshuInput" placeholder="ç¨æ·å" maxlength="100">
+    </div>
+  </div>
+  <div class="note-hint-small">è³å°å¡«åä¸ä¸ªèç³»æ¹å¼</div>
+  <button class="btn btn-primary" onclick="submitContactInfo()">å®æ</button>
 </div>
 
 <!-- Bubbles Screen -->
 <div class="screen" id="bubblesScreen">
 <div class="bubbles-container">
   <div class="bubbles-header">
-    <h2>💕 发现缘分</h2>
-    <button class="didi-count" id="didiCountBtn" onclick="showMyDidis()">🔔 <span id="didiNum">0</span></button>
+    <h2>ð åç°ç¼å</h2>
+    <button class="didi-count" id="didiCountBtn" onclick="showMyDidis()">ð <span id="didiNum">0</span></button>
   </div>
-  <div class="bubbles-area" id="bubblesArea"><div class="no-users">等待更多人加入...</div></div>
+  <div class="bubbles-area" id="bubblesArea"><div class="no-users">ç­å¾æ´å¤äººå å¥...</div></div>
 </div>
-<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">ðµ</button>
+<button class="settings-btn" onclick="openSettings()">âï¸</button>
 <div class="bubble-detail" id="bubbleDetail">
   <div class="bd-header">
-    <div class="bd-avatar" id="bdAvatar">👩</div>
+    <div class="bd-avatar" id="bdAvatar">ð©</div>
     <div><div class="bd-name" id="bdName"></div><div class="bd-gender" id="bdGender"></div></div>
   </div>
   <div class="bd-desc" id="bdDesc"></div>
   <div class="bd-actions">
-    <button class="btn btn-didi" onclick="sendDidi()">💕 滴滴TA</button>
-    <button class="btn btn-cancel-detail" onclick="closeBubbleDetail()">取消</button>
+    <button class="btn btn-didi" onclick="sendDidi()">ð æ»´æ»´TA</button>
+    <button class="btn btn-cancel-detail" onclick="closeBubbleDetail()">åæ¶</button>
   </div>
+</div>
+<div class="settings-panel" id="settingsPanel">
+  <h3>âï¸ ç¼è¾ä¸ªäººä¿¡æ¯</h3>
+  <div class="settings-section">
+    <label>æµç§°</label>
+    <input type="text" id="settingsNickInput" placeholder="ä½ çæµç§°" maxlength="20">
+  </div>
+  <div class="settings-section">
+    <label>æè¿°</label>
+    <textarea id="settingsDescInput" placeholder="æè¿°èªå·±..." maxlength="200"></textarea>
+  </div>
+  <div class="settings-section">
+    <label>Instagram</label>
+    <input type="text" id="settingsIgInput" placeholder="@username" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>WhatsApp</label>
+    <input type="text" id="settingsWhatsappInput" placeholder="+1234567890" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>TikTok</label>
+    <input type="text" id="settingsTiktokInput" placeholder="@username" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>å¾®ä¿¡</label>
+    <input type="text" id="settingsWechatInput" placeholder="WeChat ID" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>å°çº¢ä¹¦</label>
+    <input type="text" id="settingsXiaohongshuInput" placeholder="ç¨æ·å" maxlength="100">
+  </div>
+  <button class="btn btn-primary" onclick="saveSettings()">ä¿å­</button>
+  <button class="btn btn-secondary settings-close-btn" onclick="closeSettings()" style="margin-top:10px">åæ¶</button>
 </div>
 </div>
 
@@ -193,63 +273,59 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 <div class="chat-container">
   <div class="chat-header">
     <div class="partner-info">
-      <div class="partner-avatar" id="partnerAvatar">👩</div>
+      <div class="partner-avatar" id="partnerAvatar">ð©</div>
       <div><div class="partner-name" id="partnerName"></div></div>
     </div>
-    <div style="text-align:center"><div style="font-size:.65em;opacity:.8">剩余</div><div class="timer" id="chatTimer">05:00</div></div>
+    <div style="text-align:center"><div style="font-size:.65em;opacity:.8">å©ä½</div><div class="timer" id="chatTimer">05:00</div></div>
   </div>
   <div class="chat-actions-bar">
-    <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">💌 交换联系方式</button>
-    <button class="btn btn-secondary" onclick="leaveChat()">退出</button>
+    <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">ð äº¤æ¢èç³»æ¹å¼</button>
+    <button class="btn btn-secondary" onclick="leaveChat()">éåº</button>
   </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-input-area">
-    <input type="text" id="msgInput" placeholder="说点什么..." onkeypress="if(event.key==='Enter')sendMsg()" maxlength="500">
-    <button class="send-btn" onclick="sendMsg()" id="sendBtn">➤</button>
+    <input type="text" id="msgInput" placeholder="è¯´ç¹ä»ä¹..." onkeypress="if(event.key==='Enter')sendMsg()" maxlength="500">
+    <button class="send-btn" onclick="sendMsg()" id="sendBtn">â¤</button>
   </div>
-</div>
-</div>
-
-<!-- Admin -->
-<div class="screen" id="adminScreen">
-<div class="admin-wrap">
-  <div class="admin-header"><h2>⚙️ 管理后台</h2><button class="btn btn-secondary" style="width:auto;padding:8px 20px;font-size:.85em" onclick="showScreen('bubblesScreen')">← 返回</button></div>
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-num" id="sUsers">0</div><div class="stat-label">总用户</div></div>
-    <div class="stat-card"><div class="stat-num" id="sChats">0</div><div class="stat-label">总聊天</div></div>
-    <div class="stat-card"><div class="stat-num" id="sMsgs">0</div><div class="stat-label">总消息</div></div>
-    <div class="stat-card"><div class="stat-num" id="sConn">0</div><div class="stat-label">配对</div></div>
-    <div class="stat-card"><div class="stat-num" id="sOnline">0</div><div class="stat-label">在线</div></div>
-  </div>
-  <button class="btn btn-secondary" onclick="loadAdmin()" style="max-width:180px;font-size:.85em">🔄 刷新</button>
 </div>
 </div>
 
 <!-- Overlays -->
-<div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>有人滴滴你了！</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">💬 接受聊天</button><button class="btn btn-reject" onclick="rejectDidi()">下次吧</button></div></div></div>
-<div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">⏳</span><h3>等待对方确认...</h3><p class="modal-sub" id="waitSenderMsg">对方正在确认是否聊天</p></div></div>
-<div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">💕</span><h3 id="didiAcceptTitle">对方已接受！</h3><p class="modal-sub">是否开始聊天？</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">💬 开始聊天</button><button class="btn btn-reject" onclick="rejectChat()">算了</button></div></div></div>
-<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了聊天</h3><p class="modal-sub">没关系，还有更多缘分等你！</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">继续看看</button></div></div>
-<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邂逅已结束</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 交换联系方式</button><button class="btn btn-secondary" onclick="backToBubbles()">返回</button></div></div></div>
-<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想交换联系方式！</h3><p class="modal-sub">接受后双方可以看到描述信息</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">✅ 接受</button><button class="btn btn-reject" onclick="respondConn(false)">❌ 拒绝</button></div></div></div>
-<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>请求已发送</h3><p class="modal-sub">等待对方回应...</p></div></div>
-<div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>配对成功！</h3><div class="contact-reveal"><h4>📱 对方信息</h4><div class="contact-text" id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
-<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
-<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
-<div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>滴滴已发送！</h3><p class="modal-sub">对方会收到通知，等待回应吧～</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">好的</button></div></div>
-<div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">📴</span><h3 id="offlineMsg">对方暂时不在线</h3><p class="modal-sub">已通知对方，等TA上线吧！</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">好的</button></div></div>
-<div class="overlay" id="myDidisOverlay"><div class="modal"><span class="modal-icon">🔔</span><h3>收到的滴滴</h3><div id="myDidisList" style="margin:16px 0;max-height:300px;overflow-y:auto"></div><button class="btn btn-secondary" onclick="hideO('myDidisOverlay')">关闭</button></div></div>
-<div class="overlay" id="adminLoginOverlay"><div class="modal"><span class="modal-icon">🔐</span><h3>管理员登录</h3><div class="input-group" style="text-align:left;margin:16px 0"><input type="password" id="adminPwd" placeholder="密码" onkeypress="if(event.key==='Enter')adminLogin()"></div><div class="error-msg" id="adminErr" style="margin-bottom:12px">密码错误</div><div class="btn-group"><button class="btn btn-primary" onclick="adminLogin()">登录</button><button class="btn btn-secondary" onclick="hideO('adminLoginOverlay')">取消</button></div></div></div>
+<div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æäººæ»´æ»´ä½ äºï¼</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">ð¬ æ¥åèå¤©</button><button class="btn btn-reject" onclick="rejectDidi()">ä¸æ¬¡å§</button></div></div></div>
+<div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">â³</span><h3>ç­å¾å¯¹æ¹ç¡®è®¤...</h3><p class="modal-sub" id="waitSenderMsg">å¯¹æ¹æ­£å¨ç¡®è®¤æ¯å¦èå¤©</p></div></div>
+<div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">ð</span><h3 id="didiAcceptTitle">å¯¹æ¹å·²æ¥åï¼</h3><p class="modal-sub">æ¯å¦å¼å§èå¤©ï¼</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">ð¬ å¼å§èå¤©</button><button class="btn btn-reject" onclick="rejectChat()">ç®äº</button></div></div></div>
+<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">ð¢</span><h3>å¯¹æ¹æç»äºèå¤©</h3><p class="modal-sub">æ²¡å³ç³»ï¼è¿ææ´å¤ç¼åç­ä½ ï¼</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">ç»§ç»­çç</button></div></div>
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">â°</span><h3>èå¤©æ¶é´ç»æ</h3><p class="modal-sub">5åéééå·²ç»æ</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">ð äº¤æ¢èç³»æ¹å¼</button><button class="btn btn-secondary" onclick="backToBubbles()">è¿å</button></div></div></div>
+<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹æ³äº¤æ¢èç³»æ¹å¼ï¼</h3><p class="modal-sub">æ¥åååæ¹å¯ä»¥çå°èç³»ä¿¡æ¯</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">â æ¥å</button><button class="btn btn-reject" onclick="respondConn(false)">â æç»</button></div></div></div>
+<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">ð¨</span><h3>è¯·æ±å·²åé</h3><p class="modal-sub">ç­å¾å¯¹æ¹ååº...</p></div></div>
+<div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>éå¯¹æåï¼</h3><div class="contact-reveal"><h4>ð± å¯¹æ¹ä¿¡æ¯</h4><div id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">è¿å</button></div></div>
+<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">ð¢</span><h3>å¯¹æ¹æç»äº</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">è¿å</button></div></div>
+<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹å·²ç¦»å¼</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">è¿å</button></div></div>
+<div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æ»´æ»´å·²åéï¼</h3><p class="modal-sub">å¯¹æ¹ä¼æ¶å°éç¥ï¼ç­å¾ååºå§ï½</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">å¥½ç</button></div></div>
+<div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">ð´</span><h3 id="offlineMsg">å¯¹æ¹ææ¶ä¸å¨çº¿</h3><p class="modal-sub">å·²éç¥å¯¹æ¹ï¼ç­TAä¸çº¿å§ï¼</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">å¥½ç</button></div></div>
+<div class="overlay" id="myDidisOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æ¶å°çæ»´æ»´</h3><div id="myDidisList" style="margin:16px 0;max-height:300px;overflow-y:auto"></div><button class="btn btn-secondary" onclick="hideO('myDidisOverlay')">å³é­</button></div></div>
 
 <script>
 let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
 let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=null, bgOsc=null, bgGain=null;
+let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''}};
 
-// Hearts background
-(()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
+/* Audio context initialization on first user interaction */
+(()=>{
+  const initAudioContext=()=>{
+    if(!audioCtx){
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    }
+    document.removeEventListener('click',initAudioContext);
+  };
+  document.addEventListener('click',initAudioContext);
+})();
 
-// Check if already registered
-(async()=>{
+/* Hearts background */
+(()=>{const c=document.getElementById('heartsBg'),h=['ð','ð','ð','ð','â¨','ð¸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
+
+/* Check registration status */
+(async ()=>{
   if(myUserId){
     const r=await fetch('/api/check?userId='+myUserId);
     const d=await r.json();
@@ -274,20 +350,44 @@ async function doRegister(){
   if(!ok)return;
   try{
     const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:nick,description:desc,userId:myUserId})});
-    if(r.status===409){alert('你已经注册过了！');goToBubbles();return}
+    if(r.status===409){alert('ä½ å·²ç»æ³¨åè¿äºï¼');goToBubbles();return}
     const d=await r.json();
     myUserId=d.userId;
+    myProfile.nickname=nick;
+    myProfile.description=desc;
     localStorage.setItem('fateMatchUserId',myUserId);
     document.getElementById('warningBadge').style.display='none';
-    // Subscribe push
-    subscribePush();
-    goToBubbles();
-  }catch(e){alert('注册失败，请重试')}
+    showContactNoteCard();
+  }catch(e){alert('æ³¨åå¤±è´¥ï¼è¯·éè¯')}
+}
+
+function showContactNoteCard(){
+  document.getElementById('registerScreen').style.display='none';
+  document.getElementById('contactNoteCard').style.display='block';
+}
+
+function submitContactInfo(){
+  const ig=document.getElementById('igInput').value.trim();
+  const whatsapp=document.getElementById('whatsappInput').value.trim();
+  const tiktok=document.getElementById('tiktokInput').value.trim();
+  const wechat=document.getElementById('wechatInput').value.trim();
+  const xiaohongshu=document.getElementById('xiaohongshuInput').value.trim();
+
+  if(!ig&&!whatsapp&&!tiktok&&!wechat&&!xiaohongshu){
+    alert('è¯·è³å°å¡«åä¸ä¸ªèç³»æ¹å¼');
+    return;
+  }
+
+  myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
+
+  document.getElementById('contactNoteCard').style.display='none';
+  document.getElementById('registerScreen').style.display='flex';
+  subscribePush();
+  goToBubbles();
 }
 
 function goToBubbles(){
   showScreen('bubblesScreen');
-  startMusic();
   connectSocket();
   loadBubbles();
   startMusic();
@@ -299,7 +399,7 @@ function connectSocket(){
   socket.emit('go_online',{userId:myUserId});
   socket.on('didi_received',(d)=>{
     pendingDidiFrom=d;
-    document.getElementById('didiRecvMsg').textContent=d.fromNickname+' 想和你聊天！';
+    document.getElementById('didiRecvMsg').textContent=d.fromNickname+' æ³åä½ èå¤©ï¼';
     showO('didiRecvOverlay');
     playBubbleSound();
     updateDidiCount();
@@ -307,37 +407,48 @@ function connectSocket(){
   socket.on('pending_didis',(list)=>{ updateDidiCount(list.length); });
   socket.on('didi_accepted',(d)=>{
     pendingDidiFrom=d;
-    document.getElementById('didiAcceptTitle').textContent=d.nickname+' 接受了你的邀请！';
+    document.getElementById('didiAcceptTitle').textContent=d.nickname+' æ¥åäºä½ çéè¯·ï¼';
     hideAll();showO('didiAcceptedOverlay');
   });
   socket.on('waiting_for_sender',(d)=>{
-    document.getElementById('waitSenderMsg').textContent='等待 '+d.nickname+' 确认...';
+    document.getElementById('waitSenderMsg').textContent='ç­å¾ '+d.nickname+' ç¡®è®¤...';
     hideAll();showO('waitSenderOverlay');
   });
   socket.on('chat_started',(d)=>{
     hideAll();
     chatEnded=false;chatStartTime=d.startTime;
     document.getElementById('partnerName').textContent=d.partner.nickname;
-    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'👩':'👨';
+    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'ð©':'ð¨';
     document.getElementById('chatMessages').innerHTML='';
     document.getElementById('msgInput').disabled=false;
     document.getElementById('sendBtn').disabled=false;
     document.getElementById('connectBtn').disabled=false;
-    addSys('✨ 配对成功！你们有5分钟聊天时间');
+    addSys('â¨ éå¯¹æåï¼ä½ ä»¬æ5åéèå¤©æ¶é´');
     startTimer();showScreen('chatScreen');
     stopMusic();
   });
   socket.on('chat_rejected',(d)=>{hideAll();showO('chatRejectedOverlay')});
-  socket.on('partner_offline_msg',(d)=>{hideAll();document.getElementById('offlineMsg').textContent=d.nickname+' 暂时不在线';showO('offlineOverlay')});
+  socket.on('partner_offline_msg',(d)=>{hideAll();document.getElementById('offlineMsg').textContent=d.nickname+' ææ¶ä¸å¨çº¿';showO('offlineOverlay')});
   socket.on('chat_message',(d)=>addMsg(d.message,false,d.nickname));
-  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('⚠️ 还剩1分钟！')});
-  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('⏰ 时间到！');showO('timeUpOverlay')});
+  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('â ï¸ è¿å©1åéï¼')});
+  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('â° æ¶é´å°ï¼');showO('timeUpOverlay')});
   socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectReqOverlay')});
   socket.on('request_sent',()=>{hideAll();showO('reqSentOverlay')});
-  socket.on('connect_accepted',(d)=>{hideAll();document.getElementById('revealContact').textContent=d.nickname+': '+d.contact;showO('connAcceptOverlay')});
+  socket.on('connect_accepted',(d)=>{hideAll();renderContactInfo(d);showO('connAcceptOverlay')});
   socket.on('connect_rejected',()=>{hideAll();showO('connRejectOverlay')});
   socket.on('partner_left',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('msgInput').disabled=true;hideAll();showO('partnerLeftOverlay')});
   socket.on('user_status',()=>loadBubbles());
+}
+
+function renderContactInfo(data){
+  const contacts=data.contacts||{};
+  let html='';
+  if(contacts.ig) html+='<div class="contact-item"><span class="contact-item-label">ð· Instagram:</span><div class="contact-item-value">'+esc(contacts.ig)+'</div></div>';
+  if(contacts.whatsapp) html+='<div class="contact-item"><span class="contact-item-label">ð¬ WhatsApp:</span><div class="contact-item-value">'+esc(contacts.whatsapp)+'</div></div>';
+  if(contacts.tiktok) html+='<div class="contact-item"><span class="contact-item-label">ðµ TikTok:</span><div class="contact-item-value">'+esc(contacts.tiktok)+'</div></div>';
+  if(contacts.wechat) html+='<div class="contact-item"><span class="contact-item-label">ð å¾®ä¿¡:</span><div class="contact-item-value">'+esc(contacts.wechat)+'</div></div>';
+  if(contacts.xiaohongshu) html+='<div class="contact-item"><span class="contact-item-label">â¤ï¸ å°çº¢ä¹¦:</span><div class="contact-item-value">'+esc(contacts.xiaohongshu)+'</div></div>';
+  document.getElementById('revealContact').innerHTML=html;
 }
 
 async function loadBubbles(){
@@ -345,37 +456,132 @@ async function loadBubbles(){
     const r=await fetch('/api/users?userId='+myUserId);
     const list=await r.json();
     const area=document.getElementById('bubblesArea');
-    if(!list.length){area.innerHTML='<div class="no-users">💭 暂时没有其他人<br>分享链接邀请朋友加入吧！</div>';return}
+    if(!list.length){area.innerHTML='<div class="no-users">ð­ ææ¶æ²¡æå¶ä»äºº<br>åäº«é¾æ¥éè¯·æåå å¥å§ï¼</div>';return}
     area.innerHTML='';
     list.forEach(u=>{
       const b=document.createElement('div');
       b.className='bubble '+(u.gender==='male'?'male':'female');
-      b.innerHTML=`<span class="b-emoji">${u.gender==='male'?'👨':'👩'}</span><span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
+      const randomDuration=3+Math.random()*2;
+      const randomDelay=Math.random()*2;
+      b.style.animation=`floatBubble${Math.floor(Math.random()*3)} ${randomDuration}s ease-in-out infinite`;
+      b.style.animationDelay=randomDelay+'s';
+      b.innerHTML=`<span class="b-emoji">${u.gender==='male'?'ð¨':'ð©'}</span><span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
       b.onclick=()=>openBubble(u);
       area.appendChild(b);
     });
+    addDriftAnimations();
   }catch(e){}
+}
+
+function addDriftAnimations(){
+  const style=document.createElement('style');
+  style.innerHTML=`
+    @keyframes floatBubble0{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(15px,-20px)}
+      50%{transform:translate(5px,-35px)}
+      75%{transform:translate(-15px,-15px)}
+      100%{transform:translate(0,0)}
+    }
+    @keyframes floatBubble1{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(-20px,-15px)}
+      50%{transform:translate(-10px,-40px)}
+      75%{transform:translate(20px,-20px)}
+      100%{transform:translate(0,0)}
+    }
+    @keyframes floatBubble2{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(10px,-25px)}
+      50%{transform:translate(-15px,-30px)}
+      75%{transform:translate(15px,-10px)}
+      100%{transform:translate(0,0)}
+    }
+  `;
+  if(!document.getElementById('driftAnimStyle')){
+    style.id='driftAnimStyle';
+    document.head.appendChild(style);
+  }
 }
 
 function openBubble(u){
   selectedBubbleUser=u;
   playBubbleSound();
-  document.getElementById('bdAvatar').textContent=u.gender==='male'?'👨':'👩';
+  document.getElementById('bdAvatar').textContent=u.gender==='male'?'ð¨':'ð©';
   document.getElementById('bdAvatar').className='bd-avatar '+(u.gender==='male'?'male':'female');
   document.getElementById('bdName').textContent=u.nickname;
-  document.getElementById('bdGender').textContent=(u.gender==='male'?'♂ 男':'♀ 女')+(u.online?' · 🟢 在线':' · 离线');
+  document.getElementById('bdGender').textContent=(u.gender==='male'?'â ç·':'â å¥³')+(u.online?' Â· ð¢ å¨çº¿':' Â· ç¦»çº¿');
   document.getElementById('bdDesc').textContent=u.description;
   document.getElementById('bubbleDetail').classList.add('show');
 }
 
 function closeBubbleDetail(){document.getElementById('bubbleDetail').classList.remove('show');selectedBubbleUser=null}
 
+function openSettings(){
+  document.getElementById('settingsNickInput').value=myProfile.nickname;
+  document.getElementById('settingsDescInput').value=myProfile.description;
+  document.getElementById('settingsIgInput').value=myProfile.contacts.ig||'';
+  document.getElementById('settingsWhatsappInput').value=myProfile.contacts.whatsapp||'';
+  document.getElementById('settingsTiktokInput').value=myProfile.contacts.tiktok||'';
+  document.getElementById('settingsWechatInput').value=myProfile.contacts.wechat||'';
+  document.getElementById('settingsXiaohongshuInput').value=myProfile.contacts.xiaohongshu||'';
+  document.getElementById('settingsPanel').classList.add('show');
+}
+
+function closeSettings(){
+  document.getElementById('settingsPanel').classList.remove('show');
+}
+
+async function saveSettings(){
+  const nick=document.getElementById('settingsNickInput').value.trim();
+  const desc=document.getElementById('settingsDescInput').value.trim();
+  const ig=document.getElementById('settingsIgInput').value.trim();
+  const whatsapp=document.getElementById('settingsWhatsappInput').value.trim();
+  const tiktok=document.getElementById('settingsTiktokInput').value.trim();
+  const wechat=document.getElementById('settingsWechatInput').value.trim();
+  const xiaohongshu=document.getElementById('settingsXiaohongshuInput').value.trim();
+
+  if(!nick||!desc){
+    alert('æµç§°åæè¿°ä¸è½ä¸ºç©º');
+    return;
+  }
+
+  if(!ig&&!whatsapp&&!tiktok&&!wechat&&!xiaohongshu){
+    alert('è¯·è³å°å¡«åä¸ä¸ªèç³»æ¹å¼');
+    return;
+  }
+
+  try{
+    const r=await fetch('/api/update-profile',{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        userId:myUserId,
+        nickname:nick,
+        description:desc,
+        contacts:{ig,whatsapp,tiktok,wechat,xiaohongshu}
+      })
+    });
+    if(r.ok){
+      myProfile.nickname=nick;
+      myProfile.description=desc;
+      myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
+      alert('ä¿å­æå');
+      closeSettings();
+    }else{
+      alert('ä¿å­å¤±è´¥');
+    }
+  }catch(e){
+    alert('ä¿å­å¤±è´¥ï¼è¯·éè¯');
+  }
+}
+
 async function sendDidi(){
   if(!selectedBubbleUser)return;
   try{
     await fetch('/api/didi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fromId:myUserId,toId:selectedBubbleUser.id})});
     showO('didiSentOverlay');
-  }catch(e){alert('发送失败')}
+  }catch(e){alert('åéå¤±è´¥')}
 }
 
 function acceptDidi(){
@@ -397,12 +603,12 @@ async function showMyDidis(){
   const r=await fetch('/api/my-didis?userId='+myUserId);
   const list=await r.json();
   const c=document.getElementById('myDidisList');
-  if(!list.length){c.innerHTML='<p style="color:#9ca3af;padding:20px">还没有收到滴滴</p>';showO('myDidisOverlay');return}
+  if(!list.length){c.innerHTML='<p style="color:#9ca3af;padding:20px">è¿æ²¡ææ¶å°æ»´æ»´</p>';showO('myDidisOverlay');return}
   c.innerHTML='';
   list.forEach(d=>{
     const div=document.createElement('div');
     div.style.cssText='padding:12px;margin-bottom:8px;background:rgba(255,107,157,.05);border-radius:12px;display:flex;justify-content:space-between;align-items:center';
-    div.innerHTML=`<div><strong>${esc(d.fromNickname)}</strong> <span style="font-size:.8em;color:#9ca3af">${d.fromGender==='male'?'♂':'♀'}</span><br><span style="font-size:.8em;color:#666">${esc(d.fromDesc||'')}</span></div><button class="btn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">💬 接受</button>`;
+    div.innerHTML=`<div><strong>${esc(d.fromNickname)}</strong> <span style="font-size:.8em;color:#9ca3af">${d.fromGender==='male'?'â':'â'}</span><br><span style="font-size:.8em;color:#666">${esc(d.fromDesc||'')}</span></div><button class="btn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">ð¬ æ¥å</button>`;
     c.appendChild(div);
   });
   showO('myDidisOverlay');
@@ -416,7 +622,7 @@ function updateDidiCount(n){
   else document.getElementById('didiNum').textContent=n;
 }
 
-// Chat functions
+/* Chat functions */
 function startTimer(){
   clearInterval(chatTimerInterval);const D=5*60*1000,el=document.getElementById('chatTimer');el.classList.remove('warning');
   chatTimerInterval=setInterval(()=>{const r=Math.max(0,D-(Date.now()-chatStartTime));el.textContent=String(Math.floor(r/60000)).padStart(2,'0')+':'+String(Math.floor((r%60000)/1000)).padStart(2,'0');if(r<=0)clearInterval(chatTimerInterval)},250);
@@ -433,36 +639,30 @@ function respondConn(a){hideO('connectReqOverlay');if(socket)socket.emit('respon
 function leaveChat(){if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);hideAll();goToBubbles()}
 function backToBubbles(){hideAll();if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);goToBubbles()}
 
-// Audio
-function initAudio(){
-  if(audioCtx)return;
-  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-}
+/* Audio */
 function startMusic(){
-  initAudio();if(musicPlaying)return;
+  if(!audioCtx)return;
+  if(musicPlaying)return;
   try{
     bgGain=audioCtx.createGain();bgGain.gain.value=0.06;bgGain.connect(audioCtx.destination);
-    // Gentle ambient pad
     const notes=[261.63,329.63,392,523.25];
     notes.forEach((f,i)=>{
       const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=f;
       const g=audioCtx.createGain();g.gain.value=0.015;
-      // Gentle LFO
       const lfo=audioCtx.createOscillator();lfo.type='sine';lfo.frequency.value=0.2+i*0.1;
       const lfoG=audioCtx.createGain();lfoG.gain.value=3;
       lfo.connect(lfoG);lfoG.connect(o.frequency);
       o.connect(g);g.connect(bgGain);o.start();lfo.start();
     });
-    musicPlaying=true;document.getElementById('musicBtn').textContent='🎵';
+    musicPlaying=true;document.getElementById('musicBtn').textContent='ðµ';
   }catch(e){}
 }
-function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='🔇'}
+function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='ð'}
 function toggleMusic(){if(musicPlaying)stopMusic();else startMusic()}
 function playBubbleSound(){
-  initAudio();
+  if(!audioCtx)return;
   try{
     const t=audioCtx.currentTime;
-    // Soft bubble pop - high pitched short blip fading out quickly
     const o=audioCtx.createOscillator(),g=audioCtx.createGain();
     o.type='sine';
     o.frequency.setValueAtTime(1400,t);
@@ -470,7 +670,6 @@ function playBubbleSound(){
     g.gain.setValueAtTime(0.06,t);
     g.gain.exponentialRampToValueAtTime(0.001,t+0.12);
     o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+0.12);
-    // Tiny noise burst for "pop" texture
     const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*0.06,audioCtx.sampleRate);
     const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.3;
     const ns=audioCtx.createBufferSource();ns.buffer=buf;
@@ -480,7 +679,7 @@ function playBubbleSound(){
   }catch(e){}
 }
 
-// Push notifications
+/* Push notifications */
 async function subscribePush(){
   if(!('serviceWorker' in navigator)||!('PushManager' in window))return;
   try{
@@ -492,21 +691,6 @@ async function subscribePush(){
 }
 function urlBase64ToUint8Array(base64String){const padding='='.repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');const raw=atob(base64);const arr=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)arr[i]=raw.charCodeAt(i);return arr}
 
-// Admin
-function showAdminLogin(){showO('adminLoginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').classList.remove('show')}
-function adminLogin(){
-  if(document.getElementById('adminPwd').value==='admin123'){hideO('adminLoginOverlay');showScreen('adminScreen');loadAdmin()}
-  else document.getElementById('adminErr').classList.add('show');
-}
-function loadAdmin(){
-  fetch('/admin/data?pwd=admin123').then(r=>r.json()).then(d=>{
-    document.getElementById('sUsers').textContent=d.stats.users;
-    document.getElementById('sChats').textContent=d.stats.chats;
-    document.getElementById('sMsgs').textContent=d.stats.messages;
-    document.getElementById('sConn').textContent=d.stats.connects;
-    document.getElementById('sOnline').textContent=d.online;
-  }).catch(()=>{});
-}
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
 </script>
 </body>
