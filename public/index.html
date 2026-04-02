@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ç¼åéé | Fate Match</title>
+  <title>缘分速配 | Fate Match</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
@@ -119,26 +119,26 @@
 </head>
 <body>
 <div class="hearts-bg" id="heartsBg"></div>
-<button class="admin-entry-btn" onclick="showAdminLogin()" title="Admin">âï¸</button>
+<button class="admin-entry-btn" onclick="showAdminLogin()" title="Admin">⚙️</button>
 
 <!-- Welcome -->
 <div class="screen active" id="welcomeScreen">
   <div class="card">
-    <div class="logo"><span class="logo-icon">ð</span><h1>ç¼åéé</h1><p>Fate Match â 5åééé / A 5-Minute Encounter</p></div>
+    <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 5分钟邂逅 / A 5-Minute Encounter</p></div>
     <div>
-      <span style="font-weight:500;margin-bottom:10px;display:block">éæ©ä½ çæ§å« / Select Your Gender <span class="required">*</span></span>
+      <span style="font-weight:500;margin-bottom:10px;display:block">选择你的性别 / Select Your Gender <span class="required">*</span></span>
       <div class="gender-select">
-        <button class="gender-btn" data-gender="male" onclick="selectGender('male')"><span class="icon">ð¨</span><div style="font-weight:500">ç· Male</div></button>
-        <button class="gender-btn" data-gender="female" onclick="selectGender('female')"><span class="icon">ð©</span><div style="font-weight:500">å¥³ Female</div></button>
+        <button class="gender-btn" data-gender="male" onclick="selectGender('male')"><span class="icon">👨</span><div style="font-weight:500">男 Male</div></button>
+        <button class="gender-btn" data-gender="female" onclick="selectGender('female')"><span class="icon">👩</span><div style="font-weight:500">女 Female</div></button>
       </div>
-      <div class="error-msg" id="genderError">è¯·éæ©æ§å« / Please select gender</div>
+      <div class="error-msg" id="genderError">请选择性别 / Please select gender</div>
     </div>
     <div class="note-card">
-      <div class="note-card-title">ð å°çº¸æ¡ / Your Note Card</div>
-      <div class="input-group"><label>æµç§° / Nickname <span class="required">*</span></label><input type="text" id="nicknameInput" placeholder="è¾å¥æµç§° / Enter nickname" maxlength="20"><div class="error-msg" id="nicknameError">è¯·å¡«åæµç§°</div></div>
-      <div class="input-group"><label>èç³»æ¹å¼ / Contact <span class="required">*</span></label><input type="text" id="contactInput" placeholder="å¾®ä¿¡/QQ/é®ç®±" maxlength="50"><div class="error-msg" id="contactError">è¯·å¡«åèç³»æ¹å¼</div></div>
+      <div class="note-card-title">📝 小纸条 / Your Note Card</div>
+      <div class="input-group"><label>昵称 / Nickname <span class="required">*</span></label><input type="text" id="nicknameInput" placeholder="输入昵称 / Enter nickname" maxlength="20"><div class="error-msg" id="nicknameError">请填写昵称</div></div>
+      <div class="input-group"><label>联系方式 / Contact <span class="required">*</span></label><input type="text" id="contactInput" placeholder="微信/QQ/邮箱" maxlength="50"><div class="error-msg" id="contactError">请填写联系方式</div></div>
     </div>
-    <button class="btn btn-primary" onclick="startMatching()">ð å¼å§å¹é / Start Matching</button>
+    <button class="btn btn-primary" onclick="startMatching()">💘 开始匹配 / Start Matching</button>
   </div>
 </div>
 
@@ -146,12 +146,12 @@
 <div class="screen" id="waitingScreen">
   <div class="card">
     <div class="waiting-content">
-      <div class="pulse-heart">ð</div>
-      <div style="margin:20px 0 8px;font-size:1.2em;font-weight:600">å¯»æ¾çäººä¸­</div>
+      <div class="pulse-heart">💓</div>
+      <div style="margin:20px 0 8px;font-size:1.2em;font-weight:600">寻找真人中</div>
       <p style="color:var(--text-light)">Finding a real person<span class="waiting-dots"></span></p>
-      <div class="online-count" id="onlineCount">å¨çº¿ç­å¾ä¸­...</div>
-      <p style="margin-top:16px;font-size:.84em;color:#9ca3af">éè¦å¦ä¸ä½çäººå å¥æè½å¼å§èå¤©<br>A real person must join to start chatting</p>
-      <button class="btn btn-secondary" style="margin-top:24px" onclick="cancelWaiting()">â åæ¶ / Cancel</button>
+      <div class="online-count" id="onlineCount">在线等待中...</div>
+      <p style="margin-top:16px;font-size:.84em;color:#9ca3af">需要另一位真人加入才能开始聊天<br>A real person must join to start chatting</p>
+      <button class="btn btn-secondary" style="margin-top:24px" onclick="cancelWaiting()">✕ 取消 / Cancel</button>
     </div>
   </div>
 </div>
@@ -161,19 +161,19 @@
   <div class="chat-container">
     <div class="chat-header">
       <div class="partner-info">
-        <div class="partner-avatar" id="partnerAvatar">ð©</div>
-        <div><div class="partner-name" id="partnerName">å¯¹æ¹</div><span class="partner-gender-tag" id="partnerGender"></span></div>
+        <div class="partner-avatar" id="partnerAvatar">👩</div>
+        <div><div class="partner-name" id="partnerName">对方</div><span class="partner-gender-tag" id="partnerGender"></span></div>
       </div>
-      <div style="text-align:center"><div style="font-size:.7em;opacity:.8;letter-spacing:1px">å©ä½ LEFT</div><div class="timer" id="chatTimer">05:00</div></div>
+      <div style="text-align:center"><div style="font-size:.7em;opacity:.8;letter-spacing:1px">剩余 LEFT</div><div class="timer" id="chatTimer">05:00</div></div>
     </div>
     <div class="chat-actions-bar">
-      <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">ð è¿ä¸æ­¥äºè§£ / Know More</button>
-      <button class="btn btn-secondary" onclick="leaveChat()">ðª éåº / Exit</button>
+      <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">💌 进一步了解 / Know More</button>
+      <button class="btn btn-secondary" onclick="leaveChat()">🚪 退出 / Exit</button>
     </div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input-area">
-      <input type="text" id="messageInput" placeholder="è¾å¥æ¶æ¯... / Type a message..." onkeypress="if(event.key==='Enter')sendMessage()" maxlength="500">
-      <button class="send-btn" onclick="sendMessage()" id="sendBtn">â¤</button>
+      <input type="text" id="messageInput" placeholder="输入消息... / Type a message..." onkeypress="if(event.key==='Enter')sendMessage()" maxlength="500">
+      <button class="send-btn" onclick="sendMessage()" id="sendBtn">➤</button>
     </div>
   </div>
 </div>
@@ -181,36 +181,36 @@
 <!-- Admin -->
 <div class="screen" id="adminScreen">
   <div class="admin-wrap">
-    <div class="admin-header"><h2>âï¸ ç®¡çåå° / Admin</h2><button class="btn btn-secondary" style="width:auto;padding:10px 24px" onclick="showScreen('welcomeScreen')">â è¿å</button></div>
+    <div class="admin-header"><h2>⚙️ 管理后台 / Admin</h2><button class="btn btn-secondary" style="width:auto;padding:10px 24px" onclick="showScreen('welcomeScreen')">← 返回</button></div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-label">æ»ç¨æ·</div></div>
-      <div class="stat-card"><div class="stat-num" id="statChats">0</div><div class="stat-label">æ»èå¤©</div></div>
-      <div class="stat-card"><div class="stat-num" id="statMsgs">0</div><div class="stat-label">æ»æ¶æ¯</div></div>
-      <div class="stat-card"><div class="stat-num" id="statConnects">0</div><div class="stat-label">æåéå¯¹</div></div>
-      <div class="stat-card"><div class="stat-num" id="statOnline">0</div><div class="stat-label">å½åå¨çº¿</div></div>
+      <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-label">总用户</div></div>
+      <div class="stat-card"><div class="stat-num" id="statChats">0</div><div class="stat-label">总聊天</div></div>
+      <div class="stat-card"><div class="stat-num" id="statMsgs">0</div><div class="stat-label">总消息</div></div>
+      <div class="stat-card"><div class="stat-num" id="statConnects">0</div><div class="stat-label">成功配对</div></div>
+      <div class="stat-card"><div class="stat-num" id="statOnline">0</div><div class="stat-label">当前在线</div></div>
     </div>
     <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchTab('messages',this)">ð¬ èå¤©è®°å½</button>
+      <button class="admin-tab active" onclick="switchTab('messages',this)">💬 聊天记录</button>
     </div>
-    <div class="admin-panel active" id="panel_messages"><p style="color:#9ca3af;text-align:center;padding:40px" id="logsContainer">å è½½ä¸­...</p></div>
-    <button class="btn btn-secondary" onclick="loadAdminData()" style="margin-top:16px;max-width:200px">ð å·æ°æ°æ®</button>
+    <div class="admin-panel active" id="panel_messages"><p style="color:#9ca3af;text-align:center;padding:40px" id="logsContainer">加载中...</p></div>
+    <button class="btn btn-secondary" onclick="loadAdminData()" style="margin-top:16px;max-width:200px">🔄 刷新数据</button>
   </div>
 </div>
 
 <!-- Overlays -->
-<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">â°</span><h3>èå¤©æ¶é´ç»æ</h3><p class="modal-sub">5åéééå·²ç»æï¼æ³è¿ä¸æ­¥äºè§£å¯¹æ¹åï¼</p><div class="btn-group-col"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">ð ç³è¯·è¿ä¸æ­¥äºè§£</button><button class="btn btn-secondary" onclick="exitToHome()">ð  è¿åé¦é¡µ</button></div></div></div>
-<div class="overlay" id="connectRequestOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹æ³è¿ä¸æ­¥äºè§£ä½ ï¼</h3><p class="modal-sub">æ¥åååæ¹äº¤æ¢èç³»æ¹å¼</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConnect(true)">â æ¥å</button><button class="btn btn-reject" onclick="respondConnect(false)">â æç»</button></div></div></div>
-<div class="overlay" id="requestSentOverlay"><div class="modal"><span class="modal-icon">ð¨</span><h3>ç³è¯·å·²åé</h3><p class="modal-sub">ç­å¾å¯¹æ¹ååº...</p></div></div>
-<div class="overlay" id="connectAcceptedOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>æ­åï¼å¯¹æ¹æ¥åäºï¼</h3><div class="contact-reveal"><h4>ð± å¯¹æ¹èç³»æ¹å¼</h4><div class="contact-text" id="revealedContact"></div></div><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">ð  è¿åé¦é¡µ</button></div></div>
-<div class="overlay" id="connectRejectedOverlay"><div class="modal"><span class="modal-icon">ð¢</span><h3>å¯¹æ¹æç»äº</h3><p class="modal-sub">ç¼åèªæå¤©æï¼</p><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">ð  è¿åé¦é¡µ</button></div></div>
-<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>å¯¹æ¹å·²ç¦»å¼</h3><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">ð  è¿åé¦é¡µ</button></div></div>
-<div class="overlay" id="adminLoginOverlay"><div class="modal"><span class="modal-icon">ð</span><h3>ç®¡çåç»å½</h3><div class="input-group" style="text-align:left;margin:16px 0"><input type="password" id="adminPwd" placeholder="å¯ç " onkeypress="if(event.key==='Enter')adminLogin()"></div><div class="error-msg" id="adminErr" style="margin-bottom:12px">å¯ç éè¯¯</div><div class="btn-group"><button class="btn btn-primary" onclick="adminLogin()">ç»å½</button><button class="btn btn-secondary" onclick="hideO('adminLoginOverlay')">åæ¶</button></div></div></div>
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟邂逅已结束，想进一步了解对方吗？</p><div class="btn-group-col"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 申请进一步了解</button><button class="btn btn-secondary" onclick="exitToHome()">🏠 返回首页</button></div></div></div>
+<div class="overlay" id="connectRequestOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想进一步了解你！</h3><p class="modal-sub">接受后双方交换联系方式</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConnect(true)">✅ 接受</button><button class="btn btn-reject" onclick="respondConnect(false)">❌ 拒绝</button></div></div></div>
+<div class="overlay" id="requestSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>申请已发送</h3><p class="modal-sub">等待对方回应...</p></div></div>
+<div class="overlay" id="connectAcceptedOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>恭喜！对方接受了！</h3><div class="contact-reveal"><h4>📱 对方联系方式</h4><div class="contact-text" id="revealedContact"></div></div><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">🏠 返回首页</button></div></div>
+<div class="overlay" id="connectRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><p class="modal-sub">缘分自有天意！</p><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">🏠 返回首页</button></div></div>
+<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="exitToHome()" style="margin-top:12px">🏠 返回首页</button></div></div>
+<div class="overlay" id="adminLoginOverlay"><div class="modal"><span class="modal-icon">🔐</span><h3>管理员登录</h3><div class="input-group" style="text-align:left;margin:16px 0"><input type="password" id="adminPwd" placeholder="密码" onkeypress="if(event.key==='Enter')adminLogin()"></div><div class="error-msg" id="adminErr" style="margin-bottom:12px">密码错误</div><div class="btn-group"><button class="btn btn-primary" onclick="adminLogin()">登录</button><button class="btn btn-secondary" onclick="hideO('adminLoginOverlay')">取消</button></div></div></div>
 
 <script>
 let socket=null,selectedGender=null,chatTimerInterval=null,chatEnded=false,chatStartTime=null,pendingReqId=null;
 
 // Hearts
-(()=>{const c=document.getElementById('heartsBg'),h=['ð','ð','ð','ð','â¨','ð¸'];for(let i=0;i<20;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(10+Math.random()*15)+'s';s.style.animationDelay=Math.random()*12+'s';s.style.fontSize=(16+Math.random()*20)+'px';c.appendChild(s)}})();
+(()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<20;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(10+Math.random()*15)+'s';s.style.animationDelay=Math.random()*12+'s';s.style.fontSize=(16+Math.random()*20)+'px';c.appendChild(s)}})();
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function showO(id){document.getElementById(id).classList.add('active')}
@@ -236,18 +236,18 @@ function setupSocket(){
   socket.on('matched',(d)=>{
     chatEnded=false;chatStartTime=d.startTime;
     document.getElementById('partnerName').textContent=d.partner.nickname;
-    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'ð©':'ð¨';
-    document.getElementById('partnerGender').textContent=d.partner.gender==='male'?'ð¨ ç·':'ð© å¥³';
+    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'👩':'👨';
+    document.getElementById('partnerGender').textContent=d.partner.gender==='male'?'👨 男':'👩 女';
     document.getElementById('chatMessages').innerHTML='';
     document.getElementById('messageInput').disabled=false;
     document.getElementById('sendBtn').disabled=false;
     document.getElementById('connectBtn').disabled=false;
-    addSys('â¨ å¹éæåï¼ä½ ä»¬æ5åéèå¤©æ¶é´');
+    addSys('✨ 匹配成功！你们有5分钟聊天时间');
     startTimer();showScreen('chatScreen');
   });
   socket.on('chat_message',(d)=>addMsg(d.message,false,d.nickname));
-  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('â ï¸ è¿å©1åéï¼')});
-  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('messageInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('â° æ¶é´å°ï¼');showO('timeUpOverlay')});
+  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('⚠️ 还剩1分钟！')});
+  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('messageInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('⏰ 时间到！');showO('timeUpOverlay')});
   socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectRequestOverlay')});
   socket.on('request_sent',()=>{hideAll();showO('requestSentOverlay')});
   socket.on('connect_accepted',(d)=>{hideAll();document.getElementById('revealedContact').textContent=d.nickname+': '+d.contact;showO('connectAcceptedOverlay')});
@@ -286,14 +286,14 @@ function loadAdminData(){
     document.getElementById('statConnects').textContent=d.stats.connects;
     document.getElementById('statOnline').textContent=d.online;
     renderLogs(d.logs);
-  }).catch(()=>{document.getElementById('logsContainer').innerHTML='<p style="color:#ef4444">å è½½å¤±è´¥</p>'});
+  }).catch(()=>{document.getElementById('logsContainer').innerHTML='<p style="color:#ef4444">加载失败</p>'});
 }
 function renderLogs(logs){
   const c=document.getElementById('logsContainer');
-  if(!logs||!logs.length){c.innerHTML='<p style="color:#9ca3af;text-align:center;padding:40px">ææ èå¤©è®°å½</p>';return}
+  if(!logs||!logs.length){c.innerHTML='<p style="color:#9ca3af;text-align:center;padding:40px">暂无聊天记录</p>';return}
   let h='';
   logs.forEach(l=>{
-    h+=`<div class="msg-log-card"><div class="msg-log-header"><div class="msg-log-user">${esc(l.user1.nickname)} â ${esc(l.user2.nickname)}${l.connected?'<span class="connected-badge">å·²éå¯¹</span>':''}</div><div class="msg-log-meta">${l.date}</div></div>`;
+    h+=`<div class="msg-log-card"><div class="msg-log-header"><div class="msg-log-user">${esc(l.user1.nickname)} ↔ ${esc(l.user2.nickname)}${l.connected?'<span class="connected-badge">已配对</span>':''}</div><div class="msg-log-meta">${l.date}</div></div>`;
     h+=`<div style="font-size:.8em;color:#9ca3af;margin-bottom:8px">${esc(l.user1.nickname)}(${l.user1.gender}): ${esc(l.user1.contact)} | ${esc(l.user2.nickname)}(${l.user2.gender}): ${esc(l.user2.contact)}</div>`;
     l.messages.forEach(m=>{
       let cls=m.sender===l.user1.nickname?'u1':m.sender===l.user2.nickname?'u2':'sys';
