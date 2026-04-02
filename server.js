@@ -27,11 +27,11 @@ app.get('/api/vapid-key', (req, res) => res.json({ key: vapidKeys.publicKey }));
 
 // Register
 app.post('/api/register', (req, res) => {
-  const { gender, nickname, description, userId } = req.body;
+  const { gender, nickname, description, userId, contacts } = req.body;
   if (!gender || !nickname || !description) return res.status(400).json({ error: 'missing' });
   if (userId && users.has(userId)) return res.status(409).json({ error: 'exists' });
   const id = userId || crypto.randomUUID();
-  users.set(id, { id, gender, nickname, description, online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  users.set(id, { id, gender, nickname, description, contacts: contacts || {}, online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
   statsData.users++;
   res.json({ userId: id });
 });
@@ -43,6 +43,18 @@ app.get('/api/users', (req, res) => {
   users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, online: u.online }); });
   res.json(list);
 });
+
+// Update profile
+app.put('/api/update-profile', (req, res) => {
+  const { userId, nickname, description, contacts } = req.body;
+  const u = users.get(userId);
+  if (!u) return res.status(404).json({ error: 'not found' });
+  if (nickname !== undefined) u.nickname = nickname;
+  if (description !== undefined) u.description = description;
+  if (contacts !== undefined) u.contacts = contacts;
+  res.json({ ok: true });
+});
+
 // Send didi
 app.post('/api/didi', (req, res) => {
   const { fromId, toId } = req.body;
@@ -57,7 +69,7 @@ app.post('/api/didi', (req, res) => {
   }
   // Push notification
   if (to.pushSub) {
-    webpush.sendNotification(to.pushSub, JSON.stringify({ title: '💕 有人滴滴你了！', body: from.nickname + ' 想和你聊天，快来看看！', url: '/' })).catch(() => {});
+    webpush.sendNotification(to.pushSub, JSON.stringify({ title: 'ð æäººæ»´æ»´ä½ äºï¼', body: from.nickname + ' æ³åä½ èå¤©ï¼å¿«æ¥ççï¼', url: '/' })).catch(() => {});
   }
   res.json({ success: true });
 });
@@ -83,12 +95,43 @@ app.get('/api/my-didis', (req, res) => {
   res.json(u.didis);
 });
 
-// Admin
+// Admin endpoints
 app.get('/admin/data', (req, res) => {
   if (req.query.pwd !== 'admin123') return res.status(403).json({ error: 'wrong' });
-  const ul = []; users.forEach(u => ul.push({ nickname: u.nickname, gender: u.gender, desc: u.description, online: u.online, didis: u.didis.length }));
+  const ul = [];
+  users.forEach(u => ul.push({ id: u.id, nickname: u.nickname, gender: u.gender, description: u.description, contacts: u.contacts, online: u.online, didis: u.didis.length, createdAt: u.createdAt }));
   res.json({ stats: statsData, users: ul, logs: allChatLogs.slice(-100).reverse(), online: [...users.values()].filter(u => u.online).length });
 });
+
+app.get('/admin/users', (req, res) => {
+  if (req.query.pwd !== 'admin123') return res.status(403).json({ error: 'wrong' });
+  const ul = [];
+  users.forEach(u => ul.push({ id: u.id, nickname: u.nickname, gender: u.gender, description: u.description, contacts: u.contacts, online: u.online, didis: u.didis.length, createdAt: u.createdAt }));
+  res.json(ul);
+});
+
+app.delete('/admin/user/:id', (req, res) => {
+  if (req.query.pwd !== 'admin123') return res.status(403).json({ error: 'wrong' });
+  users.delete(req.params.id);
+  statsData.users--;
+  res.json({ ok: true });
+});
+
+app.put('/admin/user/:id', (req, res) => {
+  if (req.query.pwd !== 'admin123') return res.status(403).json({ error: 'wrong' });
+  const u = users.get(req.params.id);
+  if (!u) return res.status(404).json({ error: 'not found' });
+  const { nickname, gender, description, contacts } = req.body;
+  if (nickname !== undefined) u.nickname = nickname;
+  if (gender !== undefined) u.gender = gender;
+  if (description !== undefined) u.description = description;
+  if (contacts !== undefined) u.contacts = contacts;
+  res.json({ ok: true });
+});
+
+// Serve admin page
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
+
 // Socket.IO
 io.on('connection', (socket) => {
   let myUserId = null;
@@ -118,7 +161,7 @@ io.on('connection', (socket) => {
       socket.emit('partner_offline_msg', { nickname: from.nickname });
       // Push notify sender
       if (from.pushSub) {
-        webpush.sendNotification(from.pushSub, JSON.stringify({ title: '💕 ' + me.nickname + ' 接受了你的邀请！', body: '快来聊天吧！', url: '/' })).catch(() => {});
+        webpush.sendNotification(from.pushSub, JSON.stringify({ title: 'ð ' + me.nickname + ' æ¥åäºä½ çéè¯·ï¼', body: 'å¿«æ¥èå¤©å§ï¼', url: '/' })).catch(() => {});
       }
     }
   });
@@ -177,8 +220,8 @@ io.on('connection', (socket) => {
       const ri = users.get(requesterId);
       statsData.connects++;
       const room = chatRooms.get(me.roomId); if (room) room.log.connected = true;
-      rs.emit('connect_accepted', { nickname: me.nickname, contact: me.description });
-      socket.emit('connect_accepted', { nickname: ri.nickname, contact: ri.description });
+      rs.emit('connect_accepted', { nickname: me.nickname, contacts: me.contacts });
+      socket.emit('connect_accepted', { nickname: ri.nickname, contacts: ri.contacts });
     } else if (rs) rs.emit('connect_rejected');
   });
 
