@@ -61,6 +61,14 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .note-card .note-hint-small{font-size:.75em;color:#aaa;text-align:center;margin-bottom:12px}
 .note-card .btn{font-size:.9em;padding:12px}
 
+/* Interest Tags */
+.interest-section{margin-bottom:18px}
+.interest-section .section-label{font-size:.88em;font-weight:600;color:#5a4a2e;margin-bottom:10px;display:block}
+.interest-tags{display:flex;flex-wrap:wrap;gap:8px}
+.interest-tag{padding:7px 14px;border-radius:20px;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;font-size:.82em;color:#666;transition:all .25s;font-family:inherit;user-select:none}
+.interest-tag:hover{border-color:var(--pink-light);color:var(--pink)}
+.interest-tag.selected{border-color:var(--pink);background:linear-gradient(135deg,rgba(255,107,157,.12),rgba(192,132,252,.12));color:var(--pink);font-weight:500;box-shadow:0 2px 8px rgba(255,107,157,.15)}
+
 /* Bubbles Screen */
 #bubblesScreen{padding:0}
 #bubblesScreen.active{display:block}
@@ -207,6 +215,23 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
       <input type="text" id="xiaohongshuInput" placeholder="用户名" maxlength="100">
     </div>
   </div>
+  <div class="interest-section">
+    <span class="section-label">🎯 你的兴趣爱好（可多选）</span>
+    <div class="interest-tags" id="interestTags">
+      <button type="button" class="interest-tag" data-interest="电影" onclick="toggleInterest(this)">🎬 电影</button>
+      <button type="button" class="interest-tag" data-interest="聊天" onclick="toggleInterest(this)">💬 聊天</button>
+      <button type="button" class="interest-tag" data-interest="恋爱" onclick="toggleInterest(this)">💕 恋爱</button>
+      <button type="button" class="interest-tag" data-interest="音乐" onclick="toggleInterest(this)">🎵 音乐</button>
+      <button type="button" class="interest-tag" data-interest="创业" onclick="toggleInterest(this)">💼 创业</button>
+      <button type="button" class="interest-tag" data-interest="健身" onclick="toggleInterest(this)">💪 健身</button>
+      <button type="button" class="interest-tag" data-interest="游戏" onclick="toggleInterest(this)">🎮 游戏</button>
+      <button type="button" class="interest-tag" data-interest="旅行" onclick="toggleInterest(this)">✈️ 旅行</button>
+      <button type="button" class="interest-tag" data-interest="美食" onclick="toggleInterest(this)">🍜 美食</button>
+      <button type="button" class="interest-tag" data-interest="摄影" onclick="toggleInterest(this)">📸 摄影</button>
+      <button type="button" class="interest-tag" data-interest="读书" onclick="toggleInterest(this)">📚 读书</button>
+      <button type="button" class="interest-tag" data-interest="动漫" onclick="toggleInterest(this)">🌸 动漫</button>
+    </div>
+  </div>
   <div class="note-hint-small">至少填写一个联系方式</div>
   <button class="btn btn-primary" onclick="submitContactInfo()">完成</button>
 </div>
@@ -308,7 +333,8 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 <script>
 let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
 let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=null, bgOsc=null, bgGain=null;
-let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''}};
+let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''},interests:[]};
+let selectedInterests=[];
 
 /* Audio context initialization on first user interaction */
 (()=>{
@@ -366,6 +392,16 @@ function showContactNoteCard(){
   document.getElementById('contactNoteCard').style.display='block';
 }
 
+function toggleInterest(btn){
+  btn.classList.toggle('selected');
+  var interest=btn.dataset.interest;
+  if(btn.classList.contains('selected')){
+    if(!selectedInterests.includes(interest))selectedInterests.push(interest);
+  }else{
+    selectedInterests=selectedInterests.filter(function(i){return i!==interest;});
+  }
+}
+
 function submitContactInfo(){
   const ig=document.getElementById('igInput').value.trim();
   const whatsapp=document.getElementById('whatsappInput').value.trim();
@@ -379,9 +415,11 @@ function submitContactInfo(){
   }
 
   myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
+  myProfile.interests=selectedInterests;
+
+  fetch('/api/update-profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:myUserId,contacts:myProfile.contacts,interests:selectedInterests})}).catch(function(){});
 
   document.getElementById('contactNoteCard').style.display='none';
-  document.getElementById('registerScreen').style.display='flex';
   subscribePush();
   goToBubbles();
 }
