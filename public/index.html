@@ -264,20 +264,754 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 <!-- Register Page (nickname + password) -->
 <div class="screen" id="registerPage">
 <div class="card">
-  <div class="logo"><span class="logo-icon">📝��[��O���9a�;�)�c���O��b&�n�/h9�9�&9b!�`'�acz-)�c�����]���]��\��H�[�]Yܛ�\��X�[��-y���[��\��H��\]Z\�Y�����[���X�[�[�]\OH�^�YH��YӚX��[�]�X�Z�\�H�c�. 9.*�ioyd+9�9d#ykeȈX^[��H����]��\��H�\��܋[\�ȈYH��YӚX��\����+��hj�a�y�-y���]���]���]��\��H�[�]Yܛ�\��X�[�k�� H�[��\��H��\]Z\�Y�����[���X�[�[�]\OH�\���ܙ�YH��Y��[�]�X�Z�\�H�+���k�k�� {�":!��l$M9/c{�"H�X^[��H����]��\��H�\��܋[\�ȈYH��Y��\����+��+���k�k�� {�":!��l$M9/c{�"O�]���]���]��\��H�[�]Yܛ�\��X�[��k�+�9k��H�[��\��H��\]Z\�Y�����[���X�[�[�]\OH�\���ܙ�YH��Y���ۙ�\�R[�]�X�Z�\�H�a�y�(z/��aiyk�� H�X^[��H����]��\��H�\��܋[\�ȈYH��Y���ۙ�\�Q\����.)9�(yk�� y.#y. :!��]���]����]ۈ�\��H�����\�[X\�H�ۘ�X��H�ԙY�\�\�X���[�
+  <div class="logo"><span class="logo-icon">📝</span><h1>注册账号</h1><p>创建你的缘分速配账号</p></div>
+  <div class="input-group"><label>昵称 <span class="required">*</span></label><input type="text" id="regNickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="regNickErr">请填写昵称</div></div>
+  <div class="input-group"><label>密码 <span class="required">*</span></label><input type="password" id="regPwdInput" placeholder="设置密码（至少4位）" maxlength="30"><div class="error-msg" id="regPwdErr">请设置密码（至少4位）</div></div>
+  <div class="input-group"><label>确认密码 <span class="required">*</span></label><input type="password" id="regPwdConfirmInput" placeholder="再次输入密码" maxlength="30"><div class="error-msg" id="regPwdConfirmErr">两次密码不一致</div></div>
+  <button class="btn btn-primary" onclick="doRegisterAccount()" style="margin-top:10px">✅ 确认注册</button>
+  <button class="btn btn-secondary" onclick="goToAuth()" style="margin-top:10px">← 返回</button>
+</div>
+</div>
 
-H��[OH�X\��[�]��L���!H9�k�+�9��9a�؝]ۏ���]ۈ�\��H�����\�X�ۙ\�H�ۘ�X��H����]]
+<!-- Login Page (nickname + password) -->
+<div class="screen" id="loginPage">
+<div class="card">
+  <div class="logo"><span class="logo-icon">🔑</span><h1>登录</h1><p>欢迎回来！</p></div>
+  <div class="input-group"><label>昵称 <span class="required">*</span></label><input type="text" id="loginNickInput" placeholder="你的昵称" maxlength="20"><div class="error-msg" id="loginNickErr">请填写昵称</div></div>
+  <div class="input-group"><label>密码 <span class="required">*</span></label><input type="password" id="loginPwdInput" placeholder="你的密码" maxlength="30" onkeypress="if(event.key==='Enter')doLogin()"><div class="error-msg" id="loginPwdErr">请填写密码</div></div>
+  <div class="error-msg" id="loginGeneralErr" style="text-align:center;margin-bottom:10px"></div>
+  <button class="btn btn-primary" onclick="doLogin()" style="margin-top:10px">✅ 确认登录</button>
+  <button class="btn btn-secondary" onclick="goToAuth()" style="margin-top:10px">← 返回</button>
+</div>
+</div>
 
-H��[OH�X\��[�]��L����:/�9f�؝]ۏ���]����]����KKH��[�Y�H
-�X�ۘ[YH
-�\���ܙ
-HKO��]��\��H��ܙY[��YH���[�Y�H���]��\��H��\����]��\��H���ȏ��[��\��H����ZX�ۈ��'�$O��[��O��n�oeO�O���(�/�f繧i{� O���]���]��\��H�[�]Yܛ�\��X�[��-y���[��\��H��\]Z\�Y�����[���X�[�[�]\OH�^�YH���[��X��[�]�X�Z�\�H�/h9�9�-y���X^[��H����]��\��H�\��܋[\�ȈYH���[��X��\����+��hj�a�y�-y���]���]���]��\��H�[�]B�w&�W#���&V��Z�nz�7�6�73�'&WV�&VB#���7�����&V��Ɩ�WBG�S�'77v�&B"�C�&��v��vD��WB"�6V���FW#�.K�y�NZ�nz"���V�wF��#3"��W�&W73�&�b�WfV�B�W����tV�FW"r�F���v�ₒ#��F�b6�73�&W'&�"��6r"�C�&��v��vDW'"#��~Z�Xi�Z�nz��F�c���F�c��F�b6�73�&W'&�"��6r"�C�&��v��vV�W&�W'""7G��S�'FW�B�Ɩv�6V�FW#��&v���&�GF�ӣ�#���F�c��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&F���v�ₒ"7G��S�&�&v���F���#�)�Rz��Ny��[�S��'WGF����'WGF��6�73�&'F�'F��6V6��F'�"��6Ɩ6��&v�F�WF���"7G��S�&�&v���F���#�(i��NY����'WGF�����F�c���F�cࠣ���&�f��R6WGW67&VV��vV�FW"�fF"�FW67&�F���gFW"f�'7B��v������F�b6�73�'67&VV�"�C�'&�f��U6WGW67&VV�#��F�b6�73�&6&B#��F�b6�73�&��v�#��7�6�73�&��v�֖6��#�)ʃ��7��ƃ�Z��YhN�XNii��������ZJ~Z�ni�NZ[�Y���N��nK������F�c��F�c��7�7G��S�&f��B�vV�v�C�S��&v���&�GF�ӣ���F�7���&��6��f��B�6��S��V�#��h��K�y�Nh
-~X���7�6�73�'&WV�&VB#���7����7���F�b6�73�&vV�FW"�6V�V7B#��'WGF��6�73�&vV�FW"�'F�"FF�vV�FW#�&��R"��6Ɩ6��'6V�vV�FW"�v��Rr�#��7�6�73�&�6��#�	����7���F�b7G��S�&f��B�vV�v�C�S#�yKs��F�c���'WGF����'WGF��6�73�&vV�FW"�'F�"FF�vV�FW#�&fV��R"��6Ɩ6��'6V�vV�FW"�vfV��Rr�#��7�6�73�&�6��#�	����7���F�b7G��S�&f��B�vV�v�C�S#�Z[3��F�c���'WGF�����F�c��F�b6�73�&W'&�"��6r"�C�&vV�FW$W'"#��~��h��h
-~X����F�c���F�c��F�b6�73�&fF"�W��B�6V7F���#���&V��K��K�ZKNX8����&V���F�b6�73�&fF"�6�&6�R"�C�&fF$6�&6�R"��6Ɩ6��&F�7V�V�B�vWDV�V�V�D'��B�vfF$f��T��WBr��6Ɩ6���#��7�6�73�&fF"��6V���FW"#�	�;s��7����F�c�Ɩ�WBG�S�&f��R"�C�&fF$f��T��WB"66WC�&��vR�"��6��vS�&��F�TfF%W��B�WfV�B�#��7�7G��S�&f��B�6��S��s&VӶ6���#�6��&v���F��g�#�x+�X{�K��K��ȎX�����ȓ��7����F�c��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��'7V&֗E&�f��U6WGW��"7G��S�&�&v���F���#�	�*�{�~{��(i#��'WGF�����F�c���F�cࠣ���FW67&�F�����FR6&B�[�{��i������F�b�C�&FW64��FT6&B"6�73�&FW62���FR�6&B"7G��S�&F�7������R#�ƃ3�	�9�Xi�K�[�[�{��i����3��F�b6�73�&��FRֆ��B#�K��{��K�K��K��z�[{Y
-~����X��K��i�NZ[�Y���N��nK���F�c��FW�F&V�C�&FW64��FT��WB"�6V���FW#�.K�y�NX[N�j>x�Z[�8h;>h��K�K��j~y�NK��8iȞ�j>y�N�z�h�K��{�����"���V�wF��###���FW�F&V��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��'7V&֗DFW64��FR��#�z��B(i#��'WGF�����F�cࠣ���6��F7B��f���FR6&B����F�b�C�&6��F7D��FT6&B"6�73�&��FR�6&B"7G��S�&F�7������R#�ƃ3�	�9�yY�K��K�y�N�N{;�ik�[�����3��F�b6�73�&��FRֆ��B#�N{;�ik�[��K�^Yʎ�X�Z��h�X��Y�[^zK�{��Z��ik���F�c��F�b6�73�&6��F7B֖�WG2#��F�b6�73�&��WB�&�r#���&V���7Fw&����&V��Ɩ�WBG�S�'FW�B"�C�&�t��WB"�6V���FW#�$W6W&��R"���V�wF��##���F�c��F�b6�73�&��WB�&�r#���&V��v�G4���&V��Ɩ�WBG�S�'FW�B"�C�'v�G6��WB"�6V���FW#�"�#3CScs��"���V�wF��##���F�c��F�b6�73�&��WB�&�r#���&V��F��F�����&V��Ɩ�WBG�S�'FW�B"�C�'F��F����WB"�6V���FW#�$W6W&��R"���V�wF��##���F�c��F�b6�73�&��WB�&�r#���&V��[��K����&V��Ɩ�WBG�S�'FW�B"�C�'vV6�D��WB"�6V���FW#�%vT6�B�B"���V�wF��##���F�c��F�b6�73�&��WB�&�r#���&V��[�{�.K�c���&V��Ɩ�WBG�S�'FW�B"�C�'������w6�T��WB"�6V���FW#�.yJ�h�~Y�"���V�wF��##���F�c���F�c��F�b6�73�&��FW&W7B�6V7F���#��7�6�73�'6V7F�����&V�#�	���K�y�NX[N�j>x�Z[��ȎX��ZI����ȓ��7���F�b6�73�&��FW&W7B�Fw2"�C�&��FW&W7EFw2#��'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.yK^[�"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	���yK^[���'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.��ZJ�"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�*���ZJ���'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.h�x�"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�)Rh�x���'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.��>K�"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	��R��>K���'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.X��K��"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�+�X��K����'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.X^���"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�*�X^�����'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.k��h��"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	���k��h����'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.ix^��"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�)Ȏ���ix^����'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.{��9�"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	���{��9���'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.iN[�"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�;�iN[���'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.���K�b"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�9����K�c��'WGF����'WGF��G�S�&'WGF��"6�73�&��FW&W7B�Fr"FF֖�FW&W7C�.X��kʲ"��6Ɩ6��'F�vv�T��FW&W7B�F��2�#�	�˂X��kʳ��'WGF�����F�c���F�c��F�b6�73�&��FRֆ��B�6���#�{>[	Z�Xi�K�K���N{;�ik�[����F�c��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��'7V&֗D6��F7D��f�#�Z��h���'WGF�����F�cࠣ���'V&&�W267&VV�����F�b6�73�'67&VV�"�C�&'V&&�W567&VV�#��F�b6�73�&'V&&�W2�6��F��W"#��F�b6�73�&'V&&�W2ֆVFW"#�ƃ#�	�)RX�x�{ɎX�c���#��'WGF��6�73�&F�F��6�V�B"�C�&F�F�6�V�D'F�"��6Ɩ6��'6��tהF�F�2��#�	�IB�7��C�&F�F��V�#���7����'WGF�����F�c��F�b6�73�&'V&&�W2�&V"�C�&'V&&�W4&V#��F�b6�73�&���W6W'2#�z؞[�^i�NZI�K��X�XZR�����F�c���F�c���F�c��'WGF��6�73�&�W6�2�F�vv�R"�C�&�W6�4'F�"��6Ɩ6��'F�vv�T�W6�2��#�	��S��'WGF����'WGF��6�73�&��v�WB�'F�"��6Ɩ6��&F���v�WB��"F�F�S�.�X{�y��[�R#�	�����'WGF����'WGF��6�73�'6WGF��w2�'F�"��6Ɩ6��&�V�6WGF��w2��#�)�������'WGF����F�b6�73�&'V&&�R�FWF��"�C�&'V&&�TFWF��#��F�b6�73�&&BֆVFW"#��F�b6�73�&&B�fF""�C�&&DfF"#�	����F�c��F�c��F�b6�73�&&B���R"�C�&&D��R#���F�c��F�b6�73�&&B�vV�FW""�C�&&DvV�FW"#���F�c���F�c���F�c��F�b6�73�&&B�FW62"�C�&&DFW62#���F�c��F�b6�73�&&B�7F���2#��'WGF��6�73�&'F�'F��F�F�"��6Ɩ6��'6V�DF�F���#�	�)Rk�Nk�ED��'WGF����'WGF��6�73�&'F�'F��6�6V��FWF��"��6Ɩ6��&6��6T'V&&�TFWF��#�X�nkh���'WGF�����F�c���F�c��F�b6�73�'6WGF��w2��V�"�C�'6WGF��w5�V�#�ƃ3�)�����{�n��K��K��K�h����3��F�b6�73�'6WGF��w2�6V7F���#���&V��i�^z{���&V��Ɩ�WBG�S�'FW�B"�C�'6WGF��w4�6���WB"�6V���FW#�.K�y�Ni�^z{"���V�wF��###���F�c��F�b6�73�'6WGF��w2�6V7F���#���&V��h�������&V���FW�F&V�C�'6WGF��w4FW64��WB"�6V���FW#�.h�����z�[{���"���V�wF��###���FW�F&V���F�c��F�b6�73�'6WGF��w2�6V7F���#���&V���7Fw&����&V��Ɩ�WBG�S�'FW�B"�C�'6WGF��w4�t��WB"�6V���FW#�$W6W&��R"���V�wF��##���F�c��F�b6�73�'6WGF��w2�6V7F���#���&V��v�G4���&V��Ɩ�WBG�S�'FW�B"�C�'6WGF��w5v�G6��WB"�6V���FW#�"�#3CScs��"���V�wF��##���F�c��F�b6�73�'6WGF��w2�6V7F���#���&V��F��F�����&V��Ɩ�WBG�S�'FW�B"�C�'6WGF��w5F��F����WB"�6V���FW#�$W6W&��R"���V�wF��##���F�c��F�b6�73�'6WGF��w2�6V7F���#���&V��[��K����&V��Ɩ�WBG�S�'FW�B"�C�'6WGF��w5vV6�D��WB"�6V���FW#�%vT6�B�B"���V�wF��##���F�c��F�b6�73�'6WGF��w2�6V7F���#���&V��[�{�.K�c���&V��Ɩ�WBG�S�'FW�B"�C�'6WGF��w5������w6�T��WB"�6V���FW#�.yJ�h�~Y�"���V�wF��##���F�c��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��'6fU6WGF��w2��#�K��Zك��'WGF����'WGF��6�73�&'F�'F��6V6��F'�6WGF��w2�6��6R�'F�"��6Ɩ6��&6��6U6WGF��w2��"7G��S�&�&v���F���#�X�nkh���'WGF�����F�c���F�cࠣ���6�B67&VV�����F�b6�73�'67&VV�"�C�&6�E67&VV�#��F�b6�73�&6�B�6��F��W"#��F�b6�73�&6�BֆVFW"#��F�b6�73�''F�W"֖�f�#��F�b6�73�''F�W"�fF""�C�''F�W$fF"#�	����F�c��F�c��F�b6�73�''F�W"���R"�C�''F�W$��R#���F�c���F�c���F�c��F�b7G��S�'FW�B�Ɩv�6V�FW"#��F�b7G��S�&f��B�6��S��cVVӶ�6�G���#�X��Kٓ��F�c��F�b6�73�'F��W""�C�&6�EF��W"#�S���F�c���F�c���F�c��F�b6�73�&6�B�7F���2�&"#��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��'&WVW7D6���V7B��"�C�&6���V7D'F�#�	�(�K�Nh�.�N{;�ik�[����'WGF����'WGF��6�73�&'F�'F��6V6��F'�"��6Ɩ6��&�VfT6�B��#�X{���'WGF�����F�c��F�b6�73�&6�B��W76vW2"�C�&6�D�W76vW2#���F�c��F�b6�73�&6�B֖�WB�&V#�Ɩ�WBG�S�'FW�B"�C�&�6t��WB"�6V���FW#�.��Nx+�K�K�����"��W�&W73�&�b�WfV�B�W����tV�FW"r�6V�D�6r��"���V�wF��#S#��'WGF��6�73�'6V�B�'F�"��6Ɩ6��'6V�D�6r��"�C�'6V�D'F�#�)�C��'WGF�����F�c���F�c���F�cࠣ����fW&��2����F�b6�73�&�fW&��"�C�&F�F�&V7d�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�)S��7��ƃ3�iȞK��k�Nk�NK�K�n�����3��6�73�&��F��7V""�C�&F�F�&V7d�6r#�����F�b6�73�&'F��w&�W#��'WGF��6�73�&'F�'F��66WB"��6Ɩ6��&66WDF�F���#�	�*�h�^X�~��ZJ���'WGF����'WGF��6�73�&'F�'F��&V�V7B"��6Ɩ6��'&V�V7DF�F���#�K��j�Y
-s��'WGF�����F�c���F�c���F�c��F�b6�73�&�fW&��"�C�'v�E6V�FW$�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�(�3��7��ƃ3�z؞[�^Z��ik�z��B������3��6�73�&��F��7V""�C�'v�E6V�FW$�6r#�Z��ik�j�>Yʎz��Ni��Y
-n��ZJ������F�c���F�c��F�b6�73�&�fW&��"�C�&F�F�66WFVD�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�)S��7��ƃ2�C�&F�F�66WEF�F�R#�Z��ik�[{.h�^X�~�����3��6�73�&��F��7V"#�i��Y
-n[�Zx���ZJ��������F�b6�73�&'F��w&�W#��'WGF��6�73�&'F�'F��66WB"��6Ɩ6��&6��f�&�6�B��#�	�*�[�Zx���ZJ���'WGF����'WGF��6�73�&'F�'F��&V�V7B"��6Ɩ6��'&V�V7D6�B��#�z�~K�c��'WGF�����F�c���F�c���F�c��F�b6�73�&�fW&��"�C�&6�E&V�V7FVD�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	��#��7��ƃ3�Z��ik�h�.{��K�n��ZJ����3��6�73�&��F��7V"#�k*X[>{;���΋��iȞi�NZI�{ɎX�nz؞K�������'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&��FT�v6�E&V�V7FVD�fW&��r�"7G��S�&�&v���F��'�#�{�~{��yȾyȳ��'WGF�����F�c���F�c��F�b6�73�&�fW&��"�C�'F��UW�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�(���7��ƃ3��ZJ�i{n�{N{�>i�����3��6�73�&��F��7V"#�^X�n�)��(.�^[{.{�>i������F�b6�73�&'F��w&�W"7G��S�&f�W��F�&V7F���6��V��#��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&��FT�wF��UW�fW&��r��&WVW7D6���V7B��#�	�(�K�Nh�.�N{;�ik�[����'WGF����'WGF��6�73�&'F�'F��6V6��F'�"��6Ɩ6��&&6�F�'V&&�W2��#��NY����'WGF�����F�c���F�c���F�c��F�b6�73�&�fW&��"�C�&6���V7E&W�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�(���7��ƃ3�Z��ik�h;>K�Nh�.�N{;�ik�[�������3��6�73�&��F��7V"#�h�^X�~Y�X��ik�X��K�^yȾX��N{;�K�h�����F�b6�73�&'F��w&�W#��'WGF��6�73�&'F�'F��66WB"��6Ɩ6��'&W7��D6���G'VR�#�)�Rh�^X�s��'WGF����'WGF��6�73�&'F�'F��&V�V7B"��6Ɩ6��'&W7��D6���f�6R�#�)��h�.{����'WGF�����F�c���F�c���F�c��F�b6�73�&�fW&��"�C�'&W6V�D�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�:���7��ƃ3��~k.[{.X�����3��6�73�&��F��7V"#�z؞[�^Z��ik�Y��[�B��������F�c���F�c��F�b6�73�&�fW&��"�C�&6���66WD�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	����7��ƃ3�X�Z��h�X�������3��F�b6�73�&6��F7B�&WfV�#�ƃC�	�;Z��ik�K�h����C��F�b�C�'&WfV�6��F7B#���F�c���F�c��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&&6�F�'V&&�W2��"7G��S�&�&v���F��'�#��NY����'WGF�����F�c���F�c��F�b6�73�&�fW&��"�C�&6���&V�V7D�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	��#��7��ƃ3�Z��ik�h�.{��K�c���3��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&&6�F�'V&&�W2��"7G��S�&�&v���F��'�#��NY����'WGF�����F�c���F�c��F�b6�73�&�fW&��"�C�''F�W$�VgD�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	����7��ƃ3�Z��ik�[{.zk�[����3��'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&&6�F�'V&&�W2��"7G��S�&�&v���F��'�#��NY����'WGF�����F�c���F�c��F�b6�73�&�fW&��"�C�&F�F�6V�D�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�)S��7��ƃ3�k�Nk�N[{.X�������3��6�73�&��F��7V"#�Z��ik�KɮiKnX��	�y�^���z؞[�^Y��[�NY
-~�������'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&��FT�vF�F�6V�D�fW&��r��6��6T'V&&�TFWF��"7G��S�&�&v���F��'�#�Z[�y�C��'WGF�����F�c���F�c��F�b6�73�&�fW&��"�C�&�ffƖ�T�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�;C��7��ƃ2�C�&�ffƖ�T�6r#�Z��ik�i�.i{nK��Yʎ{�����3��6�73�&��F��7V"#�[{.�	�y�^Z��ik����zؕDK��{��Y
-~������'WGF��6�73�&'F�'F��&��'�"��6Ɩ6��&��FT�v�ffƖ�T�fW&��r�"7G��S�&�&v���F��'�#�Z[�y�C��'WGF�����F�c���F�c��F�b6�73�&�fW&��"�C�&הF�F�4�fW&��#��F�b6�73�&��F�#��7�6�73�&��F�֖6��#�	�IC��7��ƃ3�iKnX�y�Nk�Nk�C���3��F�b�C�&הF�F�4Ɨ7B"7G��S�&�&v��g����ֆV�v�C�3���fW&f��rד�WF�#���F�c��'WGF��6�73�&'F�'F��6V6��F'�"��6Ɩ6��&��FT�vהF�F�4�fW&��r�#�X[>�z���'WGF�����F�c���F�cࠣ�67&�C��WB6�6�WC��V���וW6W$�C���6�7F�&vR�vWD�FV҂vfFT�F6�W6W$�Br��6V�V7FVDvV�FW#��V���6�EF��W$��FW'f���V���6�DV�FVC�f�6R�6�E7F'EF��S��V���V�F��u&W�C��V�ð��WB6V�V7FVD'V&&�UW6W#��V���V�F��tF�F�g&����V����W6�5����s�f�6R�VF��7G���V���&t�63��V���&tv����V�ð��WBו&�f��S׶�6���S�rr�FW67&�F���rr�6��F7G3���s�rr�v�G6�rr�F��F���rr�vV6�C�rrǆ�����w6�S�rw�Ɩ�FW&W7G3����fF#�rwӰ��WB6V�V7FVD��FW&W7G3յӰ��WBהfF$FF�rs����VF��6��FW�B��F�Ɨ�F�����f�'7BW6W"��FW&7F����𢂂��簢6��7B��DVF��6��FW�C҂��簢�b�VF��7G����VF��7G���Wr�v��F�r�VF��6��FW�G��v��F�r�vV&��DVF��6��FW�B�����ТF�7V�V�B�&V��fTWfV�DƗ7FV�W"�v6Ɩ6�rƖ�DVF��6��FW�B���Ӱ�F�7V�V�B�FDWfV�DƗ7FV�W"�v6Ɩ6�rƖ�DVF��6��FW�B���Ғ�������V'G2&6�w&�V�B�𢂂���6��7B3�F�7V�V�B�vWDV�V�V�D'��B�v�V'G4&rr�ƃղ	�)Rr�	�)br�	�)rr�	�)�r�~)ʂr�	�˂uӶf�"��WB�����S������6��7B3�F�7V�V�B�7&VFTV�V�V�B�w7�r��2�6�74��S�v�V'Bs�2�FW�D6��FV�Cօ��F��f���"��F��&�F�҂�����V�wF��ӷ2�7G��R��VgC��F��&�F�҂���rRs�2�7G��R���F���GW&F���҃"��F��&�F�҂��R��w2s�2�7G��R���F���FV����F��&�F�҂���w2s�2�7G��R�f��E6��S҃B��F��&�F�҂�����w�s�2�V�D6���B�2��Ғ������6�V6��bW6W"�&VG���vvVB����7��2���簢�b�וW6W$�B���G'���6��7B#�v�BfWF6��r���6�V6��W6W$�C�r�וW6W$�B���6��7BC�v�B"�6�ₓ���b�B�&Vv�7FW&VBbbB�5&�f��R�����W6W"�2gV��&�f��R�v�F�'V&&�W0�ו&�f��R��6���S�B��6���S��ו&�f��R�FW67&�F����B�FW67&�F�����rs��ו&�f��R�6��F7G3�B�6��F7G7�ǷӰ�ו&�f��R��FW&W7G3�B��FW&W7G7�ŵӰ�F�7V�V�B�vWDV�V�V�D'��B�wv&��t&FvRr��7G��R�F�7���v���Rs��v�F�'V&&�W2����&WGW&㰢�V�6R�b�B�&Vv�7FW&VBbbB�5&�f��R�����W6W"&Vv�7FW&VB'WB��&�f��R�WB�v�F�&�f��R6WGW �ו&�f��R��6���S�B��6���S��6��u67&VV�w&�f��U6WGW67&VV�r���&WGW&㰢Т�6F6��R��ТЧҒ�����gV�7F���6��u67&VV↖B���F�7V�V�B�VW'�6V�V7F�$�r�67&VV�r��f�$V6��3��2�6�74Ɨ7B�&V��fR�v7F�fRr����F�7V�V�B�vWDV�V�V�D'��B��B��6�74Ɨ7B�FB�v7F�fRr�������FR��FR6&G2v�V�7v�F6���r67&VV�0�F�7V�V�B�vWDV�V�V�D'��B�vFW64��FT6&Br��7G��R�F�7���v���Rs��F�7V�V�B�vWDV�V�V�D'��B�v6��F7D��FT6&Br��7G��R�F�7���v���Rs��ЦgV�7F���6��t�B��F�7V�V�B�vWDV�V�V�D'��B��B��6�74Ɨ7B�FB�v7F�fRr�ЦgV�7F�����FT�B��F�7V�V�B�vWDV�V�V�D'��B��B��6�74Ɨ7B�&V��fR�v7F�fRr�ЦgV�7F�����FT���F�7V�V�B�VW'�6V�V7F�$�r��fW&��r��f�$V6�������6�74Ɨ7B�&V��fR�v7F�fRr��Р�gV�7F���6��uF�7B��6r���f"��C�F�7V�V�B�VW'�6V�V7F�"�r�F�7Br����b���B���B�&V��fR����f"C�F�7V�V�B�7&VFTV�V�V�B�vF�br���B�6�74��S�wF�7Bs��B�FW�D6��FV�C��6s��F�7V�V�B�&�G��V�D6���B�B���6WEF��V�WB����綖b�B�&V�D��FR�B�&V��fR����3���Р���f�vF���gV�7F���2��gV�7F���v�F�WF�����6��u67&VV�vWF�67&VV�r���Р�gV�7F���v�F���v�ₗ��6��u67&VV�v��v��vRr���F�7V�V�B�vWDV�V�V�D'��B�v��v���6���WBr��f�VS�rs��F�7V�V�B�vWDV�V�V�D'��B�v��v��vD��WBr��f�VS�rs��F�7V�V�B�vWDV�V�V�D'��B�v��v��vV�W&�W'"r��6�74Ɨ7B�&V��fR�w6��rr���F�7V�V�B�vWDV�V�V�D'��B�v��v��vV�W&�W'"r��FW�D6��FV�C�rs��Р�gV�7F���v�F�&Vv�7FW%vR����6��u67&VV�w&Vv�7FW%vRr���F�7V�V�B�vWDV�V�V�D'��B�w&Vt�6���WBr��f�VS�rs��F�7V�V�B�vWDV�V�V�D'��B�w&VuvD��WBr��f�VS�rs��F�7V�V�B�vWDV�V�V�D'��B�w&VuvD6��f�&Ԗ�WBr��f�VS�rs��Р��&Vv�7FW"66�V�B��7��2gV�7F���F�&Vv�7FW$66�V�B�����WB���G'VS��6��7B�6��F�7V�V�B�vWDV�V�V�D'��B�w&Vt�6���WBr��f�VR�G&�҂���6��7BvC�F�7V�V�B�vWDV�V�V�D'��B�w&VuvD��WBr��f�VS��6��7BvD6��f�&��F�7V�V�B�vWDV�V�V�D'��B�w&VuvD6��f�&Ԗ�WBr��f�VS����b��6���F�7V�V�B�vWDV�V�V�D'��B�w&Vt�6�W'"r��6�74Ɨ7B�FB�w6��rr�����f�6W�V�6RF�7V�V�B�vWDV�V�V�D'��B�w&Vt�6�W'"r��6�74Ɨ7B�&V��fR�w6��rr����b�vG��vB��V�wF��B��F�7V�V�B�vWDV�V�V�D'��B�w&VuvDW'"r��6�74Ɨ7B�FB�w6��rr�����f�6W�V�6RF�7V�V�B�vWDV�V�V�D'��B�w&VuvDW'"r��6�74Ɨ7B�&V��fR�w6��rr����b�vB��vD6��f�&җ�F�7V�V�B�vWDV�V�V�D'��B�w&VuvD6��f�&�W'"r��6�74Ɨ7B�FB�w6��rr�����f�6W�V�6RF�7V�V�B�vWDV�V�V�D'��B�w&VuvD6��f�&�W'"r��6�74Ɨ7B�&V��fR�w6��rr����b����&WGW&㰠�G'���6��7B#�v�BfWF6��r���&Vv�7FW"�66�V�BrǶ�WF��C�u�5BrƆVFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w��&�G���4���7G&��v�g����6���S��6��77v�&C�vGҗғ��6��7BC�v�B"�6�ₓ���b�"�������W'B�B�W'&�'��~k:�Xh�ZK�JRr���&WGW&㰢Т��7V66W72�v�&6�F�WF�67&VV�v�F���F�f�6F���6��u67&VV�vWF�67&VV�r���6��uF�7B�~)�R�JnX�~[{.k:�Xh���Ί�~x+�X{�y��[�Rr����6F6��R���W'B�~k:�Xh�ZK�J^��Ί�~�xފ�Rr�ЧР����v����7��2gV�7F���F���v�ₗ���WB���G'VS��6��7B�6��F�7V�V�B�vWDV�V�V�D'��B�v��v���6���WBr��f�VR�G&�҂���6��7BvC�F�7V�V�B�vWDV�V�V�D'��B�v��v��vD��WBr��f�VS����b��6���F�7V�V�B�vWDV�V�V�D'��B�v��v���6�W'"r��6�74Ɨ7B�FB�w6��rr�����f�6W�V�6RF�7V�V�B�vWDV�V�V�D'��B�v��v���6�W'"r��6�74Ɨ7B�&V��fR�w6��rr����b�vB��F�7V�V�B�vWDV�V�V�D'��B�v��v��vDW'"r��6�74Ɨ7B�FB�w6��rr�����f�6W�V�6RF�7V�V�B�vWDV�V�V�D'��B�v��v��vDW'"r��6�74Ɨ7B�&V��fR�w6��rr����b����&WGW&㰠�G'���6��7B#�v�BfWF6��r�����v��rǶ�WF��C�u�5BrƆVFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w��&�G���4���7G&��v�g����6���S��6��77v�&C�vGҗғ��6��7BC�v�B"�6�ₓ���b�"������F�7V�V�B�vWDV�V�V�D'��B�v��v��vV�W&�W'"r��FW�D6��FV�C�B�W'&�'��~y��[�^ZK�JRs��F�7V�V�B�vWDV�V�V�D'��B�v��v��vV�W&�W'"r��6�74Ɨ7B�FB�w6��rr���&WGW&㰢Т��6fRW6W$�@�וW6W$�C�B�W6W$�C����6�7F�&vR�6WD�FV҂vfFT�F6�W6W$�Br�וW6W$�B���ו&�f��R��6���S�B��6���S��ו&�f��R�FW67&�F����B�FW67&�F�����rs��ו&�f��R�6��F7G3�B�6��F7G7�ǷӰ�ו&�f��R��FW&W7G3�B��FW&W7G7�ŵӰ�הfF$FF�B�fF'��rs����b�B�5&�f��R�����&WGW&��rW6W"v�F�gV��&�f��R�v�F�'V&&�W0�v�F�'V&&�W2�����V�6W����f�'7B��v����VVBF�6WBW&�f��R�vV�FW"�fF"�FW67&�F����6��F7G2��6��u67&VV�w&�f��U6WGW67&VV�r���Т�6F6��R���W'B�~y��[�^ZK�J^��Ί�~�xފ�Rr�ЧР��&�f��R6WGW�vV�FW"�fF"���gV�7F���7V&֗E&�f��U6WGW�����b�6V�V7FVDvV�FW"��F�7V�V�B�vWDV�V�V�D'��B�vvV�FW$W'"r��6�74Ɨ7B�FB�w6��rr��&WGW&�Т����FR&�f��R6WGW�6��rFW67&�F�����FR6&@�F�7V�V�B�vWDV�V�V�D'��B�w&�f��U6WGW67&VV�r��6�74Ɨ7B�&V��fR�v7F�fRr���F�7V�V�B�vWDV�V�V�D'��B�vFW64��FT6&Br��7G��R�F�7���v&��6�s��Р��FW67&�F�����FR6&B��gV�7F���7V&֗DFW64��FR����6��7BFW63�F�7V�V�B�vWDV�V�V�D'��B�vFW64��FT��WBr��f�VR�G&�҂����b�FW62���W'B�~��~Xi�K�x+�X[>K��K��z�[{y�Nh����r��&WGW&�Тו&�f��R�FW67&�F����FW63��F�7V�V�B�vWDV�V�V�D'��B�vFW64��FT6&Br��7G��R�F�7���v���Rs�����6fRvV�FW"�FW67&�F����fF"F�6W'fW �fWF6��r���&Vv�7FW"rǶ�WF��C�u�5BrƆVFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w��&�G���4���7G&��v�g���vV�FW#�6V�V7FVDvV�FW"��6���S�ו&�f��R��6���R�FW67&�F���FW62�W6W$�C�וW6W$�B�fF#�הfF$FFҗҒ�6F6������ғ�����6��r6��F7B��f�6&@�F�7V�V�B�vWDV�V�V�D'��B�v6��F7D��FT6&Br��7G��R�F�7���v&��6�s��Р�gV�7F�����F�TfF%W��B�WfV�B���f"f��S�WfV�B�F&vWB�f��W5�Ӱ��b�f��R�&WGW&㰢�b�f��R�6��S�"�#B�#B���W'B�~ZKNX8�K�ވ;ދh^��s$�"r��&WGW&�Тf"&VFW#��Wrf��U&VFW"����&VFW"�����C�gV�7F���R���f"��s��Wr��vR������r�����C�gV�7F��ₗ��f"6�f3�F�7V�V�B�7&VFTV�V�V�B�v6�f2r���f"6��S�#��6�f2�v�GF��6��S�6�f2�V�v�C�6��S��f"7G��6�f2�vWD6��FW�B�s&Br���f"֖���F��֖↖�r�v�GF�Ɩ�r�V�v�B���f"7�҆��r�v�GF��֖��"�7�҆��r�V�v�B�֖��#��7G��G&t��vR���r�7��7��֖��֖����6��R�6��R���הfF$FF�6�f2�F�FFU$v��vR��Vrr��r���f"6�&6�S�F�7V�V�B�vWDV�V�V�D'��B�vfF$6�&6�Rr���6�&6�R���W$�D���sƖ�r7&3�"r�הfF$FF�r#�s��6�&6�R�6�74Ɨ7B�FB�v�2֖�rr���Ӱ���r�7&3�R�F&vWB�&W7V�C��Ӱ�&VFW"�&VD4FFU$f��R���Р�gV�7F���6V�vV�FW"�r��6V�V7FVDvV�FW#�s�F�7V�V�B�VW'�6V�V7F�$�r�vV�FW"�'F�r��f�$V6��#��"�6�74Ɨ7B�&V��fR�w6V�V7FVBr���F�7V�V�B�VW'�6V�V7F�"��FF�vV�FW#�"G�w�%���6�74Ɨ7B�FB�w6V�V7FVBr��F�7V�V�B�vWDV�V�V�D'��B�vvV�FW$W'"r��6�74Ɨ7B�&V��fR�w6��rr�Р�gV�7F���F�vv�T��FW&W7B�'F◰�'F��6�74Ɨ7B�F�vv�R�w6V�V7FVBr���6��7B��FW&W7C�'F��FF6WB��FW&W7C���b�'F��6�74Ɨ7B�6��F��2�w6V�V7FVBr�����b�6V�V7FVD��FW&W7G2��6�VFW2���FW&W7B��6V�V7FVD��FW&W7G2�W6����FW&W7B����V�6W��6V�V7FVD��FW&W7G3�6V�V7FVD��FW&W7G2�f��FW"�����֖�FW&W7B���ЧР�gV�7F���7V&֗D6��F7D��f򂗰�6��7B�s�F�7V�V�B�vWDV�V�V�D'��B�v�t��WBr��f�VR�G&�҂���6��7Bv�G6�F�7V�V�B�vWDV�V�V�D'��B�wv�G6��WBr��f�VR�G&�҂���6��7BF��F���F�7V�V�B�vWDV�V�V�D'��B�wF��F����WBr��f�VR�G&�҂���6��7BvV6�C�F�7V�V�B�vWDV�V�V�D'��B�wvV6�D��WBr��f�VR�G&�҂���6��7B������w6�S�F�7V�V�B�vWDV�V�V�D'��B�w������w6�T��WBr��f�VR�G&�҂�����b��rbbv�G6bbF��F��bbvV6�Bbb������w6�R����W'B�~��~�{>[	Z�Xi�K�K���N{;�ik�[��r���&WGW&㰢Р�ו&�f��R�6��F7G3׶�r�v�G6�F��F���vV6�Bǆ�����w6�WӰ�ו&�f��R��FW&W7G3�6V�V7FVD��FW&W7G3�����WFFR&�f��Rv�F�6��F7G2�B��FW&W7G0�fWF6��r���WFFR�&�f��RrǶ�WF��C�uUBrƆVFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w��&�G���4���7G&��v�g���W6W$�C�וW6W$�B�6��F7G3�ו&�f��R�6��F7G2Ɩ�FW&W7G3�6V�V7FVD��FW&W7G7җҒ�6F6������ғ�������FR6��F7B6&B�B�V�F�&V7FǒF�'V&&�W0�F�7V�V�B�vWDV�V�V�D'��B�v6��F7D��FT6&Br��7G��R�F�7���v���Rs��7V'67&�&UW6�����v�F�'V&&�W2����Р�gV�7F���v�F�'V&&�W2����6��u67&VV�v'V&&�W567&VV�r���F�7V�V�B�vWDV�V�V�D'��B�wv&��t&FvRr��7G��R�F�7���v���Rs��6���V7E6�6�WB������D'V&&�W2����7F'D�W6�2����Р�gV�7F���F���v�WB�����b�6��f�&҂~z�Z鮊h�X{�y��[�^Y	~���r��&WGW&㰢��6�7F�&vR�&V��fT�FV҂vfFT�F6�W6W$�Br���וW6W$�C��V�ð�ו&�f��S׶�6���S�rr�FW67&�F���rr�6��F7G3���s�rr�v�G6�rr�F��F���rr�vV6�C�rrǆ�����w6�S�rw�Ɩ�FW&W7G3����fF#�rwӰ�6V�V7FVDvV�FW#��V�ð�הfF$FF�rs���b�6�6�WB��6�6�WB�F�66���V7B���6�6�WC��V��Т7F��W6�2����6��u67&VV�wvV�6��U67&VV�r���Р�gV�7F���6���V7E6�6�WB�����b�6�6�WB�&WGW&㰢6�6�WC֖򂓰�6�6�WB�V֗B�vv����Ɩ�RrǷW6W$�C�וW6W$�Gғ��6�6�WB���vF�F��&V6V�fVBrB��簢V�F��tF�F�g&���C��F�7V�V�B�vWDV�V�V�D'��B�vF�F�&V7d�6rr��FW�D6��FV�C�B�g&���6���R�rh;>Y(�K���ZJ���s��6��t�vF�F�&V7d�fW&��r�����'V&&�U6�V�B����WFFTF�F�6�V�B����ғ��6�6�WB���wV�F��u�F�F�2rƗ7B���WFFTF�F�6�V�B�Ɨ7B��V�wF���ғ��6�6�WB���vF�F��66WFVBrB��簢V�F��tF�F�g&���C��F�7V�V�B�vWDV�V�V�D'��B�vF�F�66WEF�F�Rr��FW�D6��FV�C�B��6���R�rh�^X�~K�nK�y�N�(��~��s����FT���6��t�vF�F�66WFVD�fW&��r���ғ��6�6�WB���wv�F��u�f�%�6V�FW"rB��簢F�7V�V�B�vWDV�V�V�D'��B�wv�E6V�FW$�6rr��FW�D6��FV�C�~z؞[�Rr�B��6���R�rz��B���s����FT���6��t�wv�E6V�FW$�fW&��r���ғ��6�6�WB���v6�E�7F'FVBrB��簢��FT����6�DV�FVC�f�6S�6�E7F'EF��S�B�7F'EF��S��F�7V�V�B�vWDV�V�V�D'��B�w'F�W$��Rr��FW�D6��FV�C�B�'F�W"��6���S��F�7V�V�B�vWDV�V�V�D'��B�w'F�W$fF"r��FW�D6��FV�C�B�'F�W"�vV�FW#���vfV��Rs�	��s�	��s��F�7V�V�B�vWDV�V�V�D'��B�v6�D�W76vW2r����W$�D���rs��F�7V�V�B�vWDV�V�V�D'��B�v�6t��WBr��F�6&�VC�f�6S��F�7V�V�B�vWDV�V�V�D'��B�w6V�D'F�r��F�6&�VC�f�6S��F�7V�V�B�vWDV�V�V�D'��B�v6���V7D'F�r��F�6&�VC�f�6S��FE7�2�~)ʂ�X�Z��h�X����K�K��iȓ^X�n�)���ZJ�i{n�{Br���7F'EF��W"���6��u67&VV�v6�E67&VV�r���7F��W6�2����ғ��6�6�WB���v6�E�&V�V7FVBrB��綆�FT���6��t�v6�E&V�V7FVD�fW&��r�ғ��6�6�WB���w'F�W%��ffƖ�U��6rrB��綆�FT���F�7V�V�B�vWDV�V�V�D'��B�v�ffƖ�T�6rr��FW�D6��FV�C�B��6���R�ri�.i{nK��Yʎ{��s�6��t�v�ffƖ�T�fW&��r�ғ��6�6�WB���v6�E��W76vRrB���FD�6r�B��W76vR�f�6R�B��6���R����6�6�WB���wF��U�v&��rr���F�7V�V�B�vWDV�V�V�D'��B�v6�EF��W"r��6�74Ɨ7B�FB�wv&��rr��FE7�2�~)�������X��X�n�)���r�ғ��6�6�WB���v6�E�V�FVBr���6�DV�FVC�G'VS�6�V$��FW'f6�EF��W$��FW'f�F�7V�V�B�vWDV�V�V�D'��B�v6�EF��W"r��FW�D6��FV�C�s�s�F�7V�V�B�vWDV�V�V�D'��B�v�6t��WBr��F�6&�VC�G'VS�F�7V�V�B�vWDV�V�V�D'��B�w6V�D'F�r��F�6&�VC�G'VS�FE7�2�~(�i{n�{NX���r��6��t�wF��UW�fW&��r�ғ��6�6�WB���v6���V7E�&WVW7BrB���V�F��u&W�C�B�g&�ԖC�6��t�v6���V7E&W�fW&��r�ғ��6�6�WB���w&WVW7E�6V�Br��綆�FT���6��t�w&W6V�D�fW&��r�ғ��6�6�WB���v6���V7E�66WFVBrB��綆�FT���&V�FW$6��F7D��f�B��6��t�v6���66WD�fW&��r�ғ��6�6�WB���v6���V7E�&V�V7FVBr��綆�FT���6��t�v6���&V�V7D�fW&��r�ғ��6�6�WB���w'F�W%��VgBr���6�DV�FVC�G'VS�6�V$��FW'f6�EF��W$��FW'f�F�7V�V�B�vWDV�V�V�D'��B�v�6t��WBr��F�6&�VC�G'VS���FT���6��t�w'F�W$�VgD�fW&��r�ғ��6�6�WB���wW6W%�7FGW2r�����D'V&&�W2�����Р�gV�7F���&V�FW$6��F7D��f�FF���6��7B6��F7G3�FF�6��F7G7�ǷӰ��WB�F���rs���b�6��F7G2�r��F�³�s�F�b6�73�&6��F7B֗FV�#��7�6�73�&6��F7B֗FV���&V�#�	�;r��7Fw&ӣ��7���F�b6�73�&6��F7B֗FV��f�VR#�r�W62�6��F7G2�r��s��F�c���F�c�s���b�6��F7G2�v�G6��F�³�s�F�b6�73�&6��F7B֗FV�#��7�6�73�&6��F7B֗FV���&V�#�	�*�v�G4���7���F�b6�73�&6��F7B֗FV��f�VR#�r�W62�6��F7G2�v�G6��s��F�c���F�c�s���b�6��F7G2�F��F����F�³�s�F�b6�73�&6��F7B֗FV�#��7�6�73�&6��F7B֗FV���&V�#�	��RF��F�����7���F�b6�73�&6��F7B֗FV��f�VR#�r�W62�6��F7G2�F��F����s��F�c���F�c�s���b�6��F7G2�vV6�B��F�³�s�F�b6�73�&6��F7B֗FV�#��7�6�73�&6��F7B֗FV���&V�#�	�)�[��K����7���F�b6�73�&6��F7B֗FV��f�VR#�r�W62�6��F7G2�vV6�B��s��F�c���F�c�s���b�6��F7G2熖����w6�R��F�³�s�F�b6�73�&6��F7B֗FV�#��7�6�73�&6��F7B֗FV���&V�#�)�N���[�{�.K�c���7���F�b6�73�&6��F7B֗FV��f�VR#�r�W62�6��F7G2熖����w6�R��s��F�c���F�c�s��F�7V�V�B�vWDV�V�V�D'��B�w&WfV�6��F7Br����W$�D��ևF�ð�Р�7��2gV�7F�����D'V&&�W2����G'���6��7B#�v�BfWF6��r���W6W'3�W6W$�C�r�וW6W$�B���6��7BƗ7C�v�B"�6�ₓ��6��7B&V�F�7V�V�B�vWDV�V�V�D'��B�v'V&&�W4&Vr����b�Ɨ7B��V�wF���&V���W$�D���s�F�b6�73�&���W6W'2#�	�*�i�.i{nk*iȞX[nK�nK���'#�X�nK���;�h�^�(��~iȾX��X�XZ^Y
-~����F�c�s�&WGW&�Т&V���W$�D���rs��Ɨ7B�f�$V6��S�簢6��7B#�F�7V�V�B�7&VFTV�V�V�B�vF�br���"�6�74��S�v'V&&�Rr��R�vV�FW#���v��Rs�v��Rs�vfV��Rr���6��7B&�F��GW&F����2��F��&�F�҂��#��6��7B&�F��FV����F��&�F�҂��#��"�7G��R���F����f��D'V&&�RG��F��f���"��F��&�F�҂��2��G�&�F��GW&F����2V6R֖���WB��f��FV��"�7G��R���F���FV���&�F��FV���w2s��f"fF$�F���R�fF#�Ɩ�r6�73�&"�fF""7&3�"G�R�fF'�#���7�6�73�&"�V����#�G�R�vV�FW#���v��Rs�	��s�	��w���7����"���W$�D���fF$�F�¶�7�6�73�&"���R#�G�W62�R��6���R����7���7�6�73�&"���Ɩ�RG�R���Ɩ�S�v��s�v�fbw�#���7����"���6Ɩ6�҂����V�'V&&�R�R���&V�V�D6���B�"���ғ��FDG&�gD��F���2�����6F6��R��ЧР�gV�7F���FDG&�gD��F���2����6��7B7G��S�F�7V�V�B�7&VFTV�V�V�B�w7G��Rr���7G��R���W$�D��� ��W�g&�W2f��D'V&&�S��W�G&�6f�&ӧG&�6�FR���Т#RW�G&�6f�&ӧG&�6�FR�W���#��ТSW�G&�6f�&ӧG&�6�FR�W���3W��ТsRW�G&�6f�&ӧG&�6�FR��W���W��ТW�G&�6f�&ӧG&�6�FR���ТТ�W�g&�W2f��D'V&&�S��W�G&�6f�&ӧG&�6�FR���Т#RW�G&�6f�&ӧG&�6�FR��#���W��ТSW�G&�6f�&ӧG&�6�FR�����C��ТsRW�G&�6f�&ӧG&�6�FR�#���#��ТW�G&�6f�&ӧG&�6�FR���ТТ�W�g&�W2f��D'V&&�S'��W�G&�6f�&ӧG&�6�FR���Т#RW�G&�6f�&ӧG&�6�FR����#W��ТSW�G&�6f�&ӧG&�6�FR��W���3��ТsRW�G&�6f�&ӧG&�6�FR�W�����ТW�G&�6f�&ӧG&�6�FR���ТТ���b�F�7V�V�B�vWDV�V�V�D'��B�vG&�gD��7G��Rr����7G��R�C�vG&�gD��7G��Rs��F�7V�V�B�VB�V�D6���B�7G��R���ЧР�gV�7F����V�'V&&�R�R���6V�V7FVD'V&&�UW6W#�S����'V&&�U6�V�B����f"&Dc�F�7V�V�B�vWDV�V�V�D'��B�v&DfF"r����b�R�fF"��&Db���W$�D���sƖ�r7&3�"r�R�fF"�r"7G��S�'v�GF��S��V�v�C�S��&�V7B�f�C�6�fW#�&�&FW"�&F�W3�SR#�s�&Db�6�74��S�v&B�fF"s�ТV�6W�&Db�FW�D6��FV�C�R�vV�FW#���v��Rs�	��s�	��s�&Db�6�74��S�v&B�fF"r��R�vV�FW#���v��Rs�v��Rs�vfV��Rr��ТF�7V�V�B�vWDV�V�V�D'��B�v&D��Rr��FW�D6��FV�C�R��6���S��F�7V�V�B�vWDV�V�V�D'��B�v&DvV�FW"r��FW�D6��FV�C҇R�vV�FW#���v��Rs�~)�"yKrs�~)�Z[2r���R���Ɩ�S�r+r	��"Yʎ{��s�r+rzh�{��r���F�7V�V�B�vWDV�V�V�D'��B�v&DFW62r��FW�D6��FV�C�R�FW67&�F��㰢F�7V�V�B�vWDV�V�V�D'��B�v'V&&�TFWF��r��6�74Ɨ7B�FB�w6��rr���Р�gV�7F���6��6T'V&&�TFWF���F�7V�V�B�vWDV�V�V�D'��B�v'V&&�TFWF��r��6�74Ɨ7B�&V��fR�w6��rr��6V�V7FVD'V&&�UW6W#��V��Р�gV�7F����V�6WGF��w2����F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w4�6���WBr��f�VS�ו&�f��R��6���S��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w4FW64��WBr��f�VS�ו&�f��R�FW67&�F��㰢F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w4�t��WBr��f�VS�ו&�f��R�6��F7G2�w��rs��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5v�G6��WBr��f�VS�ו&�f��R�6��F7G2�v�G6��rs��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5F��F����WBr��f�VS�ו&�f��R�6��F7G2�F��F����rs��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5vV6�D��WBr��f�VS�ו&�f��R�6��F7G2�vV6�G��rs��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5������w6�T��WBr��f�VS�ו&�f��R�6��F7G2熖����w6�W��rs��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5�V�r��6�74Ɨ7B�FB�w6��rr���Р�gV�7F���6��6U6WGF��w2����F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5�V�r��6�74Ɨ7B�&V��fR�w6��rr���Р�7��2gV�7F���6fU6WGF��w2����6��7B�6��F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w4�6���WBr��f�VR�G&�҂���6��7BFW63�F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w4FW64��WBr��f�VR�G&�҂���6��7B�s�F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w4�t��WBr��f�VR�G&�҂���6��7Bv�G6�F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5v�G6��WBr��f�VR�G&�҂���6��7BF��F���F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5F��F����WBr��f�VR�G&�҂���6��7BvV6�C�F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5vV6�D��WBr��f�VR�G&�҂���6��7B������w6�S�F�7V�V�B�vWDV�V�V�D'��B�w6WGF��w5������w6�T��WBr��f�VR�G&�҂�����b��6���FW62����W'B�~i�^z{Y(�h����K�ވ;�K��z��r���&WGW&㰢Р��b��rbbv�G6bbF��F��bbvV6�Bbb������w6�R����W'B�~��~�{>[	Z�Xi�K�K���N{;�ik�[��r���&WGW&㰢Р�G'���6��7B#�v�BfWF6��r���WFFR�&�f��Rrǰ��WF��C�uUBr���VFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w���&�G���4���7G&��v�g����W6W$�C�וW6W$�B���6���S��6���FW67&�F���FW62��6��F7G3���r�v�G6�F��F���vV6�Bǆ�����w6�WТҐ�ғ���b�"������ו&�f��R��6���S��6���ו&�f��R�FW67&�F����FW63��ו&�f��R�6��F7G3׶�r�v�G6�F��F���vV6�Bǆ�����w6�WӰ��W'B�~K��Zَh�X��r���6��6U6WGF��w2�����V�6W���W'B�~K��ZَZK�JRr���Т�6F6��R����W'B�~K��ZَZK�J^��Ί�~�xފ�Rr���ЧР�7��2gV�7F���6V�DF�F������b�6V�V7FVD'V&&�UW6W"�&WGW&㰢G'���v�BfWF6��r���F�F�rǶ�WF��C�u�5BrƆVFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w��&�G���4���7G&��v�g���g&�ԖC�וW6W$�B�F��C�6V�V7FVD'V&&�UW6W"�Gҗғ��6��t�vF�F�6V�D�fW&��r����6F6��R���W'B�~X��ZK�JRr�ЧР�gV�7F���66WDF�F�������FT�vF�F�&V7d�fW&��r����b�V�F��tF�F�g&��bg6�6�WB�6�6�WB�V֗B�v66WE�F�F�rǶg&�ԖC�V�F��tF�F�g&���g&�ԖGғ��ЦgV�7F���&V�V7DF�F������FT�vF�F�&V7d�fW&��r��V�F��tF�F�g&����V��ЦgV�7F���6��f�&�6�B������FT�vF�F�66WFVD�fW&��r����b�V�F��tF�F�g&��bg6�6�WB�6�6�WB�V֗B�v6��f�&��6�BrǷF&vWD�C�V�F��tF�F�g&���W6W$�Gғ��ЦgV�7F���&V�V7D6�B������FT�vF�F�66WFVD�fW&��r����b�V�F��tF�F�g&��bg6�6�WB�6�6�WB�V֗B�w&V�V7E�6�BrǷF&vWD�C�V�F��tF�F�g&���W6W$�Gғ��V�F��tF�F�g&����V�ð�Р�7��2gV�7F���6��tהF�F�2����6��7B#�v�BfWF6��r���ג�F�F�3�W6W$�C�r�וW6W$�B���6��7BƗ7C�v�B"�6�ₓ��6��7B3�F�7V�V�B�vWDV�V�V�D'��B�vהF�F�4Ɨ7Br����b�Ɨ7B��V�wF���2���W$�D���s�7G��S�&6���#�3�66c�FF��s�#�#���k*iȞiKnX�k�Nk�C���s�6��t�vהF�F�4�fW&��r��&WGW&�Т2���W$�D���rs��Ɨ7B�f�$V6��C�簢6��7BF�c�F�7V�V�B�7&VFTV�V�V�B�vF�br���F�b�7G��R�775FW�C�wFF��s�'���&v���&�GF�ӣ���&6�w&�V�C�&v&�#SR�r�Sr��R��&�&FW"�&F�W3�'��F�7���f�W���W7F�g��6��FV�C�76R�&WGvVV�Ɩv�֗FV�3�6V�FW"s��F�b���W$�D����F�c��7G&��s�G�W62�B�g&���6���R����7G&��s��7�7G��S�&f��B�6��S��VӶ6���#�3�66b#�G�B�g&��vV�FW#���v��Rs�~)�"s�~)�w���7���'#��7�7G��S�&f��B�6��S��VӶ6���#�3ccb#�G�W62�B�g&��FW67��rr����7����F�c��'WGF��6�73�&'F�'F��66WB"7G��S�'v�GF��WF�FF��s���g��f��B�6��S��V�"��6Ɩ6��&66WDF�F�g&��Ɨ7B�rG�B�g&�ԖG�r�#�	�*�h�^X�s��'WGF�����2�V�D6���B�F�b���ғ��6��t�vהF�F�4�fW&��r���ЦgV�7F���66WDF�F�g&��Ɨ7B�g&�ԖB�����FT�vהF�F�4�fW&��r����b�6�6�WB�6�6�WB�V֗B�v66WE�F�F�rǶg&�ԖGғ��ЦgV�7F���WFFTF�F�6�V�B�◰��b�����V�FVf��VB��fWF6��r���ג�F�F�3�W6W$�C�r�וW6W$�B��F�V�#��"�6�ₒ��F�V����F�7V�V�B�vWDV�V�V�D'��B�vF�F��V�r��FW�D6��FV�C����V�wF�җТV�6RF�7V�V�B�vWDV�V�V�D'��B�vF�F��V�r��FW�D6��FV�C�㰧Р��6�BgV�7F���2��gV�7F���7F'EF��W"����6�V$��FW'f6�EF��W$��FW'f�6��7BC�R�c��V��F�7V�V�B�vWDV�V�V�D'��B�v6�EF��W"r��V��6�74Ɨ7B�&V��fR�wv&��rr���6�EF��W$��FW'f��6WD��FW'f����6��7B#��F������B҄FFR���r���6�E7F'EF��R���V��FW�D6��FV�C�7G&��r��F��f���"�"�c���E7F'B�"�sr��s�r�7G&��r��F��f���"��"Sc�����E7F'B�"�sr���b�#���6�V$��FW'f6�EF��W$��FW'f��#S���ЦgV�7F���FD�6r�B�֖�R��6����6��7B3�F�7V�V�B�vWDV�V�V�D'��B�v6�D�W76vW2r��C�F�7V�V�B�7&VFTV�V�V�B�vF�br��B�6�74��S�v�W76vRr��֖�S�v֖�Rs�wF�V�'2r����b�֖�Rbf�6���6��7B3�F�7V�V�B�7&VFTV�V�V�B�vF�br��2�6�74��S�v�6r�6V�FW"s�2�FW�D6��FV�C��6��B�V�D6���B�2�Т6��7B��F�7V�V�B�7&VFTV�V�V�B�vF�br����FW�D6��FV�C�C�B�V�D6���B����2�V�D6���B�B��2�67&���F��2�67&��ĆV�v�C��ЦgV�7F���FE7�2�B��6��7B3�F�7V�V�B�vWDV�V�V�D'��B�v6�D�W76vW2r��C�F�7V�V�B�7&VFTV�V�V�B�vF�br��B�6�74��S�v�W76vR7�7FV�s�B�FW�D6��FV�C�C�2�V�D6���B�B��2�67&���F��2�67&��ĆV�v�GЦgV�7F���6V�D�6r����b�6�DV�FVG��6�6�WB�&WGW&�6��7B��F�7V�V�B�vWDV�V�V�D'��B�v�6t��WBr��C֒�f�VR�G&�҂���b�B�&WGW&�6�6�WB�V֗B�v6�E��W76vRrǶ�W76vS�Gғ�FD�6r�B�G'VR����f�VS�rs���f�7W2��ЦgV�7F���&WVW7D6���V7B����b�6�6�WB�&WGW&�F�7V�V�B�vWDV�V�V�D'��B�v6���V7D'F�r��F�6&�VC�G'VS�6�6�WB�V֗B�w&WVW7E�6���V7Br�ЦgV�7F���&W7��D6�������FT�v6���V7E&W�fW&��r���b�6�6�WB�6�6�WB�V֗B�w&W7��E�6���V7BrǶ66WFVC��&WVW7FW$�C�V�F��u&W�GҗЦgV�7F����VfT6�B����b�6�6�WB�6�6�WB�V֗B�v�VfU�6�Br��6�V$��FW'f6�EF��W$��FW'f���FT���v�F�'V&&�W2��ЦgV�7F���&6�F�'V&&�W2�����FT����b�6�6�WB�6�6�WB�V֗B�v�VfU�6�Br��6�V$��FW'f6�EF��W$��FW'f�v�F�'V&&�W2��Р��VF����gV�7F���7F'D�W6�2�����b�VF��7G��&WGW&㰢�b��W6�5����r�&WGW&㰢G'���&tv���VF��7G��7&VFTv�ₓ�&tv���v���f�VS��c�&tv���6���V7B�VF��7G��FW7F��F��⓰�6��7B��FW3ճ#c�c2�3#��c2�3�"�S#2�#UӰ���FW2�f�$V6���bƒ��簢6��7B��VF��7G��7&VFT�66���F�"�����G�S�w6��Rs���g&WVV�7��f�VS�c��6��7Bs�VF��7G��7&VFTv�ₓ�r�v���f�VS��S��6��7B�f��VF��7G��7&VFT�66���F�"����f��G�S�w6��Rs��f��g&WVV�7��f�VS��"������6��7B�f�s�VF��7G��7&VFTv�ₓ��f�r�v���f�VS�3���f��6���V7B��f�r���f�r�6���V7B���g&WVV�7������6���V7B�r��r�6���V7B�&tv�⓶��7F'B����f��7F'B����ғ���W6�5����s�G'VS�F�7V�V�B�vWDV�V�V�D'��B�v�W6�4'F�r��FW�D6��FV�C�	��Rs���6F6��R��ЧЦgV�7F���7F��W6�2����b�&tv�◶&tv���F�66���V7B���&tv����V����W6�5����s�f�6S�F�7V�V�B�vWDV�V�V�D'��B�v�W6�4'F�r��FW�D6��FV�C�	�HrwЦgV�7F���F�vv�T�W6�2����b��W6�5����r�7F��W6�2���V�6R7F'D�W6�2��ЦgV�7F�����'V&&�U6�V�B�����b�VF��7G��&WGW&㰢G'���6��7BC�VF��7G��7W'&V�EF��S��6��7B��VF��7G��7&VFT�66���F�"���s�VF��7G��7&VFTv�ₓ����G�S�w6��Rs����g&WVV�7��6WEf�VTEF��R�C�B�����g&WVV�7��W���V�F��&�F�f�VTEF��R�c�B������r�v���6WEf�VTEF��R��b�B���r�v���W���V�F��&�F�f�VTEF��R���B��"�����6���V7B�r��r�6���V7B�VF��7G��FW7F��F��⓶��7F'B�B����7F��B��"���6��7B'Vc�VF��7G��7&VFT'VffW"��VF��7G��6��U&FR��b�VF��7G��6��U&FR���6��7BC�'Vb�vWD6���V�FF���f�"��WB�����B��V�wF������E���҄�F��&�F�҂��"����3��6��7B�3�VF��7G��7&VFT'VffW%6�W&6R����2�'VffW#�'Vc��6��7B�s�VF��7G��7&VFTv�ₓ��r�v���6WEf�VTEF��R��2�B���r�v���W���V�F��&�F�f�VTEF��R���B��b���6��7Bf��C�VF��7G��7&VFT&�VDf��FW"���f��B�G�S�v��v�72s�f��B�g&WVV�7��f�VS�3���2�6���V7B�f��B��f��B�6���V7B��r���r�6���V7B�VF��7G��FW7F��F��⓶�2�7F'B�B����6F6��R��ЧР��W6���F�f�6F���2��7��2gV�7F���7V'67&�&UW6������b��w6W'f�6Uv�&�W"r���f�vF�"����uW6���vW"r��v��F�r��&WGW&㰢G'���6��7B&Vs�v�B�f�vF�"�6W'f�6Uv�&�W"�&Vv�7FW"�r�7r�2r���6��7B�#�v�BfWF6��r���f�BֶW�r��6��7G��W���v�B�"�6�ₓ��6��7B7V#�v�B&Vr�W6���vW"�7V'67&�&R��W6W%f�6�&�T��Ǔ�G'VR�Ɩ6F���6W'fW$�W��W&�&6ScEF�V��C�'&���W��ғ��v�BfWF6��r���W6��7V'67&�&RrǶ�WF��C�u�5BrƆVFW'3��t6��FV�B�G�Rs�vƖ6F�����6��w��&�G���4���7G&��v�g���W6W$�C�וW6W$�B�7V'67&�F���7V'җғ���6F6��R��6��6��R���r�uW6�7V"f��VC�r�R�ЧЦgV�7F���W&�&6ScEF�V��C�'&��&6ScE7G&��r��6��7BFF��s�s�r�&WVB��B�&6ScE7G&��r��V�wF�SB�SB��6��7B&6ScC҆&6ScE7G&��r�FF��r��&W�6R����r�r�r��&W�6R����r�r�r��6��7B&s�F�"�&6ScB��6��7B'#��WrV��C�'&��&r��V�wF���f�"��WB�����&r��V�wF������'%����&r�6�$6�FTB����&WGW&�''Р�gV�7F���W62�2��&WGW&�3�2�&W�6R��b�r�rf��r��&W�6R����r�rf�C�r��&W�6R����r�rfwC�r��rwУ��67&�C���&�G�����F���
+<!-- Profile Setup Screen (gender + avatar + description after first login) -->
+<div class="screen" id="profileSetupScreen">
+<div class="card">
+  <div class="logo"><span class="logo-icon">✨</span><h1>完善资料</h1><p>让大家更好地认识你</p></div>
+  <div>
+    <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">选择你的性别 <span class="required">*</span></span>
+    <div class="gender-select">
+      <button class="gender-btn" data-gender="male" onclick="selGender('male')"><span class="icon">👨</span><div style="font-weight:500">男</div></button>
+      <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">👩</span><div style="font-weight:500">女</div></button>
+    </div>
+    <div class="error-msg" id="genderErr">请选择性别</div>
+  </div>
+  <div class="avatar-upload-section">
+    <label>上传头像</label>
+    <div class="avatar-circle" id="avatarCircle" onclick="document.getElementById('avatarFileInput').click()">
+      <span class="avatar-placeholder">📷</span>
+    </div>
+    <input type="file" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(event)">
+    <span style="font-size:.72em;color:#aaa;margin-top:6px">点击上传（可选）</span>
+  </div>
+  <button class="btn btn-primary" onclick="submitProfileSetup()" style="margin-top:10px">💫 继续 →</button>
+</div>
+</div>
+
+<!-- Description Note Card (小纸条) -->
+<div id="descNoteCard" class="desc-note-card" style="display:none">
+  <h3>📝 写一张小纸条</h3>
+  <div class="note-hint">介绍一下你自己吧～让别人更好地认识你</div>
+  <textarea id="descNoteInput" placeholder="你的兴趣爱好、想找什么样的人、有趣的自我介绍..." maxlength="200"></textarea>
+  <button class="btn btn-primary" onclick="submitDescNote()">确认 →</button>
+</div>
+
+<!-- Contact Info Note Card -->
+<div id="contactNoteCard" class="note-card" style="display:none">
+  <h3>📝 留下你的联系方式</h3>
+  <div class="note-hint">联系方式仅在配对成功后展示给对方</div>
+  <div class="contact-inputs">
+    <div class="input-row">
+      <label>Instagram</label>
+      <input type="text" id="igInput" placeholder="@username" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>WhatsApp</label>
+      <input type="text" id="whatsappInput" placeholder="+1234567890" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>TikTok</label>
+      <input type="text" id="tiktokInput" placeholder="@username" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>微信</label>
+      <input type="text" id="wechatInput" placeholder="WeChat ID" maxlength="100">
+    </div>
+    <div class="input-row">
+      <label>小红书</label>
+      <input type="text" id="xiaohongshuInput" placeholder="用户名" maxlength="100">
+    </div>
+  </div>
+  <div class="interest-section">
+    <span class="section-label">🎯 你的兴趣爱好（可多选）</span>
+    <div class="interest-tags" id="interestTags">
+      <button type="button" class="interest-tag" data-interest="电影" onclick="toggleInterest(this)">🎬 电影</button>
+      <button type="button" class="interest-tag" data-interest="聊天" onclick="toggleInterest(this)">💬 聊天</button>
+      <button type="button" class="interest-tag" data-interest="恋爱" onclick="toggleInterest(this)">💕 恋爱</button>
+      <button type="button" class="interest-tag" data-interest="音乐" onclick="toggleInterest(this)">🎵 音乐</button>
+      <button type="button" class="interest-tag" data-interest="创业" onclick="toggleInterest(this)">💼 创业</button>
+      <button type="button" class="interest-tag" data-interest="健身" onclick="toggleInterest(this)">💪 健身</button>
+      <button type="button" class="interest-tag" data-interest="游戏" onclick="toggleInterest(this)">🎮 游戏</button>
+      <button type="button" class="interest-tag" data-interest="旅行" onclick="toggleInterest(this)">✈️ 旅行</button>
+      <button type="button" class="interest-tag" data-interest="美食" onclick="toggleInterest(this)">🍜 美食</button>
+      <button type="button" class="interest-tag" data-interest="摄影" onclick="toggleInterest(this)">📸 摄影</button>
+      <button type="button" class="interest-tag" data-interest="读书" onclick="toggleInterest(this)">📚 读书</button>
+      <button type="button" class="interest-tag" data-interest="动漫" onclick="toggleInterest(this)">🌸 动漫</button>
+    </div>
+  </div>
+  <div class="note-hint-small">至少填写一个联系方式</div>
+  <button class="btn btn-primary" onclick="submitContactInfo()">完成</button>
+</div>
+
+<!-- Bubbles Screen -->
+<div class="screen" id="bubblesScreen">
+<div class="bubbles-container">
+  <div class="bubbles-header">
+    <h2>💕 发现缘分</h2>
+    <button class="didi-count" id="didiCountBtn" onclick="showMyDidis()">🔔 <span id="didiNum">0</span></button>
+  </div>
+  <div class="bubbles-area" id="bubblesArea"><div class="no-users">等待更多人加入...</div></div>
+</div>
+<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<button class="logout-btn" onclick="doLogout()" title="退出登录">🚪</button>
+<button class="settings-btn" onclick="openSettings()">⚙️</button>
+<div class="bubble-detail" id="bubbleDetail">
+  <div class="bd-header">
+    <div class="bd-avatar" id="bdAvatar">👩</div>
+    <div><div class="bd-name" id="bdName"></div><div class="bd-gender" id="bdGender"></div></div>
+  </div>
+  <div class="bd-desc" id="bdDesc"></div>
+  <div class="bd-actions">
+    <button class="btn btn-didi" onclick="sendDidi()">💕 滴滴TA</button>
+    <button class="btn btn-cancel-detail" onclick="closeBubbleDetail()">取消</button>
+  </div>
+</div>
+<div class="settings-panel" id="settingsPanel">
+  <h3>⚙️ 编辑个人信息</h3>
+  <div class="settings-section">
+    <label>昵称</label>
+    <input type="text" id="settingsNickInput" placeholder="你的昵称" maxlength="20">
+  </div>
+  <div class="settings-section">
+    <label>描述</label>
+    <textarea id="settingsDescInput" placeholder="描述自己..." maxlength="200"></textarea>
+  </div>
+  <div class="settings-section">
+    <label>Instagram</label>
+    <input type="text" id="settingsIgInput" placeholder="@username" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>WhatsApp</label>
+    <input type="text" id="settingsWhatsappInput" placeholder="+1234567890" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>TikTok</label>
+    <input type="text" id="settingsTiktokInput" placeholder="@username" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>微信</label>
+    <input type="text" id="settingsWechatInput" placeholder="WeChat ID" maxlength="100">
+  </div>
+  <div class="settings-section">
+    <label>小红书</label>
+    <input type="text" id="settingsXiaohongshuInput" placeholder="用户名" maxlength="100">
+  </div>
+  <button class="btn btn-primary" onclick="saveSettings()">保存</button>
+  <button class="btn btn-secondary settings-close-btn" onclick="closeSettings()" style="margin-top:10px">取消</button>
+</div>
+</div>
+
+<!-- Chat Screen -->
+<div class="screen" id="chatScreen">
+<div class="chat-container">
+  <div class="chat-header">
+    <div class="partner-info">
+      <div class="partner-avatar" id="partnerAvatar">👩</div>
+      <div><div class="partner-name" id="partnerName"></div></div>
+    </div>
+    <div style="text-align:center"><div style="font-size:.65em;opacity:.8">剩余</div><div class="timer" id="chatTimer">05:00</div></div>
+  </div>
+  <div class="chat-actions-bar">
+    <button class="btn btn-primary" onclick="requestConnect()" id="connectBtn">💌 交换联系方式</button>
+    <button class="btn btn-secondary" onclick="leaveChat()">退出</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input type="text" id="msgInput" placeholder="说点什么..." onkeypress="if(event.key==='Enter')sendMsg()" maxlength="500">
+    <button class="send-btn" onclick="sendMsg()" id="sendBtn">➤</button>
+  </div>
+</div>
+</div>
+
+<!-- Overlays -->
+<div class="overlay" id="didiRecvOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>有人滴滴你了！</h3><p class="modal-sub" id="didiRecvMsg"></p><div class="btn-group"><button class="btn btn-accept" onclick="acceptDidi()">💬 接受聊天</button><button class="btn btn-reject" onclick="rejectDidi()">下次吧</button></div></div></div>
+<div class="overlay" id="waitSenderOverlay"><div class="modal"><span class="modal-icon">⏳</span><h3>等待对方确认...</h3><p class="modal-sub" id="waitSenderMsg">对方正在确认是否聊天</p></div></div>
+<div class="overlay" id="didiAcceptedOverlay"><div class="modal"><span class="modal-icon">💕</span><h3 id="didiAcceptTitle">对方已接受！</h3><p class="modal-sub">是否开始聊天？</p><div class="btn-group"><button class="btn btn-accept" onclick="confirmChat()">💬 开始聊天</button><button class="btn btn-reject" onclick="rejectChat()">算了</button></div></div></div>
+<div class="overlay" id="chatRejectedOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了聊天</h3><p class="modal-sub">没关系，还有更多缘分等你！</p><button class="btn btn-primary" onclick="hideO('chatRejectedOverlay')" style="margin-top:12px">继续看看</button></div></div>
+<div class="overlay" id="timeUpOverlay"><div class="modal"><span class="modal-icon">⏰</span><h3>聊天时间结束</h3><p class="modal-sub">5分钟遂逅已结束</p><div class="btn-group" style="flex-direction:column"><button class="btn btn-primary" onclick="hideO('timeUpOverlay');requestConnect()">💌 交换联系方式</button><button class="btn btn-secondary" onclick="backToBubbles()">返回</button></div></div></div>
+<div class="overlay" id="connectReqOverlay"><div class="modal"><span class="modal-icon">💌</span><h3>对方想交换联系方式！</h3><p class="modal-sub">接受后双方可以看到联系信息</p><div class="btn-group"><button class="btn btn-accept" onclick="respondConn(true)">✅ 接受</button><button class="btn btn-reject" onclick="respondConn(false)">❌ 拒绝</button></div></div></div>
+<div class="overlay" id="reqSentOverlay"><div class="modal"><span class="modal-icon">📨</span><h3>请求已发送</h3><p class="modal-sub">等待对方回应...</p></div></div>
+<div class="overlay" id="connAcceptOverlay"><div class="modal"><span class="modal-icon">🎉</span><h3>配对成功！</h3><div class="contact-reveal"><h4>📱 对方信息</h4><div id="revealContact"></div></div><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="connRejectOverlay"><div class="modal"><span class="modal-icon">😢</span><h3>对方拒绝了</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="partnerLeftOverlay"><div class="modal"><span class="modal-icon">👋</span><h3>对方已离开</h3><button class="btn btn-primary" onclick="backToBubbles()" style="margin-top:12px">返回</button></div></div>
+<div class="overlay" id="didiSentOverlay"><div class="modal"><span class="modal-icon">💕</span><h3>滴滴已发送！</h3><p class="modal-sub">对方会收到通知，等待回应吧～</p><button class="btn btn-primary" onclick="hideO('didiSentOverlay');closeBubbleDetail()" style="margin-top:12px">好的</button></div></div>
+<div class="overlay" id="offlineOverlay"><div class="modal"><span class="modal-icon">📴</span><h3 id="offlineMsg">对方暂时不在线</h3><p class="modal-sub">已通知对方，等TA上线吧！</p><button class="btn btn-primary" onclick="hideO('offlineOverlay')" style="margin-top:12px">好的</button></div></div>
+<div class="overlay" id="myDidisOverlay"><div class="modal"><span class="modal-icon">🔔</span><h3>收到的滴滴</h3><div id="myDidisList" style="margin:16px 0;max-height:300px;overflow-y:auto"></div><button class="btn btn-secondary" onclick="hideO('myDidisOverlay')">关闭</button></div></div>
+
+<script>
+let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
+let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=null, bgOsc=null, bgGain=null;
+let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''},interests:[],avatar:''};
+let selectedInterests=[];
+let myAvatarData='';
+
+/* Audio context initialization on first user interaction */
+(()=>{
+  const initAudioContext=()=>{
+    if(!audioCtx){
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    }
+    document.removeEventListener('click',initAudioContext);
+  };
+  document.addEventListener('click',initAudioContext);
+})();
+
+/* Hearts background */
+(()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
+
+/* Check if user already logged in */
+(async ()=>{
+  if(myUserId){
+    try{
+      const r=await fetch('/api/check?userId='+myUserId);
+      const d=await r.json();
+      if(d.registered && d.hasProfile){
+        // User has full profile, go to bubbles
+        myProfile.nickname=d.nickname;
+        myProfile.description=d.description||'';
+        myProfile.contacts=d.contacts||{};
+        myProfile.interests=d.interests||[];
+        document.getElementById('warningBadge').style.display='none';
+        goToBubbles();
+        return;
+      } else if(d.registered && !d.hasProfile){
+        // User registered but no profile yet, go to profile setup
+        myProfile.nickname=d.nickname;
+        showScreen('profileSetupScreen');
+        return;
+      }
+    }catch(e){}
+  }
+})();
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Hide note cards when switching screens
+  document.getElementById('descNoteCard').style.display='none';
+  document.getElementById('contactNoteCard').style.display='none';
+}
+function showO(id){document.getElementById(id).classList.add('active')}
+function hideO(id){document.getElementById(id).classList.remove('active')}
+function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
+
+function showToast(msg){
+  var old=document.querySelector('.toast');
+  if(old)old.remove();
+  var t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{if(t.parentNode)t.remove()},3000);
+}
+
+/* Navigation functions */
+function goToAuth(){
+  showScreen('authScreen');
+}
+
+function goToLogin(){
+  showScreen('loginPage');
+  document.getElementById('loginNickInput').value='';
+  document.getElementById('loginPwdInput').value='';
+  document.getElementById('loginGeneralErr').classList.remove('show');
+  document.getElementById('loginGeneralErr').textContent='';
+}
+
+function goToRegisterPage(){
+  showScreen('registerPage');
+  document.getElementById('regNickInput').value='';
+  document.getElementById('regPwdInput').value='';
+  document.getElementById('regPwdConfirmInput').value='';
+}
+
+/* Register account */
+async function doRegisterAccount(){
+  let ok=true;
+  const nick=document.getElementById('regNickInput').value.trim();
+  const pwd=document.getElementById('regPwdInput').value;
+  const pwdConfirm=document.getElementById('regPwdConfirmInput').value;
+
+  if(!nick){document.getElementById('regNickErr').classList.add('show');ok=false}else document.getElementById('regNickErr').classList.remove('show');
+  if(!pwd||pwd.length<4){document.getElementById('regPwdErr').classList.add('show');ok=false}else document.getElementById('regPwdErr').classList.remove('show');
+  if(pwd!==pwdConfirm){document.getElementById('regPwdConfirmErr').classList.add('show');ok=false}else document.getElementById('regPwdConfirmErr').classList.remove('show');
+  if(!ok)return;
+
+  try{
+    const r=await fetch('/api/register-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nickname:nick,password:pwd})});
+    const d=await r.json();
+    if(!r.ok){
+      alert(d.error||'注册失败');
+      return;
+    }
+    // Success - go back to auth screen with notification
+    showScreen('authScreen');
+    showToast('✅ 账号已注册，请点击登录');
+  }catch(e){alert('注册失败，请重试')}
+}
+
+/* Login */
+async function doLogin(){
+  let ok=true;
+  const nick=document.getElementById('loginNickInput').value.trim();
+  const pwd=document.getElementById('loginPwdInput').value;
+
+  if(!nick){document.getElementById('loginNickErr').classList.add('show');ok=false}else document.getElementById('loginNickErr').classList.remove('show');
+  if(!pwd){document.getElementById('loginPwdErr').classList.add('show');ok=false}else document.getElementById('loginPwdErr').classList.remove('show');
+  if(!ok)return;
+
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nickname:nick,password:pwd})});
+    const d=await r.json();
+    if(!r.ok){
+      document.getElementById('loginGeneralErr').textContent=d.error||'登录失败';
+      document.getElementById('loginGeneralErr').classList.add('show');
+      return;
+    }
+    // Save userId
+    myUserId=d.userId;
+    localStorage.setItem('fateMatchUserId',myUserId);
+    myProfile.nickname=d.nickname;
+    myProfile.description=d.description||'';
+    myProfile.contacts=d.contacts||{};
+    myProfile.interests=d.interests||[];
+    myAvatarData=d.avatar||'';
+
+    if(d.hasProfile){
+      // Returning user with full profile, go to bubbles
+      goToBubbles();
+    }else{
+      // First login, need to set up profile (gender, avatar, description, contacts)
+      showScreen('profileSetupScreen');
+    }
+  }catch(e){alert('登录失败，请重试')}
+}
+
+/* Profile setup (gender + avatar) */
+function submitProfileSetup(){
+  if(!selectedGender){document.getElementById('genderErr').classList.add('show');return}
+  // Hide profile setup, show description note card
+  document.getElementById('profileSetupScreen').classList.remove('active');
+  document.getElementById('descNoteCard').style.display='block';
+}
+
+/* Description note card */
+function submitDescNote(){
+  const desc=document.getElementById('descNoteInput').value.trim();
+  if(!desc){alert('请写一点关于你自己的描述');return}
+  myProfile.description=desc;
+  document.getElementById('descNoteCard').style.display='none';
+
+  // Save gender + description + avatar to server
+  fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:myProfile.nickname,description:desc,userId:myUserId,avatar:myAvatarData})}).catch(()=>{});
+
+  // Show contact info card
+  document.getElementById('contactNoteCard').style.display='block';
+}
+
+function handleAvatarUpload(event){
+  var file=event.target.files[0];
+  if(!file)return;
+  if(file.size>2*1024*1024){alert('头像不能超过2MB');return}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      var size=200;
+      canvas.width=size;canvas.height=size;
+      var ctx=canvas.getContext('2d');
+      var min=Math.min(img.width,img.height);
+      var sx=(img.width-min)/2,sy=(img.height-min)/2;
+      ctx.drawImage(img,sx,sy,min,min,0,0,size,size);
+      myAvatarData=canvas.toDataURL('image/jpeg',0.7);
+      var circle=document.getElementById('avatarCircle');
+      circle.innerHTML='<img src="'+myAvatarData+'">';
+      circle.classList.add('has-img');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function selGender(g){selectedGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));document.querySelector(`[data-gender="${g}"]`).classList.add('selected');document.getElementById('genderErr').classList.remove('show')}
+
+function toggleInterest(btn){
+  btn.classList.toggle('selected');
+  const interest=btn.dataset.interest;
+  if(btn.classList.contains('selected')){
+    if(!selectedInterests.includes(interest))selectedInterests.push(interest);
+  }else{
+    selectedInterests=selectedInterests.filter(i=>i!==interest);
+  }
+}
+
+function submitContactInfo(){
+  const ig=document.getElementById('igInput').value.trim();
+  const whatsapp=document.getElementById('whatsappInput').value.trim();
+  const tiktok=document.getElementById('tiktokInput').value.trim();
+  const wechat=document.getElementById('wechatInput').value.trim();
+  const xiaohongshu=document.getElementById('xiaohongshuInput').value.trim();
+
+  if(!ig&&!whatsapp&&!tiktok&&!wechat&&!xiaohongshu){
+    alert('请至少填写一个联系方式');
+    return;
+  }
+
+  myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
+  myProfile.interests=selectedInterests;
+
+  // Update profile with contacts and interests
+  fetch('/api/update-profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:myUserId,contacts:myProfile.contacts,interests:selectedInterests})}).catch(()=>{});
+
+  // Hide contact card and jump directly to bubbles
+  document.getElementById('contactNoteCard').style.display='none';
+  subscribePush();
+  goToBubbles();
+}
+
+function goToBubbles(){
+  showScreen('bubblesScreen');
+  document.getElementById('warningBadge').style.display='none';
+  connectSocket();
+  loadBubbles();
+  startMusic();
+}
+
+function doLogout(){
+  if(!confirm('确定要退出登录吗？'))return;
+  localStorage.removeItem('fateMatchUserId');
+  myUserId=null;
+  myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''},interests:[],avatar:''};
+  selectedGender=null;
+  myAvatarData='';
+  if(socket){socket.disconnect();socket=null}
+  stopMusic();
+  showScreen('welcomeScreen');
+}
+
+function connectSocket(){
+  if(socket)return;
+  socket=io();
+  socket.emit('go_online',{userId:myUserId});
+  socket.on('didi_received',(d)=>{
+    pendingDidiFrom=d;
+    document.getElementById('didiRecvMsg').textContent=d.fromNickname+' 想和你聊天！';
+    showO('didiRecvOverlay');
+    playBubbleSound();
+    updateDidiCount();
+  });
+  socket.on('pending_didis',(list)=>{ updateDidiCount(list.length); });
+  socket.on('didi_accepted',(d)=>{
+    pendingDidiFrom=d;
+    document.getElementById('didiAcceptTitle').textContent=d.nickname+' 接受了你的邀请！';
+    hideAll();showO('didiAcceptedOverlay');
+  });
+  socket.on('waiting_for_sender',(d)=>{
+    document.getElementById('waitSenderMsg').textContent='等待 '+d.nickname+' 确认...';
+    hideAll();showO('waitSenderOverlay');
+  });
+  socket.on('chat_started',(d)=>{
+    hideAll();
+    chatEnded=false;chatStartTime=d.startTime;
+    document.getElementById('partnerName').textContent=d.partner.nickname;
+    document.getElementById('partnerAvatar').textContent=d.partner.gender==='female'?'👩':'👨';
+    document.getElementById('chatMessages').innerHTML='';
+    document.getElementById('msgInput').disabled=false;
+    document.getElementById('sendBtn').disabled=false;
+    document.getElementById('connectBtn').disabled=false;
+    addSys('✨ 配对成功！你们有5分钟聊天时间');
+    startTimer();showScreen('chatScreen');
+    stopMusic();
+  });
+  socket.on('chat_rejected',(d)=>{hideAll();showO('chatRejectedOverlay')});
+  socket.on('partner_offline_msg',(d)=>{hideAll();document.getElementById('offlineMsg').textContent=d.nickname+' 暂时不在线';showO('offlineOverlay')});
+  socket.on('chat_message',(d)=>addMsg(d.message,false,d.nickname));
+  socket.on('time_warning',()=>{document.getElementById('chatTimer').classList.add('warning');addSys('⚠️ 还剩1分钟！')});
+  socket.on('chat_ended',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('chatTimer').textContent='00:00';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;addSys('⏰ 时间到！');showO('timeUpOverlay')});
+  socket.on('connect_request',(d)=>{pendingReqId=d.fromId;showO('connectReqOverlay')});
+  socket.on('request_sent',()=>{hideAll();showO('reqSentOverlay')});
+  socket.on('connect_accepted',(d)=>{hideAll();renderContactInfo(d);showO('connAcceptOverlay')});
+  socket.on('connect_rejected',()=>{hideAll();showO('connRejectOverlay')});
+  socket.on('partner_left',()=>{chatEnded=true;clearInterval(chatTimerInterval);document.getElementById('msgInput').disabled=true;hideAll();showO('partnerLeftOverlay')});
+  socket.on('user_status',()=>loadBubbles());
+}
+
+function renderContactInfo(data){
+  const contacts=data.contacts||{};
+  let html='';
+  if(contacts.ig) html+='<div class="contact-item"><span class="contact-item-label">📷 Instagram:</span><div class="contact-item-value">'+esc(contacts.ig)+'</div></div>';
+  if(contacts.whatsapp) html+='<div class="contact-item"><span class="contact-item-label">💬 WhatsApp:</span><div class="contact-item-value">'+esc(contacts.whatsapp)+'</div></div>';
+  if(contacts.tiktok) html+='<div class="contact-item"><span class="contact-item-label">🎵 TikTok:</span><div class="contact-item-value">'+esc(contacts.tiktok)+'</div></div>';
+  if(contacts.wechat) html+='<div class="contact-item"><span class="contact-item-label">💚 微信:</span><div class="contact-item-value">'+esc(contacts.wechat)+'</div></div>';
+  if(contacts.xiaohongshu) html+='<div class="contact-item"><span class="contact-item-label">❤️ 小红书:</span><div class="contact-item-value">'+esc(contacts.xiaohongshu)+'</div></div>';
+  document.getElementById('revealContact').innerHTML=html;
+}
+
+async function loadBubbles(){
+  try{
+    const r=await fetch('/api/users?userId='+myUserId);
+    const list=await r.json();
+    const area=document.getElementById('bubblesArea');
+    if(!list.length){area.innerHTML='<div class="no-users">💭 暂时没有其他人<br>分享链接邀请朋友加入吧！</div>';return}
+    area.innerHTML='';
+    list.forEach(u=>{
+      const b=document.createElement('div');
+      b.className='bubble '+(u.gender==='male'?'male':'female');
+      const randomDuration=3+Math.random()*2;
+      const randomDelay=Math.random()*2;
+      b.style.animation=`floatBubble${Math.floor(Math.random()*3)} ${randomDuration}s ease-in-out infinite`;
+      b.style.animationDelay=randomDelay+'s';
+      var avatarHtml=u.avatar?`<img class="b-avatar" src="${u.avatar}">`:`<span class="b-emoji">${u.gender==='male'?'👨':'👩'}</span>`;
+      b.innerHTML=avatarHtml+`<span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
+      b.onclick=()=>openBubble(u);
+      area.appendChild(b);
+    });
+    addDriftAnimations();
+  }catch(e){}
+}
+
+function addDriftAnimations(){
+  const style=document.createElement('style');
+  style.innerHTML=`
+    @keyframes floatBubble0{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(15px,-20px)}
+      50%{transform:translate(5px,-35px)}
+      75%{transform:translate(-15px,-15px)}
+      100%{transform:translate(0,0)}
+    }
+    @keyframes floatBubble1{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(-20px,-15px)}
+      50%{transform:translate(-10px,-40px)}
+      75%{transform:translate(20px,-20px)}
+      100%{transform:translate(0,0)}
+    }
+    @keyframes floatBubble2{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(10px,-25px)}
+      50%{transform:translate(-15px,-30px)}
+      75%{transform:translate(15px,-10px)}
+      100%{transform:translate(0,0)}
+    }
+  `;
+  if(!document.getElementById('driftAnimStyle')){
+    style.id='driftAnimStyle';
+    document.head.appendChild(style);
+  }
+}
+
+function openBubble(u){
+  selectedBubbleUser=u;
+  playBubbleSound();
+  var bdAv=document.getElementById('bdAvatar');
+  if(u.avatar){bdAv.innerHTML='<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';bdAv.className='bd-avatar';}
+  else{bdAv.textContent=u.gender==='male'?'👨':'👩';bdAv.className='bd-avatar '+(u.gender==='male'?'male':'female');}
+  document.getElementById('bdName').textContent=u.nickname;
+  document.getElementById('bdGender').textContent=(u.gender==='male'?'♂ 男':'♀ 女')+(u.online?' · 🟢 在线':' · 离线');
+  document.getElementById('bdDesc').textContent=u.description;
+  document.getElementById('bubbleDetail').classList.add('show');
+}
+
+function closeBubbleDetail(){document.getElementById('bubbleDetail').classList.remove('show');selectedBubbleUser=null}
+
+function openSettings(){
+  document.getElementById('settingsNickInput').value=myProfile.nickname;
+  document.getElementById('settingsDescInput').value=myProfile.description;
+  document.getElementById('settingsIgInput').value=myProfile.contacts.ig||'';
+  document.getElementById('settingsWhatsappInput').value=myProfile.contacts.whatsapp||'';
+  document.getElementById('settingsTiktokInput').value=myProfile.contacts.tiktok||'';
+  document.getElementById('settingsWechatInput').value=myProfile.contacts.wechat||'';
+  document.getElementById('settingsXiaohongshuInput').value=myProfile.contacts.xiaohongshu||'';
+  document.getElementById('settingsPanel').classList.add('show');
+}
+
+function closeSettings(){
+  document.getElementById('settingsPanel').classList.remove('show');
+}
+
+async function saveSettings(){
+  const nick=document.getElementById('settingsNickInput').value.trim();
+  const desc=document.getElementById('settingsDescInput').value.trim();
+  const ig=document.getElementById('settingsIgInput').value.trim();
+  const whatsapp=document.getElementById('settingsWhatsappInput').value.trim();
+  const tiktok=document.getElementById('settingsTiktokInput').value.trim();
+  const wechat=document.getElementById('settingsWechatInput').value.trim();
+  const xiaohongshu=document.getElementById('settingsXiaohongshuInput').value.trim();
+
+  if(!nick||!desc){
+    alert('昵称和描述不能为空');
+    return;
+  }
+
+  if(!ig&&!whatsapp&&!tiktok&&!wechat&&!xiaohongshu){
+    alert('请至少填写一个联系方式');
+    return;
+  }
+
+  try{
+    const r=await fetch('/api/update-profile',{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        userId:myUserId,
+        nickname:nick,
+        description:desc,
+        contacts:{ig,whatsapp,tiktok,wechat,xiaohongshu}
+      })
+    });
+    if(r.ok){
+      myProfile.nickname=nick;
+      myProfile.description=desc;
+      myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
+      alert('保存成功');
+      closeSettings();
+    }else{
+      alert('保存失败');
+    }
+  }catch(e){
+    alert('保存失败，请重试');
+  }
+}
+
+async function sendDidi(){
+  if(!selectedBubbleUser)return;
+  try{
+    await fetch('/api/didi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fromId:myUserId,toId:selectedBubbleUser.id})});
+    showO('didiSentOverlay');
+  }catch(e){alert('发送失败')}
+}
+
+function acceptDidi(){
+  hideO('didiRecvOverlay');
+  if(pendingDidiFrom&&socket)socket.emit('accept_didi',{fromId:pendingDidiFrom.fromId});
+}
+function rejectDidi(){hideO('didiRecvOverlay');pendingDidiFrom=null}
+function confirmChat(){
+  hideO('didiAcceptedOverlay');
+  if(pendingDidiFrom&&socket)socket.emit('confirm_chat',{targetId:pendingDidiFrom.userId});
+}
+function rejectChat(){
+  hideO('didiAcceptedOverlay');
+  if(pendingDidiFrom&&socket)socket.emit('reject_chat',{targetId:pendingDidiFrom.userId});
+  pendingDidiFrom=null;
+}
+
+async function showMyDidis(){
+  const r=await fetch('/api/my-didis?userId='+myUserId);
+  const list=await r.json();
+  const c=document.getElementById('myDidisList');
+  if(!list.length){c.innerHTML='<p style="color:#9ca3af;padding:20px">还没有收到滴滴</p>';showO('myDidisOverlay');return}
+  c.innerHTML='';
+  list.forEach(d=>{
+    const div=document.createElement('div');
+    div.style.cssText='padding:12px;margin-bottom:8px;background:rgba(255,107,157,.05);border-radius:12px;display:flex;justify-content:space-between;align-items:center';
+    div.innerHTML=`<div><strong>${esc(d.fromNickname)}</strong> <span style="font-size:.8em;color:#9ca3af">${d.fromGender==='male'?'♂':'♀'}</span><br><span style="font-size:.8em;color:#666">${esc(d.fromDesc||'')}</span></div><button class="btn btn-accept" style="width:auto;padding:8px 16px;font-size:.8em" onclick="acceptDidiFromList('${d.fromId}')">💬 接受</button>`;
+    c.appendChild(div);
+  });
+  showO('myDidisOverlay');
+}
+function acceptDidiFromList(fromId){
+  hideO('myDidisOverlay');
+  if(socket)socket.emit('accept_didi',{fromId});
+}
+function updateDidiCount(n){
+  if(n===undefined){fetch('/api/my-didis?userId='+myUserId).then(r=>r.json()).then(l=>{document.getElementById('didiNum').textContent=l.length})}
+  else document.getElementById('didiNum').textContent=n;
+}
+
+/* Chat functions */
+function startTimer(){
+  clearInterval(chatTimerInterval);const D=5*60*1000,el=document.getElementById('chatTimer');el.classList.remove('warning');
+  chatTimerInterval=setInterval(()=>{const r=Math.max(0,D-(Date.now()-chatStartTime));el.textContent=String(Math.floor(r/60000)).padStart(2,'0')+':'+String(Math.floor((r%60000)/1000)).padStart(2,'0');if(r<=0)clearInterval(chatTimerInterval)},250);
+}
+function addMsg(t,mine,nick){
+  const c=document.getElementById('chatMessages'),d=document.createElement('div');d.className='message '+(mine?'mine':'theirs');
+  if(!mine&&nick){const s=document.createElement('div');s.className='msg-sender';s.textContent=nick;d.appendChild(s)}
+  const x=document.createElement('div');x.textContent=t;d.appendChild(x);c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function addSys(t){const c=document.getElementById('chatMessages'),d=document.createElement('div');d.className='message system';d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight}
+function sendMsg(){if(chatEnded||!socket)return;const i=document.getElementById('msgInput'),t=i.value.trim();if(!t)return;socket.emit('chat_message',{message:t});addMsg(t,true);i.value='';i.focus()}
+function requestConnect(){if(!socket)return;document.getElementById('connectBtn').disabled=true;socket.emit('request_connect')}
+function respondConn(a){hideO('connectReqOverlay');if(socket)socket.emit('respond_connect',{accepted:a,requesterId:pendingReqId})}
+function leaveChat(){if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);hideAll();goToBubbles()}
+function backToBubbles(){hideAll();if(socket)socket.emit('leave_chat');clearInterval(chatTimerInterval);goToBubbles()}
+
+/* Audio */
+function startMusic(){
+  if(!audioCtx)return;
+  if(musicPlaying)return;
+  try{
+    bgGain=audioCtx.createGain();bgGain.gain.value=0.06;bgGain.connect(audioCtx.destination);
+    const notes=[261.63,329.63,392,523.25];
+    notes.forEach((f,i)=>{
+      const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=f;
+      const g=audioCtx.createGain();g.gain.value=0.015;
+      const lfo=audioCtx.createOscillator();lfo.type='sine';lfo.frequency.value=0.2+i*0.1;
+      const lfoG=audioCtx.createGain();lfoG.gain.value=3;
+      lfo.connect(lfoG);lfoG.connect(o.frequency);
+      o.connect(g);g.connect(bgGain);o.start();lfo.start();
+    });
+    musicPlaying=true;document.getElementById('musicBtn').textContent='🎵';
+  }catch(e){}
+}
+function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='🔇'}
+function toggleMusic(){if(musicPlaying)stopMusic();else startMusic()}
+function playBubbleSound(){
+  if(!audioCtx)return;
+  try{
+    const t=audioCtx.currentTime;
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(1400,t);
+    o.frequency.exponentialRampToValueAtTime(600,t+0.08);
+    g.gain.setValueAtTime(0.06,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+0.12);
+    o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+0.12);
+    const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*0.06,audioCtx.sampleRate);
+    const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.3;
+    const ns=audioCtx.createBufferSource();ns.buffer=buf;
+    const ng=audioCtx.createGain();ng.gain.setValueAtTime(0.03,t);ng.gain.exponentialRampToValueAtTime(0.001,t+0.06);
+    const filt=audioCtx.createBiquadFilter();filt.type='highpass';filt.frequency.value=3000;
+    ns.connect(filt);filt.connect(ng);ng.connect(audioCtx.destination);ns.start(t);
+  }catch(e){}
+}
+
+/* Push notifications */
+async function subscribePush(){
+  if(!('serviceWorker' in navigator)||!('PushManager' in window))return;
+  try{
+    const reg=await navigator.serviceWorker.register('/sw.js');
+    const kr=await fetch('/api/vapid-key');const{key}=await kr.json();
+    const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(key)});
+    await fetch('/api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:myUserId,subscription:sub})});
+  }catch(e){console.log('Push sub failed:',e)}
+}
+function urlBase64ToUint8Array(base64String){const padding='='.repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');const raw=atob(base64);const arr=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)arr[i]=raw.charCodeAt(i);return arr}
+
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
+</script>
+</body>
+</html>
