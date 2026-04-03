@@ -25,13 +25,50 @@ let statsData = { users: 0, chats: 0, messages: 0, connects: 0 };
 // Get VAPID public key
 app.get('/api/vapid-key', (req, res) => res.json({ key: vapidKeys.publicKey }));
 
-// Register
+// Accounts store: nickname -> { password, userId }
+const accounts = new Map();
+
+// Register account (nickname + password)
+app.post('/api/register-account', (req, res) => {
+  const { nickname, password } = req.body;
+  if (!nickname || !password) return res.status(400).json({ error: 'missing' });
+  if (accounts.has(nickname)) return res.status(409).json({ error: '该昵称已被注册' });
+  const id = crypto.randomUUID();
+  accounts.set(nickname, { password, userId: id });
+  // Create user entry (partial, will be filled later)
+  users.set(id, { id, gender: '', nickname, description: '', contacts: {}, interests: [], avatar: '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  statsData.users++;
+  res.json({ userId: id, nickname });
+});
+
+// Login account
+app.post('/api/login', (req, res) => {
+  const { nickname, password } = req.body;
+  if (!nickname || !password) return res.status(400).json({ error: 'missing' });
+  const acct = accounts.get(nickname);
+  if (!acct) return res.status(404).json({ error: '账号不存在，请先注册' });
+  if (acct.password !== password) return res.status(401).json({ error: '密码错误' });
+  const u = users.get(acct.userId);
+  res.json({ userId: acct.userId, nickname: u.nickname, gender: u.gender, description: u.description, contacts: u.contacts, interests: u.interests, avatar: u.avatar, hasProfile: !!u.gender });
+});
+
+// Register (legacy / profile completion)
 app.post('/api/register', (req, res) => {
   const { gender, nickname, description, userId, contacts, interests, avatar } = req.body;
-  if (!gender || !nickname || !description) return res.status(400).json({ error: 'missing' });
-  if (userId && users.has(userId)) return res.status(409).json({ error: 'exists' });
+  if (!gender || !nickname) return res.status(400).json({ error: 'missing' });
+  // Update existing user profile
+  if (userId && users.has(userId)) {
+    const u = users.get(userId);
+    u.gender = gender;
+    u.nickname = nickname;
+    if (description !== undefined) u.description = description;
+    if (contacts) u.contacts = contacts;
+    if (interests) u.interests = interests;
+    if (avatar) u.avatar = avatar;
+    return res.json({ userId: u.id });
+  }
   const id = userId || crypto.randomUUID();
-  users.set(id, { id, gender, nickname, description, contacts: contacts || {}, interests: interests || [], avatar: avatar || '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  users.set(id, { id, gender, nickname, description: description || '', contacts: contacts || {}, interests: interests || [], avatar: avatar || '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
   statsData.users++;
   res.json({ userId: id });
 });
@@ -87,7 +124,7 @@ app.post('/api/push-subscribe', (req, res) => {
 // Check registration
 app.get('/api/check', (req, res) => {
   const u = users.get(req.query.userId);
-  res.json(u ? { registered: true, nickname: u.nickname, gender: u.gender } : { registered: false });
+  res.json(u ? { registered: true, nickname: u.nickname, gender: u.gender, hasProfile: !!u.gender, description: u.description, contacts: u.contacts, interests: u.interests } : { registered: false });
 });
 
 // Get my didis
