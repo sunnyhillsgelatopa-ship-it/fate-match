@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // VAPID keys for push notifications
@@ -27,19 +27,20 @@ app.get('/api/vapid-key', (req, res) => res.json({ key: vapidKeys.publicKey }));
 
 // Register
 app.post('/api/register', (req, res) => {
-  const { gender, nickname, description, userId, contacts, interests } = req.body;
+  const { gender, nickname, description, userId, contacts, interests, avatar } = req.body;
   if (!gender || !nickname || !description) return res.status(400).json({ error: 'missing' });
   if (userId && users.has(userId)) return res.status(409).json({ error: 'exists' });
   const id = userId || crypto.randomUUID();
-  users.set(id, { id, gender, nickname, description, contacts: contacts || {}, interests: interests || [], online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  users.set(id, { id, gender, nickname, description, contacts: contacts || {}, interests: interests || [], avatar: avatar || '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
   statsData.users++;
   res.json({ userId: id });
 });
+
 // Get users for bubbles
 app.get('/api/users', (req, res) => {
   const myId = req.query.userId;
   const list = [];
-  users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, interests: u.interests || [], online: u.online }); });
+  users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, interests: u.interests || [], avatar: u.avatar || '', online: u.online }); });
   res.json(list);
 });
 
@@ -52,6 +53,7 @@ app.put('/api/update-profile', (req, res) => {
   if (description !== undefined) u.description = description;
   if (contacts !== undefined) u.contacts = contacts;
   if (interests !== undefined) u.interests = interests;
+  if (req.body.avatar !== undefined) u.avatar = req.body.avatar;
   res.json({ ok: true });
 });
 
@@ -94,6 +96,7 @@ app.get('/api/my-didis', (req, res) => {
   if (!u) return res.json([]);
   res.json(u.didis);
 });
+
 // Admin endpoints
 app.get('/admin/data', (req, res) => {
   if (req.query.pwd !== 'admin123') return res.status(403).json({ error: 'wrong' });
@@ -130,6 +133,7 @@ app.put('/admin/user/:id', (req, res) => {
 
 // Serve admin page
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
+
 // Socket.IO
 io.on('connection', (socket) => {
   let myUserId = null;
