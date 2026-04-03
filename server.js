@@ -32,11 +32,11 @@ const accounts = new Map();
 app.post('/api/register-account', (req, res) => {
   const { nickname, password } = req.body;
   if (!nickname || !password) return res.status(400).json({ error: 'missing' });
-  if (accounts.has(nickname)) return res.status(409).json({ error: '该昵称已被注册' });
+  if (accounts.has(nickname)) return res.status(409).json({ error: '用户已存在' });
   const id = crypto.randomUUID();
   accounts.set(nickname, { password, userId: id });
   // Create user entry (partial, will be filled later)
-  users.set(id, { id, gender: '', nickname, description: '', contacts: {}, interests: [], avatar: '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  users.set(id, { id, gender: '', nickname, description: '', contacts: {}, interests: [], avatar: '', location: '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
   statsData.users++;
   res.json({ userId: id, nickname });
 });
@@ -46,10 +46,10 @@ app.post('/api/login', (req, res) => {
   const { nickname, password } = req.body;
   if (!nickname || !password) return res.status(400).json({ error: 'missing' });
   const acct = accounts.get(nickname);
-  if (!acct) return res.status(404).json({ error: '账号不存在，请先注册' });
+  if (!acct) return res.status(404).json({ error: '用户不存在' });
   if (acct.password !== password) return res.status(401).json({ error: '密码错误' });
   const u = users.get(acct.userId);
-  res.json({ userId: acct.userId, nickname: u.nickname, gender: u.gender, description: u.description, contacts: u.contacts, interests: u.interests, avatar: u.avatar, hasProfile: !!u.gender });
+  res.json({ userId: acct.userId, nickname: u.nickname, gender: u.gender, description: u.description, contacts: u.contacts, interests: u.interests, avatar: u.avatar, location: u.location||'', hasProfile: !!u.gender });
 });
 
 // Register (legacy / profile completion)
@@ -65,10 +65,11 @@ app.post('/api/register', (req, res) => {
     if (contacts) u.contacts = contacts;
     if (interests) u.interests = interests;
     if (avatar) u.avatar = avatar;
+    if (req.body.location !== undefined) u.location = req.body.location;
     return res.json({ userId: u.id });
   }
   const id = userId || crypto.randomUUID();
-  users.set(id, { id, gender, nickname, description: description || '', contacts: contacts || {}, interests: interests || [], avatar: avatar || '', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
+  users.set(id, { id, gender, nickname, description: description || '', contacts: contacts || {}, interests: interests || [], avatar: avatar || '', location: req.body.location||'', online: false, socketId: null, pushSub: null, didis: [], roomId: null, createdAt: Date.now() });
   statsData.users++;
   res.json({ userId: id });
 });
@@ -77,7 +78,7 @@ app.post('/api/register', (req, res) => {
 app.get('/api/users', (req, res) => {
   const myId = req.query.userId;
   const list = [];
-  users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, interests: u.interests || [], avatar: u.avatar || '', online: u.online }); });
+  users.forEach((u, id) => { if (id !== myId) list.push({ id: u.id, gender: u.gender, nickname: u.nickname, description: u.description, interests: u.interests || [], avatar: u.avatar || '', location: u.location||'', online: u.online }); });
   res.json(list);
 });
 
@@ -91,6 +92,7 @@ app.put('/api/update-profile', (req, res) => {
   if (contacts !== undefined) u.contacts = contacts;
   if (interests !== undefined) u.interests = interests;
   if (req.body.avatar !== undefined) u.avatar = req.body.avatar;
+  if (req.body.location !== undefined) u.location = req.body.location;
   res.json({ ok: true });
 });
 
@@ -108,7 +110,7 @@ app.post('/api/didi', (req, res) => {
   }
   // Push notification
   if (to.pushSub) {
-    webpush.sendNotification(to.pushSub, JSON.stringify({ title: '💕 有人滴滴你了！', body: from.nickname + ' 想和你聊天，快来看看！', url: '/' })).catch(() => {});
+    webpush.sendNotification(to.pushSub, JSON.stringify({ title: '💘 有人心动你了！', body: from.nickname + ' 向你发送了一条消息：喜欢你，想了解你！', url: '/' })).catch(() => {});
   }
   res.json({ success: true });
 });
@@ -124,7 +126,7 @@ app.post('/api/push-subscribe', (req, res) => {
 // Check registration
 app.get('/api/check', (req, res) => {
   const u = users.get(req.query.userId);
-  res.json(u ? { registered: true, nickname: u.nickname, gender: u.gender, hasProfile: !!u.gender, description: u.description, contacts: u.contacts, interests: u.interests } : { registered: false });
+  res.json(u ? { registered: true, nickname: u.nickname, gender: u.gender, hasProfile: !!u.gender, description: u.description, contacts: u.contacts, interests: u.interests, location: u.location||'' } : { registered: false });
 });
 
 // Get my didis
@@ -200,7 +202,7 @@ io.on('connection', (socket) => {
       socket.emit('partner_offline_msg', { nickname: from.nickname });
       // Push notify sender
       if (from.pushSub) {
-        webpush.sendNotification(from.pushSub, JSON.stringify({ title: '💕 ' + me.nickname + ' 接受了你的邀请！', body: '快来聊天吧！', url: '/' })).catch(() => {});
+        webpush.sendNotification(from.pushSub, JSON.stringify({ title: '💘 ' + me.nickname + ' 对你表示心动了！', body: '快来看看ta是谁吧！', url: '/' })).catch(() => {});
       }
     }
   });
