@@ -164,15 +164,73 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .contact-item-label{font-weight:600;color:var(--pink)}
 .contact-item-value{word-break:break-all;color:#666;margin-top:2px}
 
-@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}.note-card{max-width:90%;padding:20px 16px}}
+
+/* Welcome Screen */
+.welcome-screen{flex-direction:column;gap:0}
+.welcome-card{background:var(--card-bg);backdrop-filter:blur(20px);border-radius:28px;padding:44px 32px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.6);max-width:420px;width:100%;animation:fadeInUp .6s ease;text-align:center}
+.welcome-logo{margin-bottom:24px}
+.welcome-logo .wl-icon{font-size:3.5em;display:block;margin-bottom:10px;animation:heartBeat 2s ease infinite}
+.welcome-logo h1{font-size:2em;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1px}
+.welcome-logo p{color:var(--text-light);font-size:.88em;margin-top:6px;opacity:.75}
+.welcome-steps{margin:28px 0 32px;display:flex;flex-direction:column;gap:18px}
+.welcome-step{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(255,107,157,.06),rgba(192,132,252,.06));border-radius:16px;padding:16px 18px;border:1px solid rgba(255,107,157,.1);text-align:left;animation:fadeInUp .5s ease both}
+.welcome-step:nth-child(1){animation-delay:.1s}
+.welcome-step:nth-child(2){animation-delay:.25s}
+.welcome-step:nth-child(3){animation-delay:.4s}
+.welcome-step .step-icon{font-size:2em;flex-shrink:0;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(255,107,157,.15)}
+.welcome-step .step-text{font-size:.92em;line-height:1.5;color:var(--text);font-weight:400}
+.welcome-step .step-text strong{font-weight:600;color:var(--pink)}
+.welcome-btn{margin-top:8px;font-size:1.1em;padding:16px 32px;letter-spacing:1px}
+@keyframes bounceIn{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.05)}70%{transform:scale(.95)}100%{transform:scale(1);opacity:1}}
+
+/* Avatar Upload */
+.avatar-upload-section{display:flex;flex-direction:column;align-items:center;margin-bottom:18px}
+.avatar-upload-section label{font-weight:500;margin-bottom:8px;font-size:.85em;color:#5a4a2e}
+.avatar-circle{width:80px;height:80px;border-radius:50%;border:3px dashed #e5e7eb;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .3s;background:#fdf2f8;position:relative}
+.avatar-circle:hover{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,107,157,.1)}
+.avatar-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.avatar-circle .avatar-placeholder{font-size:2em;color:#ccc}
+.avatar-circle.has-img{border-style:solid;border-color:var(--pink)}
+#avatarFileInput{display:none}
+
+/* Bubble avatar image */
+.bubble .b-avatar{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5)}
+
+@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}.bubble .b-avatar{width:50px;height:50px}.note-card{max-width:90%;padding:20px 16px}.welcome-card{padding:32px 20px}}
 </style>
 </head>
 <body>
 <div class="hearts-bg" id="heartsBg"></div>
-<div class="warning-badge" id="warningBadge">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
+<div class="warning-badge" id="warningBadge" style="display:none">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
 
 <!-- Register Screen -->
-<div class="screen active" id="registerScreen">
+<!-- Welcome Screen -->
+<div class="screen active welcome-screen" id="welcomeScreen">
+<div class="welcome-card">
+  <div class="welcome-logo">
+    <span class="wl-icon">💕</span>
+    <h1>缘分速配</h1>
+    <p>Fate Match — 遇见你的缘分</p>
+  </div>
+  <div class="welcome-steps">
+    <div class="welcome-step">
+      <div class="step-icon">🫧</div>
+      <div class="step-text"><strong>点击泡泡</strong>认识新朋友</div>
+    </div>
+    <div class="welcome-step">
+      <div class="step-icon">💬</div>
+      <div class="step-text"><strong>聊天5分钟</strong>决定是否继续认识</div>
+    </div>
+    <div class="welcome-step">
+      <div class="step-icon">🤝</div>
+      <div class="step-text"><strong>双方同意</strong>才交换联系方式</div>
+    </div>
+  </div>
+  <button class="btn btn-primary welcome-btn" onclick="goToRegister()">💫 开始交友</button>
+</div>
+</div>
+
+<div class="screen" id="registerScreen">
 <div class="card">
   <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 遇见你的缘分</p></div>
   <div>
@@ -182,6 +240,14 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
       <button class="gender-btn" data-gender="female" onclick="selGender('female')"><span class="icon">👩</span><div style="font-weight:500">女</div></button>
     </div>
     <div class="error-msg" id="genderErr">请选择性别</div>
+  </div>
+  <div class="avatar-upload-section">
+    <label>上传头像</label>
+    <div class="avatar-circle" id="avatarCircle" onclick="document.getElementById('avatarFileInput').click()">
+      <span class="avatar-placeholder">📷</span>
+    </div>
+    <input type="file" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(event)">
+    <span style="font-size:.72em;color:#aaa;margin-top:6px">点击上传（可选）</span>
   </div>
   <div class="input-group"><label>你的昵称 <span class="required">*</span></label><input type="text" id="nickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="nickErr">请填写昵称</div></div>
   <div class="input-group"><label>描述自己 <span class="required">*</span></label><textarea id="descInput" placeholder="介绍一下你自己吧～ 兴趣爱好、想找什么样的人..." maxlength="200"></textarea><div class="error-msg" id="descErr">请填写描述</div></div>
@@ -333,8 +399,9 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 <script>
 let socket=null, myUserId=localStorage.getItem('fateMatchUserId'), selectedGender=null, chatTimerInterval=null, chatEnded=false, chatStartTime=null, pendingReqId=null;
 let selectedBubbleUser=null, pendingDidiFrom=null, musicPlaying=false, audioCtx=null, bgOsc=null, bgGain=null;
-let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''},interests:[]};
+let myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''},interests:[],avatar:''};
 let selectedInterests=[];
+let myAvatarData='';
 
 /* Audio context initialization on first user interaction */
 (()=>{
@@ -364,6 +431,37 @@ function showO(id){document.getElementById(id).classList.add('active')}
 function hideO(id){document.getElementById(id).classList.remove('active')}
 function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
 
+
+function goToRegister(){
+  showScreen('registerScreen');
+  document.getElementById('warningBadge').style.display='block';
+}
+
+function handleAvatarUpload(event){
+  var file=event.target.files[0];
+  if(!file)return;
+  if(file.size>2*1024*1024){alert('\u5934\u50CF\u4E0D\u80FD\u8D85\u8FC72MB');return}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      var size=200;
+      canvas.width=size;canvas.height=size;
+      var ctx=canvas.getContext('2d');
+      var min=Math.min(img.width,img.height);
+      var sx=(img.width-min)/2,sy=(img.height-min)/2;
+      ctx.drawImage(img,sx,sy,min,min,0,0,size,size);
+      myAvatarData=canvas.toDataURL('image/jpeg',0.7);
+      var circle=document.getElementById('avatarCircle');
+      circle.innerHTML='<img src="'+myAvatarData+'">';
+      circle.classList.add('has-img');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 function selGender(g){selectedGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));document.querySelector(`[data-gender="${g}"]`).classList.add('selected');document.getElementById('genderErr').classList.remove('show')}
 
 async function doRegister(){
@@ -375,7 +473,7 @@ async function doRegister(){
   if(!desc){document.getElementById('descErr').classList.add('show');ok=false}else document.getElementById('descErr').classList.remove('show');
   if(!ok)return;
   try{
-    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:nick,description:desc,userId:myUserId})});
+    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:nick,description:desc,userId:myUserId,avatar:myAvatarData})});
     if(r.status===409){alert('你已经注册过了！');goToBubbles();return}
     const d=await r.json();
     myUserId=d.userId;
@@ -503,7 +601,8 @@ async function loadBubbles(){
       const randomDelay=Math.random()*2;
       b.style.animation=`floatBubble${Math.floor(Math.random()*3)} ${randomDuration}s ease-in-out infinite`;
       b.style.animationDelay=randomDelay+'s';
-      b.innerHTML=`<span class="b-emoji">${u.gender==='male'?'👨':'👩'}</span><span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
+      var avatarHtml=u.avatar?`<img class="b-avatar" src="${u.avatar}">`:`<span class="b-emoji">${u.gender==='male'?'👨':'👩'}</span>`;
+      b.innerHTML=avatarHtml+`<span class="b-name">${esc(u.nickname)}</span><span class="b-online ${u.online?'on':'off'}"></span>`;
       b.onclick=()=>openBubble(u);
       area.appendChild(b);
     });
@@ -545,8 +644,10 @@ function addDriftAnimations(){
 function openBubble(u){
   selectedBubbleUser=u;
   playBubbleSound();
-  document.getElementById('bdAvatar').textContent=u.gender==='male'?'👨':'👩';
-  document.getElementById('bdAvatar').className='bd-avatar '+(u.gender==='male'?'male':'female');
+  var bdAv=document.getElementById('bdAvatar');
+  if(u.avatar){bdAv.innerHTML='<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';bdAv.className='bd-avatar';}
+  else{bdAv.textContent=u.gender==='male'?'👨':'👩';bdAv.className='bd-avatar '+(u.gender==='male'?'male':'female');}
+  
   document.getElementById('bdName').textContent=u.nickname;
   document.getElementById('bdGender').textContent=(u.gender==='male'?'♂ 男':'♀ 女')+(u.online?' · 🟢 在线':' · 离线');
   document.getElementById('bdDesc').textContent=u.description;
