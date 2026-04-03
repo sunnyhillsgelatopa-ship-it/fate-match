@@ -27,6 +27,11 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:linear-gradi
 .warning-badge{position:fixed;top:16px;right:16px;z-index:99;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;padding:8px 14px;border-radius:12px;font-size:.72em;font-weight:600;max-width:200px;text-align:center;box-shadow:0 4px 15px rgba(238,90,36,.3);animation:pulseWarn 2s ease infinite;line-height:1.4}
 @keyframes pulseWarn{0%,100%{box-shadow:0 4px 15px rgba(238,90,36,.3)}50%{box-shadow:0 4px 25px rgba(238,90,36,.5)}}
 
+/* Toast notification */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:999;background:linear-gradient(135deg,#34d399,#10b981);color:#fff;padding:14px 28px;border-radius:16px;font-size:.92em;font-weight:500;box-shadow:0 6px 25px rgba(16,185,129,.3);animation:toastIn .4s ease,toastOut .4s ease 2.6s forwards;text-align:center;max-width:90%}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(-20px)}}
+
 .gender-select{display:flex;gap:16px;margin-bottom:20px}
 .gender-btn{flex:1;padding:18px 14px;border-radius:16px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;transition:all .3s;text-align:center;font-family:inherit;font-size:.9em;color:var(--text)}
 .gender-btn:hover{border-color:var(--pink-light);transform:translateY(-2px)}
@@ -49,6 +54,10 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .error-msg{color:#ef4444;font-size:.8em;margin-top:4px;display:none}.error-msg.show{display:block}
 .required{color:#ef4444}
 
+/* Auth buttons */
+.auth-buttons{display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.auth-buttons .btn{font-size:1.05em;padding:16px 28px}
+
 /* Contact Info Note Card */
 .note-card{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-2deg);z-index:100;background:#fffef5;border-radius:8px;padding:28px 24px;max-width:380px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.15),0 0 0 1px rgba(139,69,19,.1);backdrop-filter:blur(4px);animation:noteSlideIn .4s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes noteSlideIn{from{opacity:0;transform:translate(-50%,-50%) rotate(-5deg) scale(0.9)}to{opacity:1;transform:translate(-50%,-50%) rotate(-2deg) scale(1)}}
@@ -60,6 +69,14 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .note-card .input-row input{flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:.9em;background:#fff}
 .note-card .note-hint-small{font-size:.75em;color:#aaa;text-align:center;margin-bottom:12px}
 .note-card .btn{font-size:.9em;padding:12px}
+
+/* Description note card (小纸条) */
+.desc-note-card{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(1deg);z-index:100;background:#fffef5;border-radius:8px;padding:32px 24px;max-width:400px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.15),0 0 0 1px rgba(139,69,19,.1);backdrop-filter:blur(4px);animation:noteSlideIn .4s cubic-bezier(0.34,1.56,0.64,1)}
+.desc-note-card h3{text-align:center;font-size:1.2em;color:var(--text);margin-bottom:6px}
+.desc-note-card .note-hint{text-align:center;font-size:.82em;color:#999;margin-bottom:18px}
+.desc-note-card textarea{width:100%;min-height:100px;padding:14px;border:1.5px dashed #ddd;border-radius:12px;font-family:inherit;font-size:.92em;resize:vertical;background:#fff;outline:none;line-height:1.6;color:var(--text)}
+.desc-note-card textarea:focus{border-color:var(--pink);border-style:solid}
+.desc-note-card .btn{margin-top:16px;font-size:.95em}
 
 /* Interest Tags */
 .interest-section{margin-bottom:18px}
@@ -164,7 +181,6 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 .contact-item-label{font-weight:600;color:var(--pink)}
 .contact-item-value{word-break:break-all;color:#666;margin-top:2px}
 
-
 /* Welcome Screen */
 .welcome-screen{flex-direction:column;gap:0}
 .welcome-card{background:var(--card-bg);backdrop-filter:blur(20px);border-radius:28px;padding:44px 32px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.6);max-width:420px;width:100%;animation:fadeInUp .6s ease;text-align:center}
@@ -196,14 +212,17 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
 /* Bubble avatar image */
 .bubble .b-avatar{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5)}
 
-@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}.bubble .b-avatar{width:50px;height:50px}.note-card{max-width:90%;padding:20px 16px}.welcome-card{padding:32px 20px}}
+/* Logout button */
+.logout-btn{position:fixed;bottom:70px;right:20px;z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.85);border:2px solid rgba(239,68,68,.2);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.logout-btn:hover{transform:scale(1.1);border-color:rgba(239,68,68,.5)}
+
+@media(max-width:480px){.card{padding:28px 20px;margin:10px}.bubble{width:85px;height:85px}.bubble .b-emoji{font-size:1.5em}.bubble .b-avatar{width:50px;height:50px}.note-card{max-width:90%;padding:20px 16px}.desc-note-card{max-width:90%;padding:24px 18px}.welcome-card{padding:32px 20px}}
 </style>
 </head>
 <body>
 <div class="hearts-bg" id="heartsBg"></div>
 <div class="warning-badge" id="warningBadge" style="display:none">⚠️ 每人仅有一次填写机会<br>请认真填写！</div>
 
-<!-- Register Screen -->
 <!-- Welcome Screen -->
 <div class="screen active welcome-screen" id="welcomeScreen">
 <div class="welcome-card">
@@ -226,13 +245,50 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
       <div class="step-text"><strong>双方同意</strong>才交换联系方式</div>
     </div>
   </div>
-  <button class="btn btn-primary welcome-btn" onclick="goToRegister()">💫 开始交友</button>
+  <button class="btn btn-primary welcome-btn" onclick="goToAuth()">💫 开始交友</button>
 </div>
 </div>
 
-<div class="screen" id="registerScreen">
+<!-- Auth Screen (Login / Register buttons) -->
+<div class="screen" id="authScreen">
 <div class="card">
   <div class="logo"><span class="logo-icon">💕</span><h1>缘分速配</h1><p>Fate Match — 遇见你的缘分</p></div>
+  <div style="text-align:center;margin-bottom:8px;font-size:.95em;color:#666">欢迎来到缘分速配！请登录或注册</div>
+  <div class="auth-buttons">
+    <button class="btn btn-primary" onclick="goToLogin()">🔑 登录</button>
+    <button class="btn btn-secondary" onclick="goToRegisterPage()">📝 注册新账号</button>
+  </div>
+</div>
+</div>
+
+<!-- Register Page (nickname + password) -->
+<div class="screen" id="registerPage">
+<div class="card">
+  <div class="logo"><span class="logo-icon">📝</span><h1>注册账号</h1><p>创建你的缘分速配账号</p></div>
+  <div class="input-group"><label>昵称 <span class="required">*</span></label><input type="text" id="regNickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="regNickErr">请填写昵称</div></div>
+  <div class="input-group"><label>密码 <span class="required">*</span></label><input type="password" id="regPwdInput" placeholder="设置密码（至少4位）" maxlength="30"><div class="error-msg" id="regPwdErr">请设置密码（至少4位）</div></div>
+  <div class="input-group"><label>确认密码 <span class="required">*</span></label><input type="password" id="regPwdConfirmInput" placeholder="再次输入密码" maxlength="30"><div class="error-msg" id="regPwdConfirmErr">两次密码不一致</div></div>
+  <button class="btn btn-primary" onclick="doRegisterAccount()" style="margin-top:10px">✅ 确认注册</button>
+  <button class="btn btn-secondary" onclick="goToAuth()" style="margin-top:10px">← 返回</button>
+</div>
+</div>
+
+<!-- Login Page (nickname + password) -->
+<div class="screen" id="loginPage">
+<div class="card">
+  <div class="logo"><span class="logo-icon">🔑</span><h1>登录</h1><p>欢迎回来！</p></div>
+  <div class="input-group"><label>昵称 <span class="required">*</span></label><input type="text" id="loginNickInput" placeholder="你的昵称" maxlength="20"><div class="error-msg" id="loginNickErr">请填写昵称</div></div>
+  <div class="input-group"><label>密码 <span class="required">*</span></label><input type="password" id="loginPwdInput" placeholder="你的密码" maxlength="30" onkeypress="if(event.key==='Enter')doLogin()"><div class="error-msg" id="loginPwdErr">请填写密码</div></div>
+  <div class="error-msg" id="loginGeneralErr" style="text-align:center;margin-bottom:10px"></div>
+  <button class="btn btn-primary" onclick="doLogin()" style="margin-top:10px">✅ 确认登录</button>
+  <button class="btn btn-secondary" onclick="goToAuth()" style="margin-top:10px">← 返回</button>
+</div>
+</div>
+
+<!-- Profile Setup Screen (gender + avatar + description after first login) -->
+<div class="screen" id="profileSetupScreen">
+<div class="card">
+  <div class="logo"><span class="logo-icon">✨</span><h1>完善资料</h1><p>让大家更好地认识你</p></div>
   <div>
     <span style="font-weight:500;margin-bottom:8px;display:block;font-size:.9em">选择你的性别 <span class="required">*</span></span>
     <div class="gender-select">
@@ -249,15 +305,21 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
     <input type="file" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(event)">
     <span style="font-size:.72em;color:#aaa;margin-top:6px">点击上传（可选）</span>
   </div>
-  <div class="input-group"><label>你的昵称 <span class="required">*</span></label><input type="text" id="nickInput" placeholder="取一个好听的名字" maxlength="20"><div class="error-msg" id="nickErr">请填写昵称</div></div>
-  <div class="input-group"><label>描述自己 <span class="required">*</span></label><textarea id="descInput" placeholder="介绍一下你自己吧～ 兴趣爱好、想找什么样的人..." maxlength="200"></textarea><div class="error-msg" id="descErr">请填写描述</div></div>
-  <button class="btn btn-primary" onclick="doRegister()" style="margin-top:10px">💫 继续 →</button>
+  <button class="btn btn-primary" onclick="submitProfileSetup()" style="margin-top:10px">💫 继续 →</button>
 </div>
+</div>
+
+<!-- Description Note Card (小纸条) -->
+<div id="descNoteCard" class="desc-note-card" style="display:none">
+  <h3>📝 写一张小纸条</h3>
+  <div class="note-hint">介绍一下你自己吧～让别人更好地认识你</div>
+  <textarea id="descNoteInput" placeholder="你的兴趣爱好、想找什么样的人、有趣的自我介绍..." maxlength="200"></textarea>
+  <button class="btn btn-primary" onclick="submitDescNote()">确认 →</button>
 </div>
 
 <!-- Contact Info Note Card -->
 <div id="contactNoteCard" class="note-card" style="display:none">
-  <h3>📝 留下你的联系方式</h3>
+  <h3>📝 癙下你的联系方式</h3>
   <div class="note-hint">联系方式仅在配对成功后展示给对方</div>
   <div class="contact-inputs">
     <div class="input-row">
@@ -287,12 +349,12 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
       <button type="button" class="interest-tag" data-interest="电影" onclick="toggleInterest(this)">🎬 电影</button>
       <button type="button" class="interest-tag" data-interest="聊天" onclick="toggleInterest(this)">💬 聊天</button>
       <button type="button" class="interest-tag" data-interest="恋爱" onclick="toggleInterest(this)">💕 恋爱</button>
-      <button type="button" class="interest-tag" data-interest="音乐" onclick="toggleInterest(this)">🎵 音乐</button>
+      <button type="button" class="interest-tag" data-interest="音乐" onclick="toggleInterest(this)">🎱 音乐</button>
       <button type="button" class="interest-tag" data-interest="创业" onclick="toggleInterest(this)">💼 创业</button>
       <button type="button" class="interest-tag" data-interest="健身" onclick="toggleInterest(this)">💪 健身</button>
       <button type="button" class="interest-tag" data-interest="游戏" onclick="toggleInterest(this)">🎮 游戏</button>
       <button type="button" class="interest-tag" data-interest="旅行" onclick="toggleInterest(this)">✈️ 旅行</button>
-      <button type="button" class="interest-tag" data-interest="美食" onclick="toggleInterest(this)">🍜 美食</button>
+      <button type="button" class="interest-tag" data-interest="美食" onclick="toggleInterest(this)">🍜 美飝</button>
       <button type="button" class="interest-tag" data-interest="摄影" onclick="toggleInterest(this)">📸 摄影</button>
       <button type="button" class="interest-tag" data-interest="读书" onclick="toggleInterest(this)">📚 读书</button>
       <button type="button" class="interest-tag" data-interest="动漫" onclick="toggleInterest(this)">🌸 动漫</button>
@@ -312,6 +374,7 @@ input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(25
   <div class="bubbles-area" id="bubblesArea"><div class="no-users">等待更多人加入...</div></div>
 </div>
 <button class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<button class="logout-btn" onclick="doLogout()" title="退出登录">🚪</button>
 <button class="settings-btn" onclick="openSettings()">⚙️</button>
 <div class="bubble-detail" id="bubbleDetail">
   <div class="bd-header">
@@ -409,7 +472,7 @@ let myAvatarData='';
     if(!audioCtx){
       audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     }
-    document.removeEventListener('click',initAudioContext);
+    document.removeEventListener('click',initAudioContext;
   };
   document.addEventListener('click',initAudioContext);
 })();
@@ -417,30 +480,160 @@ let myAvatarData='';
 /* Hearts background */
 (()=>{const c=document.getElementById('heartsBg'),h=['💕','💖','💗','💝','✨','🌸'];for(let i=0;i<15;i++){const s=document.createElement('span');s.className='heart';s.textContent=h[Math.floor(Math.random()*h.length)];s.style.left=Math.random()*100+'%';s.style.animationDuration=(12+Math.random()*15)+'s';s.style.animationDelay=Math.random()*10+'s';s.style.fontSize=(14+Math.random()*18)+'px';c.appendChild(s)}})();
 
-/* Check registration status */
+/* Check if user already logged in */
 (async ()=>{
   if(myUserId){
-    const r=await fetch('/api/check?userId='+myUserId);
-    const d=await r.json();
-    if(d.registered){document.getElementById('warningBadge').style.display='none';goToBubbles();return}
+    try{
+      const r=await fetch('/api/check?userId='+myUserId);
+      const d=await r.json();
+      if(d.registered && d.hasProfile){
+        // User has full profile, go to bubbles
+        myProfile.nickname=d.nickname;
+        myProfile.description=d.description||'';
+        myProfile.contacts=d.contacts||{};
+        myProfile.interests=d.interests||[];
+        document.getElementById('warningBadge').style.display='none';
+        goToBubbles();
+        return;
+      } else if(d.registered && !d.hasProfile){
+        // User registered but no profile yet, go to profile setup
+        myProfile.nickname=d.nickname;
+        showScreen('profileSetupScreen');
+        return;
+      }
+    }catch(e){}
   }
 })();
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Hide note cards when switching screens
+  document.getElementById('descNoteCard').style.display='none';
+  document.getElementById('contactNoteCard').style.display='none';
+}
 function showO(id){document.getElementById(id).classList.add('active')}
 function hideO(id){document.getElementById(id).classList.remove('active')}
 function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
 
+function showToast(msg){
+  var old=document.querySelector('.toast');
+  if(old)old.remove();
+  var t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{if(t.parentNode)t.remove()},3000);
+}
 
-function goToRegister(){
-  showScreen('registerScreen');
-  document.getElementById('warningBadge').style.display='block';
+/* Navigation functions */
+function goToAuth(){
+  showScreen('authScreen');
+}
+
+function goToLogin(){
+  showScreen('loginPage');
+  document.getElementById('loginNickInput').value='';
+  document.getElementById('loginPwdInput').value='';
+  document.getElementById('loginGeneralErr').classList.remove('show');
+  document.getElementById('loginGeneralErr').textContent='';
+}
+
+function goToRegisterPage(){
+  showScreen('registerPage');
+  document.getElementById('regNickInput').value='';
+  document.getElementById('regPwdInput').value='';
+  document.getElementById('regPwdConfirmInput').value='';
+}
+
+/* Register account */
+async function doRegisterAccount(){
+  let ok=true;
+  const nick=document.getElementById('regNickInput').value.trim();
+  const pwd=document.getElementById('regPwdInput').value;
+  const pwdConfirm=document.getElementById('regPwdConfirmInput').value;
+
+  if(!nick){document.getElementById('regNickErr').classList.add('show');ok=false}else document.getElementById('regNickErr').classList.remove('show');
+  if(!pwd||pwd.length<4){document.getElementById('regPwdErr').classList.add('show');ok=false}else document.getElementById('regPwdErr').classList.remove('show');
+  if(pwd!==pwdConfirm){document.getElementById('regPwdConfirmErr').classList.add('show');ok=false}else document.getElementById('regPwdConfirmErr').classList.remove('show');
+  if(!ok)return;
+
+  try{
+    const r=await fetch('/api/register-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nickname:nick,password:pwd})});
+    const d=await r.json();
+    if(!r.ok){
+      alert(d.error||'注册失败');
+      return;
+    }
+    // Success - go back to auth screen with notification
+    showScreen('authScreen');
+    showToast('✅ 账号已注册，请点击登录');
+  }catch(e){alert('注册失败，请重试')}
+}
+
+/* Login */
+async function doLogin(){
+  let ok=true;
+  const nick=document.getElementById('loginNickInput').value.trim();
+  const pwd=document.getElementById('loginPwdInput').value;
+
+  if(!nick){document.getElementById('loginNickErr').classList.add('show');ok=false}else document.getElementById('loginNickErr').classList.remove('show');
+  if(!pwd){document.getElementById('loginPwdErr').classList.add('show');ok=false}else document.getElementById('loginPwdErr').classList.remove('show');
+  if(!ok)return;
+
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nickname:nick,password:pwd})});
+    const d=await r.json();
+    if(!r.ok){
+      document.getElementById('loginGeneralErr').textContent=d.error||'登录失败';
+      document.getElementById('loginGeneralErr').classList.add('show');
+      return;
+    }
+    // Save userId
+    myUserId=d.userId;
+    localStorage.setItem('fateMatchUserId',myUserId);
+    myProfile.nickname=d.nickname;
+    myProfile.description=d.description||'';
+    myProfile.contacts=d.contacts||{};
+    myProfile.interests=d.interests||[];
+    myAvatarData=d.avatar||'';
+
+    if(d.hasProfile){
+      // Returning user with full profile, go to bubbles
+      goToBubbles();
+    }else{
+      // First login, need to set up profile (gender, avatar, description, contacts)
+      showScreen('profileSetupScreen');
+    }
+  }catch(e){alert('登录失败，请重试')}
+}
+
+/* Profile setup (gender + avatar) */
+function submitProfileSetup(){
+  if(!selectedGender){document.getElementById('genderErr').classList.add('show');return}
+  // Hide profile setup, show description note card
+  document.getElementById('profileSetupScreen').classList.remove('active');
+  document.getElementById('descNoteCard').style.display='block';
+}
+
+/* Description note card */
+function submitDescNote(){
+  const desc=document.getElementById('descNoteInput').value.trim();
+  if(!desc){alert('请写一点关于你自己的描述');return}
+  myProfile.description=desc;
+  document.getElementById('descNoteCard').style.display='none';
+
+  // Save gender + description + avatar to server
+  fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:myProfile.nickname,description:desc,userId:myUserId,avatar:myAvatarData})}).catch(()=>{});
+
+  // Show contact info card
+  document.getElementById('contactNoteCard').style.display='block';
 }
 
 function handleAvatarUpload(event){
   var file=event.target.files[0];
   if(!file)return;
-  if(file.size>2*1024*1024){alert('\u5934\u50CF\u4E0D\u80FD\u8D85\u8FC72MB');return}
+  if(file.size>2*1024*1024){alert('头像不能超过2MB');return}
   var reader=new FileReader();
   reader.onload=function(e){
     var img=new Image();
@@ -464,39 +657,13 @@ function handleAvatarUpload(event){
 
 function selGender(g){selectedGender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));document.querySelector(`[data-gender="${g}"]`).classList.add('selected');document.getElementById('genderErr').classList.remove('show')}
 
-async function doRegister(){
-  let ok=true;
-  if(!selectedGender){document.getElementById('genderErr').classList.add('show');ok=false}
-  const nick=document.getElementById('nickInput').value.trim();
-  const desc=document.getElementById('descInput').value.trim();
-  if(!nick){document.getElementById('nickErr').classList.add('show');ok=false}else document.getElementById('nickErr').classList.remove('show');
-  if(!desc){document.getElementById('descErr').classList.add('show');ok=false}else document.getElementById('descErr').classList.remove('show');
-  if(!ok)return;
-  try{
-    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gender:selectedGender,nickname:nick,description:desc,userId:myUserId,avatar:myAvatarData})});
-    if(r.status===409){alert('你已经注册过了！');goToBubbles();return}
-    const d=await r.json();
-    myUserId=d.userId;
-    myProfile.nickname=nick;
-    myProfile.description=desc;
-    localStorage.setItem('fateMatchUserId',myUserId);
-    document.getElementById('warningBadge').style.display='none';
-    showContactNoteCard();
-  }catch(e){alert('注册失败，请重试')}
-}
-
-function showContactNoteCard(){
-  document.getElementById('registerScreen').style.display='none';
-  document.getElementById('contactNoteCard').style.display='block';
-}
-
 function toggleInterest(btn){
   btn.classList.toggle('selected');
-  var interest=btn.dataset.interest;
+  const interest=btn.dataset.interest;
   if(btn.classList.contains('selected')){
     if(!selectedInterests.includes(interest))selectedInterests.push(interest);
   }else{
-    selectedInterests=selectedInterests.filter(function(i){return i!==interest;});
+    selectedInterests=selectedInterests.filter(i=>i!==interest);
   }
 }
 
@@ -515,8 +682,10 @@ function submitContactInfo(){
   myProfile.contacts={ig,whatsapp,tiktok,wechat,xiaohongshu};
   myProfile.interests=selectedInterests;
 
-  fetch('/api/update-profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:myUserId,contacts:myProfile.contacts,interests:selectedInterests})}).catch(function(){});
+  // Update profile with contacts and interests
+  fetch('/api/update-profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:myUserId,contacts:myProfile.contacts,interests:selectedInterests})}).catch(()=>{});
 
+  // Hide contact card and jump directly to bubbles
   document.getElementById('contactNoteCard').style.display='none';
   subscribePush();
   goToBubbles();
@@ -524,9 +693,22 @@ function submitContactInfo(){
 
 function goToBubbles(){
   showScreen('bubblesScreen');
+  document.getElementById('warningBadge').style.display='none';
   connectSocket();
   loadBubbles();
   startMusic();
+}
+
+function doLogout(){
+  if(!confirm('确定要退出登录吗？'))return;
+  localStorage.removeItem('fateMatchUserId');
+  myUserId=null;
+  myProfile={nickname:'',description:'',contacts:{ig:'',whatsapp:'',tiktok:'',wechat:'',xiaohongshu:''},interests:[],avatar:''};
+  selectedGender=null;
+  myAvatarData='';
+  if(socket){socket.disconnect();socket=null}
+  stopMusic();
+  showScreen('welcomeScreen');
 }
 
 function connectSocket(){
@@ -647,7 +829,6 @@ function openBubble(u){
   var bdAv=document.getElementById('bdAvatar');
   if(u.avatar){bdAv.innerHTML='<img src="'+u.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';bdAv.className='bd-avatar';}
   else{bdAv.textContent=u.gender==='male'?'👨':'👩';bdAv.className='bd-avatar '+(u.gender==='male'?'male':'female');}
-  
   document.getElementById('bdName').textContent=u.nickname;
   document.getElementById('bdGender').textContent=(u.gender==='male'?'♂ 男':'♀ 女')+(u.online?' · 🟢 在线':' · 离线');
   document.getElementById('bdDesc').textContent=u.description;
@@ -664,7 +845,7 @@ function openSettings(){
   document.getElementById('settingsTiktokInput').value=myProfile.contacts.tiktok||'';
   document.getElementById('settingsWechatInput').value=myProfile.contacts.wechat||'';
   document.getElementById('settingsXiaohongshuInput').value=myProfile.contacts.xiaohongshu||'';
-  document.getElementById('settingsPanel').classList.add('show');
+ document.getElementById('settingsPanel').classList.add('show');
 }
 
 function closeSettings(){
@@ -793,7 +974,7 @@ function startMusic(){
       lfo.connect(lfoG);lfoG.connect(o.frequency);
       o.connect(g);g.connect(bgGain);o.start();lfo.start();
     });
-    musicPlaying=true;document.getElementById('musicBtn').textContent='🎵';
+    musicPlaying=true;document.getElementById('musicBtn').textContent='🎭';
   }catch(e){}
 }
 function stopMusic(){if(bgGain){bgGain.disconnect();bgGain=null}musicPlaying=false;document.getElementById('musicBtn').textContent='🔇'}
